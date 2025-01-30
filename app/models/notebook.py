@@ -27,8 +27,8 @@ class Notebook(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
-    notes = db.relationship('Note', backref='notebook', lazy=True, cascade='all, delete-orphan')
-    tasks = db.relationship('Task', backref='notebook', lazy=True, cascade='all, delete-orphan')
+
+
 
 
     def to_dict(self):
