@@ -1,19 +1,19 @@
-from app.models import db, Notes, environment, SCHEMA
+from app.models import db, environment, SCHEMA
+from app.models.notes import Notes
 from sqlalchemy.sql import text
 
 
 # Adds a demo note to notebook 1
-def seed_users():
-    demo_note_1 = Notes(
-        first_name='Demo', last_name='Lition', username='Demo', email='demo@aa.io', password='password')
-    marnie = User(
-        first_name='Marnie', last_name='User', username='marnie', email='marnie@aa.io', password='password')
-    bobbie = User(
-        first_name='Bobbie', last_name='Singer', username='bobbie', email='bobbie@aa.io', password='password')
+def seed_notes():
+    demo_note_1 = Notes(title='Example Note', content='This is an example', notebook_id=1)
+    demo_note_2 = Notes(
+        title='Anatomy of the arm', content='The arm from the shoulder to the wrist consists of 3 bones: the humerus, the ulna, and the radius.', notebook_id='marnie')
+    demo_note_3 = Notes(
+        title='Signs and symptoms of Parkinson\'s', content='Some signs and symptoms include: essential tremors, memory loss, halucinations, difficulty moving, and shuffling feet.', notebook_id='bobbie')
 
-    db.session.add(demo)
-    db.session.add(marnie)
-    db.session.add(bobbie)
+    db.session.add(demo_note_1)
+    db.session.add(demo_note_2)
+    db.session.add(demo_note_3)
     db.session.commit()
 
 
@@ -23,10 +23,10 @@ def seed_users():
 # incrementing primary key, CASCADE deletes any dependent entities.  With
 # sqlite3 in development you need to instead use DELETE to remove all data and
 # it will reset the primary keys for you as well.
-def undo_users():
+def undo_notes():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.notes RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM users"))
+        db.session.execute(text("DELETE FROM notes"))
         
     db.session.commit()
