@@ -11,12 +11,14 @@ class Notebook(db.Model):
     a notebook can have many notes and tasks
     backref allows for notebook object to access notes and for a note object to access the notebook (note.notebook)
     lazy=true allows for the access of notes through notebook.notes on demand
-    cascade='all, deletw-orphan' allows a note to be removed from the database aswell as the notebook
+    cascade='all, delete-orphan' allows a note to be removed from the database aswell as the notebook
+    Im hoping this works
     """
     __tablename__ = 'notebooks'
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
+
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(88), nullable=False)
