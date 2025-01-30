@@ -7,9 +7,9 @@ from sqlalchemy.sql import text
 def seed_notes():
     demo_note_1 = Notes(title='Example Note', content='This is an example', notebook_id=1)
     demo_note_2 = Notes(
-        title='Anatomy of the arm', content='The arm from the shoulder to the wrist consists of 3 bones: the humerus, the ulna, and the radius.', notebook_id='marnie')
+        title='Anatomy of the arm', content='The arm from the shoulder to the wrist consists of 3 bones: the humerus, the ulna, and the radius.', notebook_id=1)
     demo_note_3 = Notes(
-        title='Signs and symptoms of Parkinson\'s', content='Some signs and symptoms include: essential tremors, memory loss, halucinations, difficulty moving, and shuffling feet.', notebook_id='bobbie')
+        title='Signs and symptoms of Parkinson\'s', content='Some signs and symptoms include: essential tremors, memory loss, halucinations, difficulty moving, and shuffling feet.', notebook_id=1)
 
     db.session.add(demo_note_1)
     db.session.add(demo_note_2)
