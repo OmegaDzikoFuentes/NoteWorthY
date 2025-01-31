@@ -17,8 +17,10 @@ def seed_tasks():
     db.session.add(demo_task3)
     db.session.commit()
 
-    def undo_tasks():
-        if enviroment == 'production':
+#(OD) moved def undo_tasks function outside of def seed_tasks function to allow proper export of undo
+def undo_tasks():
+        #(OD) added letter n to mispelled environment
+        if environment == 'production':
             db.session.execute(f"TRUNCATE table {SCHEMA}.tasks RESTART IDENTITY CASCADE;")
         else:
             db.session.execute(text("DELETE FROM tasks"))

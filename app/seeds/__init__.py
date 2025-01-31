@@ -1,6 +1,9 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .notebooks import seed_notebooks, undo_notebooks
+#(OD) imported notes and task seed/undo functions
+from .notes import seed_notes, undo_notes
+from .tasks import seed_tasks, undo_tasks
 
 
 from app.models.db import db, environment, SCHEMA
@@ -21,10 +24,20 @@ def seed():
         undo_users()
 
         undo_notebooks
+        #(OD) added undo/seed functions for tasks and notes
+
+        undo_notes()
+        undo_tasks()
+
+
+
     seed_users()
     seed_notebooks()
 
     # Add other seed functions here
+    #(OD) added seed function for notes and tasks
+    seed_notes()
+    seed_tasks
 
 
 # Creates the `flask seed undo` command
@@ -32,5 +45,8 @@ def seed():
 def undo():
     undo_users()
     # Add other undo functions here
-    
+
     undo_notebooks()
+    #(OD) added undo functions for notes and tasks
+    undo_notes()
+    undo_tasks()
