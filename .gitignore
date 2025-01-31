@@ -5,3 +5,7 @@ __pycache__/
 .DS_Store
 .vscode/
 dev.db
+<<<<<<< HEAD
+
+=======
+>>>>>>> 52874f1febb924869f4b46b389d346867656e49b
