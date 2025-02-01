@@ -17,5 +17,7 @@ class Notes(db.Model):
             'id': self.id,
             'title': self.title,
             'content': self.content,
-            'notebook_id': self.notebook_id
+            'notebook_id': self.notebook_id,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
         }
