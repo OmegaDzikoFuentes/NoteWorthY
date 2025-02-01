@@ -1,5 +1,7 @@
 from .db import db, environment, SCHEMA
 from sqlalchemy.sql import func
+from .notes import Notes
+from .tags import Tag
 
 class NoteTag(db.Model):
     __tablename__ = "notetags"
