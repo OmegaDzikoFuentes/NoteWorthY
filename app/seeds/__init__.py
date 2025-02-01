@@ -1,8 +1,6 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .notebooks import seed_notebooks, undo_notebooks
-#(OD) imported notes and task seed/undo functions
-from .notes import seed_notes, undo_notes
 from .tasks import seed_tasks, undo_tasks
 
 
@@ -33,6 +31,7 @@ def seed():
 
     seed_users()
     seed_notebooks()
+    seed_tasks()
 
     # Add other seed functions here
     #(OD) added seed function for notes and tasks
@@ -47,6 +46,4 @@ def undo():
     # Add other undo functions here
 
     undo_notebooks()
-    #(OD) added undo functions for notes and tasks
-    undo_notes()
     undo_tasks()
