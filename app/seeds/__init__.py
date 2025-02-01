@@ -24,29 +24,16 @@ def seed():
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
         undo_users()
-<<<<<<< HEAD
-        undo_notebooks()
-        undo_tags()
-        undo_notes()
-        undo_tasks()
-        undo_notetags()
-        
-=======
         undo_notes()
         undo_notebooks()
 
->>>>>>> 371edd7144ddf71eb6a5bfc7ae12ec63491498b7
     seed_users()
     seed_notebooks()
     seed_tags()
     seed_notes()
     seed_tasks()
-<<<<<<< HEAD
-    seed_notetags() 
-=======
     seed_notes()
 
->>>>>>> 371edd7144ddf71eb6a5bfc7ae12ec63491498b7
     # Add other seed functions here
 
 
@@ -55,11 +42,7 @@ def seed():
 def undo():
    
     # Add other undo functions here
-<<<<<<< HEAD
-    undo_users()
-=======
     undo_notes()
->>>>>>> 371edd7144ddf71eb6a5bfc7ae12ec63491498b7
     undo_notebooks()
     undo_tags()
     undo_notes()
