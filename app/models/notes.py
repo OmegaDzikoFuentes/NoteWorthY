@@ -10,7 +10,7 @@ class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(40), nullable=False)
     content = db.Column(db.String(255), nullable=False)
-    notebook_id = db.Column(db.Integer, db.ForeignKey(Notebook.id), nullable=False)
+    notebook_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notebooks.id')), nullable=False)
     
     def to_dict(self):
         return {

@@ -8,6 +8,9 @@ Create Date: 2025-01-31 18:36:22.854160
 from alembic import op
 import sqlalchemy as sa
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '56ff662234c9'
@@ -57,7 +60,7 @@ def upgrade():
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
-    sa.Column('description', sa.Text(length=255), nullable=True),
+    sa.Column('description', sa.Text(), nullable=True),
     sa.Column('due_date', sa.Date(), nullable=True),
     sa.Column('completed', sa.Boolean(), nullable=True),
     sa.Column('notebook_id', sa.Integer(), nullable=False),
@@ -74,6 +77,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['tag_id'], ['tags.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
