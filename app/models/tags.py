@@ -13,7 +13,7 @@ class Tag(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
     # Relationship
-    notes = db.relationship("Note", secondary="notetags", back_populates="tags")
+    notes = db.relationship("notes", secondary="notetags", back_populates="tags")
 
     def to_dict(self):
         return {
