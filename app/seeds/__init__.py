@@ -26,7 +26,6 @@ def seed():
         undo_notes()
         undo_notebooks()
         undo_tags()
-        undo_notes()
         undo_tasks()
         undo_notetags()
 
@@ -35,7 +34,6 @@ def seed():
     seed_tags()
     seed_notes()
     seed_tasks()
-    seed_notes()
     seed_notetags()
     # Add other seed functions here
 
@@ -49,6 +47,5 @@ def undo():
     undo_notes()
     undo_notebooks()
     undo_tags()
-    undo_notes()
     undo_tasks()
     undo_notetags()
