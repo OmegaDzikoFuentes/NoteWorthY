@@ -4,6 +4,6 @@ from .task import Task
 from .notebook import Notebook
 from .notes import Notes
 from .tags import Tag
-from .notetags import NoteTag
+from .notetag import NoteTag
 
 from .db import environment, SCHEMA

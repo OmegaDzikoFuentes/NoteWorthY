@@ -1,4 +1,4 @@
-from app.models import db, environment, SCHEMA
+from .db import db, environment, SCHEMA
 from sqlalchemy.sql import func
 
 class NoteTag(db.Model):

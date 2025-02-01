@@ -5,7 +5,6 @@ from .notes import seed_notes, undo_notes
 from .tasks import seed_tasks, undo_tasks
 from .tags import seed_tags, undo_tags
 from .notes import seed_notes, undo_notes
-from .tasks import seed_tasks, undo_tasks
 from .notetags import seed_notetags, undo_notetags
 
 from app.models.db import db, environment, SCHEMA
