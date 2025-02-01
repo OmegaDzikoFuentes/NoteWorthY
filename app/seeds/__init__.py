@@ -1,6 +1,7 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .notebooks import seed_notebooks, undo_notebooks
+from .tasks import seed_tasks, undo_tasks
 from .tags import seed_tags, undo_tags
 from .notes import seed_notes, undo_notes
 from .tasks import seed_tasks, undo_tasks

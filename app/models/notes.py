@@ -1,4 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
+from .notebook import Notebook
 
 class Notes(db.Model):
     __tablename__ = 'notes'
@@ -9,7 +10,7 @@ class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(40), nullable=False)
     content = db.Column(db.String(255), nullable=False)
-    notebook_id = db.Column(db.Integer, nullable=False)
+    notebook_id = db.Column(db.Integer, db.ForeignKey(Notebook.id), nullable=False)
     
     def to_dict(self):
         return {
