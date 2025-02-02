@@ -23,6 +23,9 @@ def current_tasks():
 def new_task():
     data = request.json
 
+    if not data or 'title' not in data or data['title'] is None or data['title'] == '':
+        return jsonify({"message": "Title is required"}), 400
+
     task = Task(
         title=data['title'],
         description=data['description'],
@@ -30,6 +33,9 @@ def new_task():
         completed=data['completed'],
         notebook_id=data['notebook_id']
     )
+
+    if task is None:
+        return jsonify({"message": "Invalid task"}), 404
 
     db.session.add(task)
     db.session.commit()
