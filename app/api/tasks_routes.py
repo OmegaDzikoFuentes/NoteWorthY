@@ -107,3 +107,19 @@ def update_task(task_id):
     db.session.commit()
 
     return jsonify(task.to_dict())
+
+# Get all tasks within a notebook
+@tasks_routes.route('/notebook/<int:notebook_id>', methods=['GET'])
+@login_required
+def notebook_tasks(notebook_id):
+    notebook = Notebook.query.get(notebook_id)
+
+    if notebook is None:
+        return jsonify({"message": "Notebook not found"}), 404
+
+    if notebook.user_id != current_user.id:
+        return jsonify({"message": "Unauthorized"}), 401
+
+    tasks = Task.query.filter(Task.notebook_id == notebook_id).all()
+
+    return jsonify([task.to_dict() for task in tasks])
