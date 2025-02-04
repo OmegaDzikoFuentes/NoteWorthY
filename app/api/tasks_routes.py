@@ -15,7 +15,7 @@ def current_tasks():
 
     tasks = Task.query.filter(Task.notebook_id.in_(notebook_ids)).all()
 
-    return jsonify([task.to_dict() for task in tasks])
+    return jsonify({"Tasks": [task.to_dict() for task in tasks]})
 
 # Create a new task
 @tasks_routes.route('/new', methods=['POST'])
@@ -122,4 +122,4 @@ def notebook_tasks(notebook_id):
 
     tasks = Task.query.filter(Task.notebook_id == notebook_id).all()
 
-    return jsonify([task.to_dict() for task in tasks])
+    return jsonify({"Tasks":[task.to_dict() for task in tasks]})
