@@ -1,22 +1,22 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from ..models import Notes, db
+from ..models import Notes, Notebook, db
 from datetime import datetime
 
 note_routes = Blueprint('notes', __name__)
 
 # Get all notes for user
-@note_routes.route('/notes')
+@note_routes.route('/current')
 @login_required
 def get_notes():
-    notes = Notes.query.all()
+    notes = [id[0] for id in Notebook.query.with_entities(Notebook.id).filter(Notebook.user_id == current_user.id).all()]
 
     return jsonify({
         "Notes": [note.to_dict() for note in notes]
     }), 200
 
 # Get all notes for a notebook id
-@note_routes.route('/notes/:notebookId')
+@note_routes.route('/:notebookId')
 @login_required
 def edit_note(notebookId):
     notes = Notes.query.filter_by(notebook_id=notebookId).all()
@@ -30,7 +30,7 @@ def edit_note(notebookId):
     
 
 # Create a note
-@note_routes.route('/notes', methods=['POST'])
+@note_routes.route('/', methods=['POST'])
 @login_required
 def creat_note():
     data = request.get_json()
@@ -58,7 +58,7 @@ def creat_note():
     return jsonify(note.to_dict()), 201
 
 # Edit a note
-@note_routes.route('/notes/:noteId', methods=['PUT'])
+@note_routes.route('/:noteId', methods=['PUT'])
 @login_required
 def edit_note(noteId):
     note = Notes.query.get(noteId)
@@ -82,7 +82,7 @@ def edit_note(noteId):
     return jsonify(note.to_dict()), 200
 
 # Delete a note
-@note_routes.route('/note/:noteId', methods=['DELETE'])
+@note_routes.route('/:noteId', methods=['DELETE'])
 @login_required
 def delete_notebook(noteId):
     note = Notes.query.get(noteId)
