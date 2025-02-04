@@ -11,18 +11,18 @@ note_routes = Blueprint('notes', __name__)
 def get_notes():
     notebook_ids = [id[0] for id in Notebook.query.with_entities(Notebook.id).filter(Notebook.user_id == current_user.id).all()]
     notes = Notes.query.filter(Notes.notebook_id.in_(notebook_ids)).all()
-    
+
     return jsonify({
         "Notes": [note.to_dict() for note in notes]
     }), 200
 
 # Get all notes for a notebook id
-@note_routes.route('/:notebookId')
+@note_routes.route('/<int:notebook_Id>')
 @login_required
-def get_notebook_notes(notebookId):
-    notes = Notes.query.filter_by(notebook_id=notebookId).all()
+def get_notebook_notes(notebook_Id):
+    notes = Notes.query.filter(Notes.notebook_id == notebook_Id).all()
 
-    if not notes:
+    if notes is None:
         return jsonify({"message": "Notebook couldn't be found"}), 404
     
     return jsonify({
@@ -59,10 +59,10 @@ def creat_note():
     return jsonify(note.to_dict()), 201
 
 # Edit a note
-@note_routes.route('/:noteId', methods=['PUT'])
+@note_routes.route('/<int:note_Id>', methods=['PUT'])
 @login_required
-def edit_note(noteId):
-    note = Notes.query.get(noteId)
+def edit_note(note_Id):
+    note = Notes.query.get(note_Id)
 
     if not note:
         return jsonify({"message": "Note couldn't be found"}), 404
@@ -83,12 +83,12 @@ def edit_note(noteId):
     return jsonify(note.to_dict()), 200
 
 # Delete a note
-@note_routes.route('/:noteId', methods=['DELETE'])
+@note_routes.route('/<int:note_Id>', methods=['DELETE'])
 @login_required
-def delete_notebook(noteId):
-    note = Notes.query.get(noteId)
+def delete_notebook(note_Id):
+    note = Notes.query.get(note_Id)
 
-    if not note:
+    if note is None:
         return jsonify({"message": "Note couldn't be found"}), 404
     
     db.session.delete(note)
