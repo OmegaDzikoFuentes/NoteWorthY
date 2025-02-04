@@ -9,8 +9,9 @@ note_routes = Blueprint('notes', __name__)
 @note_routes.route('/current')
 @login_required
 def get_notes():
-    notes = [id[0] for id in Notebook.query.with_entities(Notebook.id).filter(Notebook.user_id == current_user.id).all()]
-
+    notebook_ids = [id[0] for id in Notebook.query.with_entities(Notebook.id).filter(Notebook.user_id == current_user.id).all()]
+    notes = Notes.query.filter(Notes.notebook_id.in_(notebook_ids)).all()
+    
     return jsonify({
         "Notes": [note.to_dict() for note in notes]
     }), 200
@@ -18,7 +19,7 @@ def get_notes():
 # Get all notes for a notebook id
 @note_routes.route('/:notebookId')
 @login_required
-def edit_note(notebookId):
+def get_notebook_notes(notebookId):
     notes = Notes.query.filter_by(notebook_id=notebookId).all()
 
     if not notes:

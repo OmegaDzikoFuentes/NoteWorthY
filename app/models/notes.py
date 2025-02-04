@@ -1,5 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from .notebook import Notebook
+from sqlalchemy.sql import func
 
 class Notes(db.Model):
     __tablename__ = 'notes'
@@ -11,6 +11,8 @@ class Notes(db.Model):
     title = db.Column(db.String(40), nullable=False)
     content = db.Column(db.String(255), nullable=False)
     notebook_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notebooks.id')), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
     
     def to_dict(self):
         return {
