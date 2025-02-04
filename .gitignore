@@ -4,8 +4,4 @@ __pycache__/
 .venv
 .DS_Store
 .vscode/
-dev.dbdev.db
-<<<<<<< HEAD
-
-=======
->>>>>>> 52874f1febb924869f4b46b389d346867656e49b
+dev.db

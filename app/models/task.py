@@ -13,7 +13,7 @@ class Task(db.Model):
     description = db.Column(db.Text(255))
     due_date = db.Column(db.Date)
     completed = db.Column(db.Boolean)
-    notebook_id = db.Column(db.Integer, db.ForeignKey(Notebook.id), nullable=False)
+    notebook_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notebooks.id')), nullable=False)
 
     def to_dict(self):
         return {

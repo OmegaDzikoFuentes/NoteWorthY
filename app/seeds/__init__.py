@@ -5,7 +5,6 @@ from .notes import seed_notes, undo_notes
 from .tasks import seed_tasks, undo_tasks
 from .tags import seed_tags, undo_tags
 from .notes import seed_notes, undo_notes
-from .tasks import seed_tasks, undo_tasks
 from .notetags import seed_notetags, undo_notetags
 
 from app.models.db import db, environment, SCHEMA
@@ -27,7 +26,6 @@ def seed():
         undo_notes()
         undo_notebooks()
         undo_tags()
-        undo_notes()
         undo_tasks()
         undo_notetags()
 
@@ -36,7 +34,6 @@ def seed():
     seed_tags()
     seed_notes()
     seed_tasks()
-    seed_notes()
     seed_notetags()
     # Add other seed functions here
     #(OD) added seed function for notes and tasks
@@ -53,6 +50,5 @@ def undo():
     undo_notes()
     undo_notebooks()
     undo_tags()
-    undo_notes()
     undo_tasks()
     undo_notetags()
