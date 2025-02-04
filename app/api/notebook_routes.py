@@ -1,33 +1,40 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from ..models import Notebook, db
 from datetime import datetime
+from app.models import db, Notebook
 
 notebook_routes = Blueprint('notebooks', __name__)
 
-# Helper function to validate notebook ownership
-def is_notebook_owner(notebook):
-    return notebook.user_id == current_user.id
+# Helper function to check ownership
+def is_owner(notebook):
+    return notebook and notebook.user_id == current_user.id
 
-# Get All Notebooks
+
+# GET ALL NOTEBOOKS
 @notebook_routes.route('/', methods=['GET'])
 @login_required
 def get_notebooks():
-    """
-    Get all notebooks owned by the current user.
-    """
+    """ Get all notebooks owned by the current user """
     notebooks = Notebook.query.filter_by(user_id=current_user.id).all()
-    return jsonify({
-        "Notebooks": [notebook.to_dict() for notebook in notebooks]
-    }), 200
+    return jsonify({"notebooks": [n.to_dict() for n in notebooks]}), 200
 
-# Create a Notebook
+
+# GET A SINGLE NOTEBOOK
+@notebook_routes.route('/<int:notebook_id>', methods=['GET'])
+@login_required
+def get_notebook(notebook_id):
+    """ Get a specific notebook by ID """
+    notebook = Notebook.query.get(notebook_id)
+    if not notebook or not is_owner(notebook):
+        return jsonify({"message": "Notebook not found or forbidden"}), 404
+    return jsonify(notebook.to_dict()), 200
+
+
+# CREATE A NOTEBOOK
 @notebook_routes.route('/', methods=['POST'])
 @login_required
 def create_notebook():
-    """
-    Create a new notebook.
-    """
+    """ Create a new notebook """
     data = request.get_json()
     name = data.get('name')
 
@@ -36,26 +43,23 @@ def create_notebook():
 
     notebook = Notebook(
         name=name,
-        user_id=current_user.id
+        user_id=current_user.id,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
     )
     db.session.add(notebook)
     db.session.commit()
     return jsonify(notebook.to_dict()), 201
 
-# Edit a Notebook
-@notebook_routes.route('/<int:notebookId>', methods=['PUT'])
+
+# UPDATE A NOTEBOOK
+@notebook_routes.route('/<int:notebook_id>', methods=['PUT'])
 @login_required
-def edit_notebook(notebookId):
-    """
-    Edit an existing notebook.
-    """
-    notebook = Notebook.query.get(notebookId)
-
-    if not notebook:
-        return jsonify({"message": "Notebook couldn't be found"}), 404
-
-    if not is_notebook_owner(notebook):
-        return jsonify({"message": "Forbidden"}), 403
+def update_notebook(notebook_id):
+    """ Update an existing notebook """
+    notebook = Notebook.query.get(notebook_id)
+    if not notebook or not is_owner(notebook):
+        return jsonify({"message": "Notebook not found or forbidden"}), 404
 
     data = request.get_json()
     name = data.get('name')
@@ -68,21 +72,16 @@ def edit_notebook(notebookId):
     db.session.commit()
     return jsonify(notebook.to_dict()), 200
 
-# Delete a Notebook
-@notebook_routes.route('/<int:notebookId>', methods=['DELETE'])
+
+# DELETE A NOTEBOOK
+@notebook_routes.route('/<int:notebook_id>', methods=['DELETE'])
 @login_required
-def delete_notebook(notebookId):
-    """
-    Delete an existing notebook.
-    """
-    notebook = Notebook.query.get(notebookId)
-
-    if not notebook:
-        return jsonify({"message": "Notebook couldn't be found"}), 404
-
-    if not is_notebook_owner(notebook):
-        return jsonify({"message": "Forbidden"}), 403
+def delete_notebook(notebook_id):
+    """ Delete a notebook """
+    notebook = Notebook.query.get(notebook_id)
+    if not notebook or not is_owner(notebook):
+        return jsonify({"message": "Notebook not found or forbidden"}), 404
 
     db.session.delete(notebook)
     db.session.commit()
-    return jsonify({"message": "Successfully deleted"}), 200
+    return jsonify({"message": "Notebook deleted"}), 200
