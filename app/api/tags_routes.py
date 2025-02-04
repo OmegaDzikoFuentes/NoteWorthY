@@ -15,8 +15,19 @@ def get_tags_for_note(note_id):
     if not note:
         return jsonify({"error": "Note not found"}), 404
 
-    tags = Tag.query.join(NoteTag).filter(NoteTag.note_id == note_id).all()
-    return jsonify([tag.to_dict() for tag in tags]), 200
+    # Query NoteTag to get tag IDs linked to the note
+    note_tags = NoteTag.query.filter_by(note_id=note_id).all()
+
+    if not note_tags:
+        return jsonify({"message": "No tags found for this note"}), 404
+
+    # Extract tag IDs and fetch corresponding Tag objects
+    tag_ids = [notetag.tag_id for notetag in note_tags]
+    tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+
+    response = jsonify([tag.to_dict() for tag in tags])
+    response.headers['Content-Type'] = 'application/json'
+    return response, 200
 
 
 # Add a tag to a note
