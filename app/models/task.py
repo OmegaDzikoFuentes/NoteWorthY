@@ -1,5 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from .notebook import Notebook
+from sqlalchemy.sql import func
 
 
 class Task(db.Model):
@@ -14,6 +14,8 @@ class Task(db.Model):
     due_date = db.Column(db.Date)
     completed = db.Column(db.Boolean)
     notebook_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notebooks.id')), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, server_default=func.now())
+    updated_at = db.Column(db.DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
 
     def to_dict(self):
         return {

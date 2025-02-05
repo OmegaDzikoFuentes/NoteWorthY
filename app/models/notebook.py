@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
+
 class Notebook(db.Model):
     """
     Notebook Model
@@ -27,8 +28,9 @@ class Notebook(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Relationships
-
-
+    #(OD) added relationships to notes and tasks
+    notes = db.relationship('Notes', backref='notebook', lazy=True, cascade='all, delete-orphan')
+    tasks = db.relationship('Task', backref='notebook', lazy=True, cascade='all, delete-orphan')
 
 
     def to_dict(self):

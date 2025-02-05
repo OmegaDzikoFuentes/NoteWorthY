@@ -36,12 +36,15 @@ def seed():
     seed_tasks()
     seed_notetags()
     # Add other seed functions here
+    #(OD) added seed function for notes and tasks
+    seed_notes()
+    seed_tasks
 
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
-   
+
     # Add other undo functions here
     undo_users()
     undo_notes()
