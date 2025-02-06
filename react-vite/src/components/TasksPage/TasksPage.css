@@ -42,7 +42,7 @@
 
 .tasks-page-new {
   height: 30px;
-  width: 85px;
+  width: 90px;
   border: none;
   background-color: #b378ee;
   color: white;
@@ -53,7 +53,7 @@
   padding-left: 10px;
   width: 200px;
   border: 1px solid grey;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .tasks-list-container {

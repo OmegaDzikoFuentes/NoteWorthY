@@ -9,7 +9,7 @@ function TasksPage() {
       <div className="tasks-search-container">
         <h4 className="task-count">(Number) task(s)</h4>
         <div className="new-task-search">
-          <button className="tasks-page-new">New Task</button>
+          <button className="tasks-page-new">+ New Task</button>
           <input
             className="tasks-page-search"
             type="text"
