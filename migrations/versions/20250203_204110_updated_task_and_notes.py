@@ -62,7 +62,7 @@ def upgrade():
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=100), nullable=False),
-    sa.Column('description', sa.Text(length=255), nullable=True),
+    sa.Column('description', sa.Text(), nullable=True),
     sa.Column('due_date', sa.Date(), nullable=True),
     sa.Column('completed', sa.Boolean(), nullable=True),
     sa.Column('notebook_id', sa.Integer(), nullable=False),
