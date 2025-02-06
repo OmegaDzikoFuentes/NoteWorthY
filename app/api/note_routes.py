@@ -16,8 +16,18 @@ def get_notes():
         "Notes": [note.to_dict() for note in notes]
     }), 200
 
+# Get note by ID
+@note_routes.route('/<int:note_Id>')
+@login_required
+def get_note_by_id(note_Id):
+    note = Notes.query.filter(Notes.id == note_Id).first()
+
+    return jsonify({
+        "Note": note.to_dict()
+    }), 200
+
 # Get all notes for a notebook id
-@note_routes.route('/<int:notebook_Id>')
+@note_routes.route('/notebook/<int:notebook_Id>')
 @login_required
 def get_notebook_notes(notebook_Id):
     notes = Notes.query.filter(Notes.notebook_id == notebook_Id).all()

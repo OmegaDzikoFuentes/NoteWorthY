@@ -39,7 +39,6 @@ const getTagsForNote = (noteId) => ({
 
 export const getCurrentUserNotes = () => async dispatch => {
     const response = await fetch(`/api/notes/current`);
-    const tags = await fetch(`/api/`)
 
     if (response.ok) {
         const notes = await response.json();
@@ -54,11 +53,20 @@ export const getNoteTags = (noteId) => async dispatch => {
     if (response.ok) {
         const tags = await response.json();
         // Create a new action type to handle adding tags to a note
-        dispatch(getNoteTags(noteId), tags);
+        dispatch(getTagsForNote(noteId), tags);
         return tags;
     }
 }
 
+export const getNoteById = (noteId) => async dispatch => {
+    const response = await fetch(`/api/notes/${noteId}`);
+
+    if (response.ok) {
+        const note = await response.json();
+        dispatch(loadById);
+        return note
+    }
+}
 
 const initialState = {
     Notes: {}
@@ -79,6 +87,14 @@ const notesReducer = (state = initialState, action) => {
             return newState;
         }
         case SET_NOTE_TAGS: {
+            const newState = { ...state };
+            newState.Notes[action.noteId] = {
+                ...newState.Notes[action.noteId],
+                tags: action.tags
+            };
+            return newState;
+        }
+        case LOAD_BY_ID: {
             const newState = { ...state };
             newState.Notes[action.noteId] = {
                 ...newState.Notes[action.noteId],

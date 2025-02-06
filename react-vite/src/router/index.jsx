@@ -20,8 +20,12 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <SignupFormPage />,
       },
+      // {
+      //   path: "notes/current",
+      //   element: <Notes />,
+      // },
       {
-        path: "notes/current",
+        path: "notes/:noteId",
         element: <Notes />,
       },
     ],
