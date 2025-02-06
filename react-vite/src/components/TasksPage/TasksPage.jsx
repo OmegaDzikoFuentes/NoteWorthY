@@ -4,7 +4,7 @@ function TasksPage() {
   return (
     <div className="tasks-page-container">
       <div className="tasks-header-box">
-        <h1 className="tasks-header">Tasks</h1>
+        <h1 className="tasks-header">My Tasks</h1>
       </div>
       <div className="tasks-search-container">
         <h4 className="task-count">(Number) task(s)</h4>
