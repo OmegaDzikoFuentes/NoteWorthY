@@ -14,13 +14,21 @@ const CreateNoteForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         const newNote = await dispatch(createNewNote({
             title,
             content,
             notebook_id
-        }))
+        })).catch(error => {
+            // Handle any errors from the request
+            return null;
+        });
+    
+        if (newNote) {
+            console.log("great success!")
+        }
     }
+    
 
     return (
         <div>

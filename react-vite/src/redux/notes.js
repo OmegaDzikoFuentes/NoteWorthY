@@ -1,3 +1,5 @@
+import { csrfFetch } from "./csrf";
+
 const LOAD_CURRENT = 'notes/LOAD_CURRENT';
 const LOAD_BY_ID = 'notes/LOAD_BY_ID'
 const CREATE_NOTE = 'notes/CREATE_NOTENOTE';
@@ -38,7 +40,7 @@ const getTagsForNote = (noteId) => ({
 
 
 export const getCurrentUserNotes = () => async dispatch => {
-    const response = await fetch(`/api/notes/current`);
+    const response = await csrfFetch(`/api/notes/current`);
 
     if (response.ok) {
         const notes = await response.json();
@@ -48,7 +50,7 @@ export const getCurrentUserNotes = () => async dispatch => {
 }
 
 export const getNoteTags = (noteId) => async dispatch => {
-    const response = await fetch(`/api/tags/${noteId}/tags`);
+    const response = await csrfFetch(`/api/tags/${noteId}/tags`);
     
     if (response.ok) {
         const tags = await response.json();
@@ -59,7 +61,7 @@ export const getNoteTags = (noteId) => async dispatch => {
 }
 
 export const getNoteById = (noteId) => async dispatch => {
-    const response = await fetch(`/api/notes/${noteId}`);
+    const response = await csrfFetch(`/api/notes/${noteId}`);
 
     if (response.ok) {
         const note = await response.json();
@@ -74,18 +76,16 @@ export const createNewNote = (noteData) => async dispatch => {
         content: noteData.content,
         notebook_id: noteData.notebook_id
     };
+    console.log("formatted data", formattedData)
 
-    const response = await fetch(`/api/notes`, {
+    const response = await csrfFetch(`/api/notes`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify(formattedData)
     });
 
     if (response.ok) {
         const note = await response.json();
+        console.log("note", note)
         dispatch(createNote(note));
         return note;
     };
@@ -121,6 +121,11 @@ const notesReducer = (state = initialState, action) => {
         case LOAD_BY_ID: {
             const newState = { ...state };
             newState.Notes = { ...action.note };
+            return newState;
+        }
+        case CREATE_NOTE: {
+            const newState = { ...state };
+            newState.Notes[action.payload.id] = action.payload;
             return newState;
         }
         default:
