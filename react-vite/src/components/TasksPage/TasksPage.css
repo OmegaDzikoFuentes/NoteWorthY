@@ -37,7 +37,7 @@
 .task-count {
   font-weight: 100;
   color: #bcbcbc;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .tasks-page-new {
@@ -70,13 +70,63 @@
 }
 
 .tasks-list-header-text {
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .tasks-list-title {
-  padding-left: 20px;
+  padding-left: 18px;
 }
 .tasks-list-due-date {
   padding-right: 35px;
+}
+
+.tasks-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tasks-list-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #bcbcbc;
+  padding-bottom: 12px;
+}
+
+.tasks-list-item {
+  display: flex;
+}
+
+.tasks-list-box-1 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tasks-list-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tasks-list-item-title {
+  font-weight: 550;
+}
+
+.tasks-list-item-description {
+  padding-left: 10px;
+  font-size: 14px;
+  color: #bcbcbc;
+}
+
+.tasks-list-item-due-date {
+  padding-right: 15px;
+}
+
+.tasks-list-checkbox {
+  width: 18px;
+  height: 18px;
+  transform: scale(1);
 }
