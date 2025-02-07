@@ -9,21 +9,26 @@ const CreateNoteForm = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [notebook_id, setNotebook_id] = useState("");
-
-
+    const [errors, setErrors] = useState([]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors([]);
         
         const newNote = {
             title,
             content,
-            notebook_id
+            notebook_id: parseInt(notebook_id)
         };
     
-        const result = await dispatch(createNewNote(newNote));
-        if (newNote) {
-            console.log("great success!")
+        try {
+            const createdNote = await dispatch(createNewNote(newNote));
+            if (createdNote) {
+                console.log("created note");
+            }
+        } catch (error) {
+            // console.log("Error creating note:", error);
+            setErrors([error.toString()]);
         }
     }
     
@@ -63,7 +68,7 @@ const CreateNoteForm = () => {
                     />
                 </label>
                 <div>
-                    <button>Create Note</button>
+                    <button type="submit">Create Note</button>
                 </div>
             </form>
         </div>

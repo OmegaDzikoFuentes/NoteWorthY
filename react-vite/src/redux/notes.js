@@ -77,8 +77,11 @@ export const createNewNote = (noteData) => async dispatch => {
         notebook_id: noteData.notebook_id
     };
 
-    const response = await csrfFetch(`/api/notes`, {
+    const response = await csrfFetch(`/api/notes/`, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formattedData)
     });
 
