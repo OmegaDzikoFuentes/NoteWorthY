@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCurrentUserNotes, getNoteById, createNewNote } from '../../redux/notes';
+import { getCurrentUserNotes, getNoteById } from '../../redux/notes';
 
 function Notes() {
     const dispatch = useDispatch();
@@ -10,10 +10,10 @@ function Notes() {
     const { noteId } = useParams();
 
     useEffect(() => {
-        // dispatch(getCurrentUserNotes());
-        dispatch(getNoteById(noteId));
+        dispatch(getCurrentUserNotes());
+        // dispatch(getNoteById(noteId));
     }, [dispatch]);
-    
+
     return (
         <div>
             {Object.values(noteDetails).map((note, index) => (

@@ -77,15 +77,19 @@ export const createNewNote = (noteData) => async dispatch => {
 
     const response = await fetch(`/api/notes`, {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
         body: JSON.stringify(formattedData)
     });
 
     if (response.ok) {
         const note = await response.json();
         dispatch(createNote(note));
+        return note;
     };
 
-    return note;
 }
 
 const initialState = {
