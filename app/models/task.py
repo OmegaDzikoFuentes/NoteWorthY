@@ -10,7 +10,7 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text(255))
+    description = db.Column(db.Text())
     due_date = db.Column(db.Date)
     completed = db.Column(db.Boolean)
     notebook_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notebooks.id')), nullable=False)
