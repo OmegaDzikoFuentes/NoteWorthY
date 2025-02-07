@@ -24,10 +24,14 @@ export const router = createBrowserRouter([
       //   path: "notes/current",
       //   element: <Notes />,
       // },
+      // {
+      //   path: "notes/:noteId",
+      //   element: <Notes />,
+      // },
       {
-        path: "notes/:noteId",
-        element: <Notes />,
-      },
+        path: "notes",
+        element: <Notes />
+      }
     ],
   },
 ]);

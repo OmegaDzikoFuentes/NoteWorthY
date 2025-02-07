@@ -63,9 +63,29 @@ export const getNoteById = (noteId) => async dispatch => {
 
     if (response.ok) {
         const note = await response.json();
-        dispatch(loadById);
+        dispatch(loadById(note));
         return note
     }
+}
+
+export const createNewNote = (noteData) => async dispatch => {
+    const formattedData = {
+        title: noteData.title,
+        content: noteData.content,
+        notebook_id: noteData.notebook_id
+    };
+
+    const response = await fetch(`/api/notes`, {
+        method: 'POST',
+        body: JSON.stringify(formattedData)
+    });
+
+    if (response.ok) {
+        const note = await response.json();
+        dispatch(createNote(note));
+    };
+
+    return note;
 }
 
 const initialState = {
@@ -96,10 +116,7 @@ const notesReducer = (state = initialState, action) => {
         }
         case LOAD_BY_ID: {
             const newState = { ...state };
-            newState.Notes[action.noteId] = {
-                ...newState.Notes[action.noteId],
-                tags: action.tags
-            };
+            newState.Notes = { ...action.note };
             return newState;
         }
         default:
