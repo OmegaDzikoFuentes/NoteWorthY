@@ -51,7 +51,7 @@ export const getCurrentUserNotes = () => async dispatch => {
 
 export const getNoteTags = (noteId) => async dispatch => {
     const response = await csrfFetch(`/api/tags/${noteId}/tags`);
-    
+
     if (response.ok) {
         const tags = await response.json();
         // Create a new action type to handle adding tags to a note
@@ -76,7 +76,6 @@ export const createNewNote = (noteData) => async dispatch => {
         content: noteData.content,
         notebook_id: noteData.notebook_id
     };
-    console.log("formatted data", formattedData)
 
     const response = await csrfFetch(`/api/notes`, {
         method: 'POST',
@@ -85,7 +84,6 @@ export const createNewNote = (noteData) => async dispatch => {
 
     if (response.ok) {
         const note = await response.json();
-        console.log("note", note)
         dispatch(createNote(note));
         return note;
     };
@@ -125,8 +123,9 @@ const notesReducer = (state = initialState, action) => {
         }
         case CREATE_NOTE: {
             const newState = { ...state };
+            newState.Notes = { ...state.Notes };
             newState.Notes[action.payload.id] = action.payload;
-            return newState;
+            return newState
         }
         default:
             return state;
