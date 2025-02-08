@@ -11,3 +11,7 @@ li {
   width: 15%;
   border-right: 1px solid #bcbcbc;
 }
+
+.profile-section {
+  margin-bottom: 100px;
+}
