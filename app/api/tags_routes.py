@@ -6,6 +6,12 @@ from sqlalchemy.exc import IntegrityError
 
 tag_routes = Blueprint("tags", __name__)
 
+@tag_routes.route('/', methods=['GET'])
+@login_required
+def get_all_tags():
+    tags = Tag.query.all()
+    return jsonify([tag.to_dict() for tag in tags]), 200
+
 # Get all tags for a specific note
 @tag_routes.route('/<int:note_id>/tags', methods=['GET'])
 @login_required
