@@ -2,6 +2,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
+import Notes from '../components/Notes/Notes';
+import NoteDetails from '../components/Notes/NoteDetails';
+import CreateNoteForm from '../components/Notes/CreateNoteForm';
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +22,18 @@ export const router = createBrowserRouter([
         path: "signup",
         element: <SignupFormPage />,
       },
+      {
+        path: "notes/current",
+        element: <Notes />,
+      },
+      {
+        path: "notes/:noteId",
+        element: <NoteDetails />,
+      },
+      {
+        path: "notes",
+        element: <CreateNoteForm />
+      }
     ],
   },
 ]);
