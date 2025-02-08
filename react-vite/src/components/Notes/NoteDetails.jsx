@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getCurrentUserNotes } from '../../redux/notes';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCurrentUserNotes, getNoteById } from '../../redux/notes';
 
-function Notes() {
+function NoteDetails() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const noteDetails = useSelector(state => state.notes.Notes);
+    const { noteId } = useParams();
 
     useEffect(() => {
-        dispatch(getCurrentUserNotes());
+        dispatch(getNoteById(noteId));
     }, [dispatch]);
 
     return (
@@ -26,4 +27,4 @@ function Notes() {
 }
 
 
-export default Notes;
+export default NoteDetails;
