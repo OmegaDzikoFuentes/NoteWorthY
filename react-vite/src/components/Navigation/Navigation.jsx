@@ -8,8 +8,8 @@ function Navigation() {
   const [searchTag, setSearchTag] = useState("");
   const [showNotebooks, setShowNotebooks] = useState(false);
   const [showTags, setShowTags] = useState(false);
-  const [notebooks, setNotebooks] = useState([]);  // Fetched notebooks
-  const [tags, setTags] = useState([]);            // Fetched tags
+  const [notebooks, setNotebooks] = useState([]);  
+  const [tags, setTags] = useState([]);            
 
   // Fetch notebooks from the backend
   useEffect(() => {
@@ -28,7 +28,10 @@ function Navigation() {
     fetch("http://127.0.0.1:8000/api/tags")
       .then((res) => res.json())
       .then((data) => {
-        setTags(data);
+        console.log("Tags data:", data);
+        // If the data is not an array, extract the array from the object
+        const tagsArray = Array.isArray(data) ? data : data.Tags || [];
+        setTags(tagsArray);
       })
       .catch((err) => console.error("Error fetching tags:", err));
   }, []);
