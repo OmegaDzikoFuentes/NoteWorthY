@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
 export async function csrfFetch(url, options = {}) {
   // Set default method to 'GET'
