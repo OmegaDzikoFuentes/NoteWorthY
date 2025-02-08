@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotebooks, createNotebook, updateNotebook, deleteNotebook } from "../redux/notebooks";
+import { getNotebooks, createNotebook, updateNotebook, deleteNotebook } from "../../redux/notebook"
 
 const NotebookPage = () => {
   const dispatch = useDispatch();
