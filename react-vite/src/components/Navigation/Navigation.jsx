@@ -8,8 +8,8 @@ function Navigation() {
   const [searchTag, setSearchTag] = useState("");
   const [showNotebooks, setShowNotebooks] = useState(false);
   const [showTags, setShowTags] = useState(false);
-  const [notebooks, setNotebooks] = useState([]);  
-  const [tags, setTags] = useState([]);            
+  const [notebooks, setNotebooks] = useState([]);
+  const [tags, setTags] = useState([]);
 
   // Fetch notebooks from the backend
   useEffect(() => {
@@ -37,7 +37,9 @@ function Navigation() {
   }, []);
 
   const filterItems = (list, searchTerm) =>
-    list.filter((item) => item.toLowerCase().includes(searchTerm.toLowerCase()));
+    list.filter((item) =>
+      item.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <nav className="sidebar">
@@ -51,17 +53,26 @@ function Navigation() {
 
       <ul className="nav-links">
         <li>
-          <NavLink to="/home" className="nav-item">Home</NavLink>
+          <NavLink to="/" className="nav-item">
+            Home
+          </NavLink>
         </li>
         <li>
-          <NavLink to="/notes" className="nav-item">Notes</NavLink>
+          <NavLink to="/notes" className="nav-item">
+            Notes
+          </NavLink>
         </li>
         <li>
-          <NavLink to="/tasks" className="nav-item">Tasks</NavLink>
+          <NavLink to="/tasks" className="nav-item">
+            Tasks
+          </NavLink>
         </li>
-           {/* Notebooks Dropdown */}
+        {/* Notebooks Dropdown */}
         <li className="dropdown-container">
-          <button onClick={() => setShowNotebooks(!showNotebooks)} className="dropdown-button">
+          <button
+            onClick={() => setShowNotebooks(!showNotebooks)}
+            className="dropdown-button"
+          >
             Notebooks ▼
           </button>
           {showNotebooks && (
@@ -74,9 +85,13 @@ function Navigation() {
                 onChange={(e) => setSearchNotebook(e.target.value)}
               />
               <ul className="dropdown-list">
-                {filterItems(notebooks, searchNotebook).map((notebook, index) => (
-                  <li key={index} className="dropdown-item">{notebook}</li>
-                ))}
+                {filterItems(notebooks, searchNotebook).map(
+                  (notebook, index) => (
+                    <li key={index} className="dropdown-item">
+                      {notebook}
+                    </li>
+                  )
+                )}
               </ul>
             </div>
           )}
@@ -84,7 +99,10 @@ function Navigation() {
 
         {/* Tags Dropdown */}
         <li className="dropdown-container">
-          <button onClick={() => setShowTags(!showTags)} className="dropdown-button">
+          <button
+            onClick={() => setShowTags(!showTags)}
+            className="dropdown-button"
+          >
             Tags ▼
           </button>
           {showTags && (
@@ -98,7 +116,9 @@ function Navigation() {
               />
               <ul className="dropdown-list">
                 {filterItems(tags, searchTag).map((tag, index) => (
-                  <li key={index} className="dropdown-item">{tag}</li>
+                  <li key={index} className="dropdown-item">
+                    {tag}
+                  </li>
                 ))}
               </ul>
             </div>
