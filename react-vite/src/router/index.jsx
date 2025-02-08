@@ -6,6 +6,8 @@ import TasksPage from "../components/TasksPage";
 import Notes from "../components/Notes/Notes";
 import NoteDetails from "../components/Notes/NoteDetails";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
+import NotebookPage from '../components/NotebookPage/NoteBook';
+import NotebookDetailsPage from '../components/NotebookDetailPage/NotebookDetailsPage';
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ export const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignupFormPage />,
+      },
+      {
+        path: "notebooks",
+        element: <NotebookPage />,
+      },
+      {
+        path: "/notebooks/:notebookId",  
+        element: <NotebookDetailsPage />,
       },
       {
         path: "notes/current",

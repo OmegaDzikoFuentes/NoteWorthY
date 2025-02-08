@@ -1,7 +1,7 @@
 """updated task and notes
 
 Revision ID: 13dddfdd9e31
-Revises: 
+Revises:
 Create Date: 2025-02-03 20:41:10.427525
 
 """
