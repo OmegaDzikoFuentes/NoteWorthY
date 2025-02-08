@@ -114,11 +114,16 @@ const notebooksReducer = (state = initialState, action) => {
         case LOAD: {
             const newState = { ...state };
             newState.allNotebooks = {};
-            action.notebooks.forEach(notebook => {
-                newState.allNotebooks[notebook.id] = notebook; // Normalize by ID
+            // If action.notebooks is an object with key "notebooks"
+            const notebooksArray = Array.isArray(action.notebooks)
+                ? action.notebooks
+                : action.notebooks.notebooks;
+            notebooksArray.forEach(notebook => {
+                newState.allNotebooks[notebook.id] = notebook;
             });
             return newState;
         }
+
 
         case CREATE_NOTEBOOK: {
             const newState = { ...state };
