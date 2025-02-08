@@ -3,9 +3,9 @@ import LoginFormPage from "../components/LoginFormPage";
 import SignupFormPage from "../components/SignupFormPage";
 import Layout from "./Layout";
 import TasksPage from "../components/TasksPage";
-import Notes from '../components/Notes/Notes';
-import NoteDetails from '../components/Notes/NoteDetails';
-import CreateNoteForm from '../components/Notes/CreateNoteForm';
+import Notes from "../components/Notes/Notes";
+import NoteDetails from "../components/Notes/NoteDetails";
+import CreateNoteForm from "../components/Notes/CreateNoteForm";
 
 export const router = createBrowserRouter([
   {
@@ -33,8 +33,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "notes",
-        element: <CreateNoteForm />
-      }
+        element: <CreateNoteForm />,
+      },
       {
         path: "tasks",
         element: <TasksPage />,
