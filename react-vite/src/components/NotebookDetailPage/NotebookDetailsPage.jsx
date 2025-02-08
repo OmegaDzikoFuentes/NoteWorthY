@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getNotebookById } from "../redux/notebook";
+import { getNotebookById } from "../../redux/notebook";
 
 const NotebookDetailsPage = () => {
   const { notebookId } = useParams();
