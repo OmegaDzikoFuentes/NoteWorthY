@@ -28,7 +28,7 @@ const update_Note = (note) => ({
     payload: note
 })
 
-const deleteNote = (noteId) => ({
+const delete_Note = (noteId) => ({
     type: DELETE_NOTE,
     noteId
 })
@@ -114,6 +114,14 @@ export const updateNote = (noteId, note) => async dispatch => {
         dispatch(update_Note(data));
         return data;
     }
+}
+
+export const deleteNote = (noteId) => async dispatch => {
+    const response = await csrfFetch(`/api/notes/${noteId}`, {
+        method: 'DELETE'
+    });
+    dispatch(delete_Note(noteId));
+    return response;
 }
 
 const initialState = {

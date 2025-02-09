@@ -39,6 +39,9 @@ const UpdateNoteForm = () => {
         };
     
         return dispatch(updateNote(noteId, updatedNote))
+            .then(() => {
+                navigate(`/notes/${noteId}`)
+            })
             .catch((res) => {
                 if (res && res.errors) {
                     setErrors(res.errors);
