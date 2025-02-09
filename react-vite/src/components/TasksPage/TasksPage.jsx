@@ -2,6 +2,7 @@ import { getUserTasks } from "../../redux/task";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { selectAllUserTasks } from "../../redux/task";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import "./TasksPage.css";
 
 function TasksPage() {
@@ -18,12 +19,6 @@ function TasksPage() {
     dispatch(getUserTasks()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
-  //remove this once i work on components
-  useEffect(() => {
-    console.log(isLoaded);
-    console.log("TASKS TEST", tasks);
-  }, [isLoaded, tasks]);
-
   return (
     <>
       {isLoaded && (
@@ -36,7 +31,10 @@ function TasksPage() {
               {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
             </h4>
             <div className="new-task-search">
-              <button className="tasks-page-new">+ New Task</button>
+              <OpenModalButton
+                buttonText="+ New Task"
+                className="tasks-page-new"
+              />
               <input
                 className="tasks-page-search"
                 type="text"
