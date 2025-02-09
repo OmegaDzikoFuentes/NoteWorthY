@@ -60,8 +60,15 @@ select {
   border: none;
   background-color: #b378ee;
   color: white;
+  cursor: pointer;
 }
 
 .due-date-input {
   margin-right: 50px;
+}
+
+.task-title-requirement {
+  color: red;
+  font-size: 12px;
+  margin-left: 68px;
 }
