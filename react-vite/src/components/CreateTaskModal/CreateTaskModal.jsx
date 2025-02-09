@@ -1,9 +1,12 @@
 import "./CreateTaskModal.css";
+import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { csrfFetch } from "../../redux/csrf";
 import { useModal } from "../../context/Modal";
+import { addTaskThunk, getUserTasks } from "../../redux/task";
 
-function CreateTaskModal() {
+function CreateTaskModal({ onTaskAdded }) {
+  const dispatch = useDispatch();
   const { setModalContent } = useModal();
   const [notebooks, setNotebooks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -59,7 +62,7 @@ function CreateTaskModal() {
     console.log("LOOK HERE", { ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const submissionData = {
       title: formData.title,
@@ -81,8 +84,17 @@ function CreateTaskModal() {
       submissionData.due_date = formattedDueDate;
     }
 
-    setModalContent(null);
-    console.log("Form submitted with data:", submissionData);
+    try {
+      await dispatch(addTaskThunk(submissionData));
+      dispatch(getUserTasks());
+      setModalContent(null);
+      if (onTaskAdded) {
+        onTaskAdded();
+      }
+    } catch (e) {
+      console.log("Error adding task:", e);
+      return e;
+    }
   };
 
   const isDueDateInvalid =
@@ -147,7 +159,7 @@ function CreateTaskModal() {
             </label>
             {isDueDateInvalid ? (
               <p className="task-title-requirement">
-                Due Date Can&apos;t Be On Or Before Today
+                Due Date Can't Be Before Today
               </p>
             ) : null}
             <button

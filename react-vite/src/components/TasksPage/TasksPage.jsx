@@ -9,9 +9,10 @@ import "./TasksPage.css";
 function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const tasks = useSelector(selectAllUserTasks);
+  const tasks = useSelector(selectAllUserTasks) || [];
 
   const formatDate = (dateString) => {
+    if (!dateString) return "No Due Date";
     const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
@@ -64,9 +65,9 @@ function TasksPage() {
                     <div className="tasks-list-text">
                       <p className="tasks-list-item-title">{task.title}</p>
                       <p className="tasks-list-item-description">
-                        {task.description.length > 35
+                        {task.description && task.description.length > 35
                           ? task.description.slice(0, 35) + "..."
-                          : task.description}
+                          : task.description || null}
                       </p>
                     </div>
                   </div>
