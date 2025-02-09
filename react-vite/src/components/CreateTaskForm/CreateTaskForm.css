@@ -24,8 +24,8 @@ select {
 }
 
 .create-task-input {
-  border: none;
   display: flex;
+  padding: 2px 5px;
 }
 
 .create-task-ta {
