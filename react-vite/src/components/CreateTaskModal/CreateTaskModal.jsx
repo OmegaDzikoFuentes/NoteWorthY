@@ -159,7 +159,7 @@ function CreateTaskModal({ onTaskAdded }) {
             </label>
             {isDueDateInvalid ? (
               <p className="task-title-requirement">
-                Due Date Can't Be Before Today
+                Due Date Can't Be On Or Before Today
               </p>
             ) : null}
             <button
