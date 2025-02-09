@@ -35,7 +35,7 @@ function TasksPage() {
               <OpenModalButton
                 buttonText="+ New Task"
                 className="tasks-page-new"
-                modalComponent={CreateTaskForm}
+                modalComponent={<CreateTaskForm />}
               />
               <input
                 className="tasks-page-search"
