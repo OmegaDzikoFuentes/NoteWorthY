@@ -23,12 +23,12 @@ select {
   gap: 10px;
 }
 
-input {
+.create-task-input {
   border: none;
   display: flex;
 }
 
-textarea {
+.create-task-ta {
   padding: 8px 8px;
   resize: none;
   display: flex;
