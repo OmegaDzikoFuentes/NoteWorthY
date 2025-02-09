@@ -47,6 +47,7 @@
   background-color: #b378ee;
   color: white;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 .tasks-page-search {
@@ -117,6 +118,7 @@
 
 .tasks-list-item-title {
   font-weight: 550;
+  cursor: pointer;
 }
 
 .tasks-list-item-description {
