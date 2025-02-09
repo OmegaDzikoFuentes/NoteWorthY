@@ -23,7 +23,7 @@ const createNote = (note) => ({
     payload: note
 })
 
-const updateNote = (note) => ({
+const update_Note = (note) => ({
     type: UPDATE_NOTE,
     payload: note
 })
@@ -91,6 +91,29 @@ export const createNewNote = (noteData) => async dispatch => {
         return note;
     };
 
+}
+
+export const updateNote = (noteId, note) => async dispatch => {
+    const currentNoteData = await csrfFetch(`/api/notes/${noteId}`);
+    const currentNote = await currentNoteData.json();
+
+    const response = await csrfFetch(`/api/notes/${noteId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            title: note.title,
+            content: note.content,
+            notebook_id: note.notebook_id
+        })
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(update_Note(data));
+        return data;
+    }
 }
 
 const initialState = {

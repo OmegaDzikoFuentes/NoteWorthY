@@ -6,6 +6,7 @@ import TasksPage from "../components/TasksPage";
 import Notes from "../components/Notes/Notes";
 import NoteDetails from "../components/Notes/NoteDetails";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
+import UpdateNoteForm from "../components/Notes/UpdateNoteForm";
 import NotebookPage from '../components/NotebookPage/NoteBook';
 import NotebookDetailsPage from '../components/NotebookDetailPage/NotebookDetailsPage';
 
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "notes/:noteId",
         element: <NoteDetails />,
+      },
+      {
+        path: "notes/:noteId/edit",
+        element: <UpdateNoteForm />,
       },
       {
         path: "notes",
