@@ -23,9 +23,6 @@ const CreateNoteForm = () => {
     
         try {
             const createdNote = await dispatch(createNewNote(newNote));
-            if (createdNote) {
-                console.log("created note");
-            }
         } catch (error) {
             // console.log("Error creating note:", error);
             setErrors([error.toString()]);

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getNoteById } from "../../redux/notes";
 // deleted getCurrentUserNotes from ../../redux/notes cuz it was unused variable
 // add later when you need
-import UpdateNoteForm from './UpdateNoteForm';
+import DeleteNote from "./DeleteNote";
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 
 function NoteDetails() {
@@ -19,6 +19,7 @@ function NoteDetails() {
     }, [dispatch, noteId]);
     //added noteId to the dependency array cuz error in Vite
 
+    console.log("note details", noteDetails)
     return (
         <div>
             {Object.values(noteDetails).map((note, index) => (
@@ -30,6 +31,13 @@ function NoteDetails() {
             ))}
             <div>
                 <button className='update' onClick={() => navigate(`/notes/${noteId}/edit`)}>Update Note</button>
+                <button className="delete">
+                    <OpenModalMenuItem
+                        itemText="Delete"
+                        onItemClick={() => setShowModal(true)}
+                        modalComponent={<DeleteNote noteId={noteId} />}
+                    />
+                </button>
             </div>
         </div>
 
