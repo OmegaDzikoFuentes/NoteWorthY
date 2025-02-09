@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { selectAllUserTasks } from "../../redux/task";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import CreateTaskForm from "../CreateTaskForm/CreateTaskForm";
 import "./TasksPage.css";
 
 function TasksPage() {
@@ -34,6 +35,7 @@ function TasksPage() {
               <OpenModalButton
                 buttonText="+ New Task"
                 className="tasks-page-new"
+                modalComponent={CreateTaskForm}
               />
               <input
                 className="tasks-page-search"
