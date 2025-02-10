@@ -13,7 +13,7 @@ function TasksPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const tasks = useSelector(selectAllUserTasks) || [];
   const { setModalContent } = useModal();
-
+  console.log("THESE ARE THE TASKS", tasks);
   const formatDate = (dateString) => {
     if (!dateString) return "No Due Date";
     const options = { year: "numeric", month: "short", day: "numeric" };
@@ -21,7 +21,10 @@ function TasksPage() {
   };
 
   const handleTaskClick = (task) => {
-    setModalContent(<UpdateTaskModal taskId={task.id} />);
+    const selectedTask = tasks.find((t) => t.id === task.id);
+    if (!selectedTask) return;
+
+    setModalContent(<UpdateTaskModal taskId={task.id} task={selectedTask} />);
   };
 
   useEffect(() => {
