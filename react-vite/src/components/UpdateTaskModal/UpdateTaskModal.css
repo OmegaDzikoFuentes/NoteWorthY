@@ -55,7 +55,6 @@ select {
 .update-task-btn {
   width: 90px;
   height: 30px;
-  align-self: center;
   border-radius: 50px;
   border: none;
   background-color: #b378ee;
@@ -71,4 +70,21 @@ select {
   color: red;
   font-size: 12px;
   margin-left: 68px;
+}
+
+.delete-task-button {
+  width: 90px;
+  height: 30px;
+  align-self: center;
+  border-radius: 50px;
+  border: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+}
+
+.task-update-buttons {
+  display: flex;
+  gap: 10px;
+  align-self: center;
 }

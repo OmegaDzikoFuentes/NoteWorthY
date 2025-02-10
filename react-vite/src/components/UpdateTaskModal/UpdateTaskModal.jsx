@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { csrfFetch } from "../../redux/csrf";
 import { useModal } from "../../context/Modal";
 import { updateTask, getUserTasks } from "../../redux/task";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteTaskModal from "../DeleteTaskModal";
 
 function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
   const dispatch = useDispatch();
@@ -173,23 +175,30 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
                 Due Date Can't Be Before Today
               </p>
             ) : null}
-            <button
-              type="submit"
-              disabled={formData.title.length <= 0 || isDueDateInvalid}
-              className="update-task-btn"
-              style={{
-                backgroundColor:
-                  formData.title.length <= 0 || isDueDateInvalid
-                    ? "#ccc"
-                    : "#b378ee",
-                cursor:
-                  formData.title.length <= 0 || isDueDateInvalid
-                    ? "not-allowed"
-                    : "pointer",
-              }}
-            >
-              Update Task
-            </button>
+            <div className="task-update-buttons">
+              <OpenModalButton
+                buttonText="Delete Task"
+                className="delete-task-button"
+                modalComponent={<DeleteTaskModal taskId={taskId} />}
+              />
+              <button
+                type="submit"
+                disabled={formData.title.length <= 0 || isDueDateInvalid}
+                className="update-task-btn"
+                style={{
+                  backgroundColor:
+                    formData.title.length <= 0 || isDueDateInvalid
+                      ? "#ccc"
+                      : "#b378ee",
+                  cursor:
+                    formData.title.length <= 0 || isDueDateInvalid
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                Update Task
+              </button>
+            </div>
           </form>
         </div>
       )}
