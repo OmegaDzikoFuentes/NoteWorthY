@@ -9,6 +9,7 @@ const headers = {
 const LOAD_TASKS = "tasks/loadTasks";
 const ADD_TASK = "tasks/addTask";
 const UPDATE_TASK = "tasks/updateTask";
+const REMOVE_TASK = "tasks/removeTask";
 
 // Action Creators
 const loadTasks = (tasks) => {
@@ -22,6 +23,13 @@ const addTask = (task) => {
   return {
     type: ADD_TASK,
     task,
+  };
+};
+
+const removeTask = (taskId) => {
+  return {
+    type: REMOVE_TASK,
+    taskId,
   };
 };
 
@@ -78,6 +86,24 @@ export const updateTask = (taskId, taskData) => async (dispatch) => {
   }
 };
 
+export const deleteTask = (taskId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/tasks/${taskId}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      dispatch(removeTask(taskId));
+      return response;
+    } else {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+  } catch (e) {
+    console.log("Unable to delete task :", e);
+    return e;
+  }
+};
+
 // Reducer
 const initialState = { userTasks: {} };
 
@@ -109,6 +135,11 @@ function tasksReducer(state = initialState, action) {
         ...state,
         userTasks: updatedUserTasks,
       };
+    }
+    case REMOVE_TASK: {
+      const newState = { ...state };
+      delete newState.userTasks[action.taskId];
+      return newState;
     }
     default:
       return state;
