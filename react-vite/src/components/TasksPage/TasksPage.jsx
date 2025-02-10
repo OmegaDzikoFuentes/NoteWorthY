@@ -4,17 +4,24 @@ import { useEffect, useState } from "react";
 import { selectAllUserTasks } from "../../redux/task";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
+import UpdateTaskModal from "../UpdateTaskModal/UpdateTaskModal";
+import { useModal } from "../../context/Modal";
 import "./TasksPage.css";
 
 function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const tasks = useSelector(selectAllUserTasks) || [];
+  const { setModalContent } = useModal();
 
   const formatDate = (dateString) => {
     if (!dateString) return "No Due Date";
     const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const handleTaskClick = (task) => {
+    setModalContent(<UpdateTaskModal taskId={task.id} />);
   };
 
   useEffect(() => {
@@ -63,7 +70,12 @@ function TasksPage() {
                       value={task.id}
                     ></input>
                     <div className="tasks-list-text">
-                      <p className="tasks-list-item-title">{task.title}</p>
+                      <p
+                        className="tasks-list-item-title"
+                        onClick={() => handleTaskClick(task)}
+                      >
+                        {task.title}
+                      </p>
                       <p className="tasks-list-item-description">
                         {task.description && task.description.length > 35
                           ? task.description.slice(0, 35) + "..."
