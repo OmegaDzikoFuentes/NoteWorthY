@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { csrfFetch } from "../../redux/csrf";
 import { useModal } from "../../context/Modal";
+import { updateTask, getUserTasks } from "../../redux/task";
 
 function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
   const dispatch = useDispatch();
@@ -82,6 +83,18 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
         .padStart(2, "0")}/${date.getFullYear()}`;
       submissionData.due_date = formattedDueDate;
     }
+
+    try {
+      await dispatch(updateTask(taskId, submissionData));
+      await dispatch(getUserTasks()); // Fetch the updated list of tasks
+      setModalContent(null);
+      if (onTaskUpdated) {
+        onTaskUpdated();
+      }
+    } catch (e) {
+      console.log("Error updating task:", e);
+      return e;
+    }
   };
 
   const isDueDateInvalid =
@@ -146,7 +159,7 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
             </label>
             {isDueDateInvalid ? (
               <p className="task-title-requirement">
-                Due Date Can&apos;t Be Before Today
+                Due Date Can't Be Before Today
               </p>
             ) : null}
             <button

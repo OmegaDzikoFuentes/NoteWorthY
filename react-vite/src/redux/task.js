@@ -8,6 +8,7 @@ const headers = {
 // Action Types
 const LOAD_TASKS = "tasks/loadTasks";
 const ADD_TASK = "tasks/addTask";
+const UPDATE_TASK = "tasks/updateTask";
 
 // Action Creators
 const loadTasks = (tasks) => {
@@ -59,6 +60,24 @@ export const addTaskThunk = (taskData) => async (dispatch) => {
   }
 };
 
+export const updateTask = (taskId, taskData) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`api/tasks/${taskId}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(taskData),
+    });
+    const updatedTask = await response.json();
+    dispatch({
+      type: "UPDATE_TASK",
+      payload: updatedTask,
+    });
+    return updatedTask;
+  } catch (e) {
+    return e;
+  }
+};
+
 // Reducer
 const initialState = { userTasks: {} };
 
@@ -75,6 +94,21 @@ function tasksReducer(state = initialState, action) {
       const newState = { ...state };
       newState.userTasks[action.task.id] = action.task;
       return newState;
+    }
+    case UPDATE_TASK: {
+      const updatedTask = action.payload;
+      const currentTask = state.userTasks[updatedTask.id] || {};
+      const updatedUserTasks = {
+        ...state.userTasks,
+        [updatedTask.id]: {
+          ...currentTask,
+          ...updatedTask,
+        },
+      };
+      return {
+        ...state,
+        userTasks: updatedUserTasks,
+      };
     }
     default:
       return state;
