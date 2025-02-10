@@ -10,10 +10,19 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
   const { setModalContent } = useModal();
   const [notebooks, setNotebooks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+    const day = date.getUTCDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const [formData, setFormData] = useState({
     title: task.title || "",
     description: task.description || "",
-    due_date: task.due_date || "",
+    due_date: task.due_date ? formatDate(task.due_date) : "",
     notebook_id: task.notebook_id || "",
   });
 
@@ -40,7 +49,9 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
       setNotebooks(sortedNotebooks);
       setFormData((prevFormData) => ({
         ...prevFormData,
-        notebook_id: sortedNotebooks.length > 0 ? sortedNotebooks[0].id : "",
+        notebook_id:
+          task.notebook_id ||
+          (sortedNotebooks.length > 0 ? sortedNotebooks[0].id : ""),
       }));
       setIsLoaded(true);
     } catch (error) {
@@ -75,12 +86,12 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
 
     if (formData.due_date) {
       const date = new Date(formData.due_date);
-      const formattedDueDate = `${(date.getMonth() + 1)
+      const formattedDueDate = `${(date.getUTCMonth() + 1)
         .toString()
         .padStart(2, "0")}/${date
-        .getDate()
+        .getUTCDate()
         .toString()
-        .padStart(2, "0")}/${date.getFullYear()}`;
+        .padStart(2, "0")}/${date.getUTCFullYear()}`;
       submissionData.due_date = formattedDueDate;
     }
 

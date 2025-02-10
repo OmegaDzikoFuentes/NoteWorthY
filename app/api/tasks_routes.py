@@ -108,6 +108,9 @@ def update_task(task_id):
     if 'title' in data:
         task.title = data['title']
 
+    if 'notebook_id' in data:
+        task.notebook_id = data['notebook_id']
+
     if 'description' in data:
         task.description = data['description']
 
