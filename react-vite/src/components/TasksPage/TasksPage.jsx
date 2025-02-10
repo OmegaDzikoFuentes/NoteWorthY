@@ -11,9 +11,15 @@ import "./TasksPage.css";
 function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const tasks = useSelector(selectAllUserTasks) || [];
+  const rawTasks = useSelector(selectAllUserTasks) || [];
+  const tasks = rawTasks.sort((a, b) => {
+    if (!a.due_date) return 1;
+    if (!b.due_date) return -1;
+    return new Date(a.due_date) - new Date(b.due_date);
+  });
   const { setModalContent } = useModal();
   console.log("THESE ARE THE TASKS", tasks);
+
   const formatDate = (dateString) => {
     if (!dateString) return "No Due Date";
     const options = { year: "numeric", month: "short", day: "numeric" };
