@@ -59,7 +59,6 @@ function CreateTaskModal({ onTaskAdded }) {
       ...prevFormData,
       [name]: value,
     }));
-    console.log("LOOK HERE", { ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
