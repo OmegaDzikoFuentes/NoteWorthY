@@ -20,7 +20,7 @@ function DeleteTaskModal({ taskId }) {
 
   return (
     <div className="delete-task-modal-container">
-      <h3>Are you sure you want to delete this task?</h3>
+      <h3 className="delete-task-header">Confirm Delete</h3>
       <div className="delete-task-modal-button-container">
         <button
           className="confirm-delete-button delete-modal-button"

@@ -1,11 +1,15 @@
 .delete-task-modal-container {
   border: 2px solid #bcbcbc;
-  width: auto;
+  width: 240px;
   padding: 15px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+}
+
+.delete-task-header {
+  align-self: center;
 }
 
 .delete-task-modal-button-container {
@@ -19,6 +23,7 @@
   border-radius: 15px;
   border: none;
   color: white;
+  cursor: pointer;
 }
 
 .confirm-delete-button {
