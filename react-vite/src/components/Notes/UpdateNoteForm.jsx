@@ -11,7 +11,7 @@ const UpdateNoteForm = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [notebook_id, setNotebook_id] = useState("");
-    const [errors, setErrors] = useState([]);
+    const [, setErrors] = useState([]);
 
     useEffect(() => {
         const loadNote = async () => {

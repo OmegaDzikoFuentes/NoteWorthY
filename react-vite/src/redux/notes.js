@@ -109,13 +109,13 @@ export const createNewNote = (noteData) => async dispatch => {
         const note = await response.json();
         dispatch(createNote(note));
         return note;
-    };
+    }
 
 }
 
 export const updateNote = (noteId, note) => async dispatch => {
-    const currentNoteData = await csrfFetch(`/api/notes/${noteId}`);
-    const currentNote = await currentNoteData.json();
+    // const currentNoteData = await csrfFetch(`/api/notes/${noteId}`);
+    // const currentNote = await currentNoteData.json();
 
     const response = await csrfFetch(`/api/notes/${noteId}`, {
         method: 'PUT',

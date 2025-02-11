@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { createNewNote } from "../../redux/notes";
 
 const CreateNoteForm = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [notebook_id, setNotebook_id] = useState("");
-    const [errors, setErrors] = useState([]);
+    const [, setErrors] = useState([]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +22,7 @@ const CreateNoteForm = () => {
         };
     
         try {
-            const createdNote = await dispatch(createNewNote(newNote));
+            await dispatch(createNewNote(newNote));
         } catch (error) {
             // console.log("Error creating note:", error);
             setErrors([error.toString()]);
