@@ -37,7 +37,7 @@ const removeNotebook = (notebookId) => ({
 
 // Get all notebooks
 export const getNotebooks = () => async dispatch => {
-    const response = await csrfFetch(`/api/notebooks`);
+    const response = await csrfFetch(`/api/notebooks/`);
 
     if (response.ok) {
         const notebooks = await response.json();
@@ -52,7 +52,7 @@ export const getNotebookById = (id) => async dispatch => {
 
     if (isNaN(notebookId)) return;
 
-    const response = await csrfFetch(`/api/notebooks/${notebookId}`);
+    const response = await csrfFetch(`/api/notebooks/${notebookId}/`);
 
     if (response.ok) {
         const notebook = await response.json();
@@ -68,7 +68,7 @@ export const createNotebook = (notebookData) => async dispatch => {
         user_id: notebookData.user_id, // assuming you pass user_id with the notebook data
     };
 
-    const response = await csrfFetch('/api/notebooks', {
+    const response = await csrfFetch('/api/notebooks/', {
         method: 'POST',
         body: JSON.stringify(formattedData),
     });
@@ -82,7 +82,7 @@ export const createNotebook = (notebookData) => async dispatch => {
 
 // Update a notebook
 export const updateNotebook = (notebookId, notebook) => async dispatch => {
-    const response = await csrfFetch(`/api/notebooks/${notebookId}`, {
+    const response = await csrfFetch(`/api/notebooks/${notebookId}/`, {
         method: 'PUT',
         body: JSON.stringify({
             name: notebook.name,
@@ -96,7 +96,7 @@ export const updateNotebook = (notebookId, notebook) => async dispatch => {
 
 // Delete a notebook
 export const deleteNotebook = (notebookId) => async dispatch => {
-    const response = await csrfFetch(`/api/notebooks/${notebookId}`, {
+    const response = await csrfFetch(`/api/notebooks/${notebookId}/`, {
         method: 'DELETE',
     });
     dispatch(removeNotebook(notebookId));
