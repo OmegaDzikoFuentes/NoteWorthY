@@ -1,0 +1,136 @@
+/* Container for the entire Notebooks page */
+.notebooks-page-container {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 40px;
+    padding-right: 50px;
+    margin-top: 20px;
+    gap: 30px;
+  }
+
+  /* Header section */
+  .notebooks-header-box {
+    width: 100%;
+  }
+
+  .notebooks-header {
+    font-weight: 400;
+    font-size: 30px;
+    align-self: flex-start;
+  }
+
+  /* Search and create section */
+  .notebooks-search-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding-bottom: 15px;
+    padding-right: 20px;
+  }
+
+  .new-notebook-search {
+    display: flex;
+    gap: 20px;
+  }
+
+  .notebooks-page-new {
+    height: 30px;
+    width: 120px;
+    border: none;
+    background-color: #b378ee;
+    color: white;
+    border-radius: 20px;
+  }
+
+  .notebooks-page-search {
+    padding-left: 10px;
+    width: 200px;
+    border: 1px solid #bcbcbc;
+    border-radius: 5px;
+  }
+
+  /* List of notebooks */
+  .notebooks-list-container {
+    display: flex;
+    flex-direction: column;
+    width: 101.3%;
+  }
+
+  .notebooks-list-headers {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #bcbcbc;
+  }
+
+  .notebooks-list-header-text {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .notebooks-list-title {
+    padding-left: 18px;
+  }
+
+  .notebooks-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    gap: 10px;
+  }
+
+  .notebooks-list-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #bcbcbc;
+    padding-top: 5px;
+    padding-bottom: 10px;
+  }
+
+  .notebooks-list-box-1 {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 8px;
+  }
+
+  .notebooks-list-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .notebooks-list-item-title {
+    font-weight: 550;
+  }
+
+  .notebooks-list-item-description {
+    padding-left: 10px;
+    font-size: 14px;
+    color: #bcbcbc;
+  }
+
+  .notebooks-list-item-actions {
+    display: flex;
+    gap: 10px;
+    padding-right: 25px;
+  }
+
+  .notebooks-list-edit-button,
+  .notebooks-list-delete-button {
+    border: none;
+    background-color: transparent;
+    color: #b378ee;
+    cursor: pointer;
+  }
+
+  .notebooks-list-edit-button:hover,
+  .notebooks-list-delete-button:hover {
+    text-decoration: underline;
+  }
