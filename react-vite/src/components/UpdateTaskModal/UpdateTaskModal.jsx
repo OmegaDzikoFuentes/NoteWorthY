@@ -99,7 +99,7 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
 
     try {
       await dispatch(updateTask(taskId, submissionData));
-      await dispatch(getUserTasks()); // Fetch the updated list of tasks
+      await dispatch(getUserTasks());
       setModalContent(null);
       if (onTaskUpdated) {
         onTaskUpdated();
