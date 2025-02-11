@@ -13,7 +13,7 @@ function Navigation() {
 
   // Fetch notebooks from the backend
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/notebooks")
+    fetch("/api/notebooks")
       .then((res) => res.json())
       .then((data) => {
         if (data.Notebooks) {
@@ -25,7 +25,7 @@ function Navigation() {
 
   // Fetch tags from the backend
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/tags")
+    fetch("/api/tags")
       .then((res) => res.json())
       .then((data) => {
         console.log("Tags data:", data);
