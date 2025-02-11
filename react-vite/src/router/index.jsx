@@ -33,6 +33,13 @@ export const router = createBrowserRouter([
       {
         path: "/notebooks/:notebookId",  
         element: <NotebookDetailsPage />,
+        // added this so notes can be nested into notebooks
+        children: [
+          {
+            path: "ntoes",
+            element: <Notes />
+          }
+        ]
       },
       {
         path: "notes/current",

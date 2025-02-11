@@ -1,28 +1,28 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getCurrentUserNotes } from '../../redux/notes';
+import { getNotesForNotebook } from '../../redux/notes';
+import "./Notes.css"
 
-function Notes() {
+function Notes({ notebookId }) {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const noteDetails = useSelector(state => state.notes.Notes);
 
     useEffect(() => {
-        dispatch(getCurrentUserNotes());
-    }, [dispatch]);
+        if (notebookId) {
+            dispatch(getNotesForNotebook(notebookId));
+        }
+    }, [dispatch, notebookId]);
 
     return (
-        <div>
-            {Object.values(noteDetails).map((note, index) => (
-                <div key={index}>
-                    <li>{note.title}</li>
-                    <li>{note.content}</li>
-                    <li>{note.notebook_id}</li>
+        <div className="notes-grid">
+            {Object.values(noteDetails).map((note) => (
+                <div key={note.id} className="note-card">
+                    <h3>{note.title}</h3>
+                    <p>{note.content}</p>
                 </div>
             ))}
         </div>
-    )
+    );
 }
 
 

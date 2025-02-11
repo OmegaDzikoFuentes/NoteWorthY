@@ -6,6 +6,7 @@ const CREATE_NOTE = 'notes/CREATE_NOTENOTE';
 const UPDATE_NOTE = 'notes/UPDATE_NOTE';
 const DELETE_NOTE = 'notes/DELETE_NOTE';
 const SET_NOTE_TAGS = 'notes/SET_NOTE_TAGS';
+const LOAD_BY_NB_ID = 'notes/LOAD_BY_NB_ID';
 
 
 const loadCurrent = notes => ({
@@ -16,6 +17,11 @@ const loadCurrent = notes => ({
 const loadById = note => ({
     type: LOAD_BY_ID,
     note
+})
+
+const loadByNotebookId = (notes) => ({
+    type: LOAD_BY_NB_ID,
+    notes
 })
 
 const createNote = (note) => ({
@@ -67,6 +73,20 @@ export const getNoteById = (noteId) => async dispatch => {
         const note = await response.json();
         dispatch(loadById(note));
         return note
+    }
+}
+
+export const getNotesForNotebook = (notebookId) => async dispatch => {
+    const response = await csrfFetch(`/api/notes/notebook/${notebookId}`);
+
+    if (response.ok) {
+        const data = await response.json();
+        const normalizedNotes = {};
+        data.Notes.forEach(note => {
+            normalizedNotes[note.id] = note;
+        });
+        dispatch(loadByNotebookId(normalizedNotes));
+        return normalizedNotes;
     }
 }
 
@@ -153,6 +173,11 @@ const notesReducer = (state = initialState, action) => {
         case LOAD_BY_ID: {
             const newState = { ...state };
             newState.Notes = { ...action.note };
+            return newState;
+        }
+        case LOAD_BY_NB_ID: {
+            const newState = { ...state };
+            newState.Notes = { ...action.notes };
             return newState;
         }
         case CREATE_NOTE: {
