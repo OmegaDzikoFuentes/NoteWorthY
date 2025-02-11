@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotebooks, createNotebook, updateNotebook, deleteNotebook } from "../../redux/notebook"
+import { useNavigate } from "react-router-dom";
+import { getNotebooks, createNotebook, updateNotebook, deleteNotebook } from "../../redux/notebook";
 
 const NotebookPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { allNotebooks, loading, error } = useSelector((state) => state.notebooks);
   const [name, setName] = useState("");
   const [editingNotebook, setEditingNotebook] = useState(null);
@@ -34,6 +36,10 @@ const NotebookPage = () => {
 
   const handleDeleteNotebook = async (notebookId) => {
     await dispatch(deleteNotebook(notebookId));
+  };
+
+  const handleNotebookClick = (notebookId) => {
+    navigate(`/notebooks/${notebookId}`);
   };
 
   if (loading) return <p className="loading-placeholder">Loading...</p>;
@@ -71,7 +77,13 @@ const NotebookPage = () => {
           {Object.values(allNotebooks).map((notebook) => (
             <li key={notebook.id} className="">
               <div>
-                <h3 className="Notebook-name">{notebook.name}</h3>
+                <h3
+                  className="Notebook-name"
+                  onClick={() => handleNotebookClick(notebook.id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {notebook.name}
+                </h3>
               </div>
               <div>
                 <button

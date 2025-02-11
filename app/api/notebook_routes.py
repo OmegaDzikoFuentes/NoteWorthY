@@ -11,7 +11,7 @@ def is_owner(notebook):
 
 
 # GET ALL NOTEBOOKS
-@notebook_routes.route('/notebooks', methods=['GET'])
+@notebook_routes.route('/', methods=['GET'])
 @login_required
 def get_notebooks():
     """ Get all notebooks owned by the current user """
@@ -20,7 +20,7 @@ def get_notebooks():
 
 
 # GET A SINGLE NOTEBOOK
-@notebook_routes.route('/notebooks/<int:notebook_id>', methods=['GET'])
+@notebook_routes.route('/<int:notebook_id>', methods=['GET'])
 @login_required
 def get_notebook(notebook_id):
     """ Get a specific notebook by ID """
@@ -31,7 +31,7 @@ def get_notebook(notebook_id):
 
 
 # CREATE A NOTEBOOK
-@notebook_routes.route('/notebooks', methods=['POST'])
+@notebook_routes.route('/', methods=['POST'])
 @login_required
 def create_notebook():
     """ Create a new notebook """
