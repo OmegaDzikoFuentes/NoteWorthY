@@ -67,6 +67,11 @@ function Navigation() {
             Tasks
           </NavLink>
         </li>
+        <li>
+    <NavLink to="/notebooks" className="nav-item">
+      Notebooks
+    </NavLink>
+  </li>
         {/* Notebooks Dropdown */}
         <li className="dropdown-container">
           <button
