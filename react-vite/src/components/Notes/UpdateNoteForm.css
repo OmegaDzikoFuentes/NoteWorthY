@@ -54,6 +54,11 @@
     width: 150px;
 }
 
+.update-note-button:hover {
+    background-color: #175088;
+}
+
 .update-note-button-container {
     padding: 20px;
 }
+

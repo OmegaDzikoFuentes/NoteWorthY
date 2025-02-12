@@ -13,4 +13,10 @@
 
 .notes-container {
     display: flex;
+    width: 100%;
+}
+
+.note-details {
+    flex: 1;
+    width: 100%;
 }

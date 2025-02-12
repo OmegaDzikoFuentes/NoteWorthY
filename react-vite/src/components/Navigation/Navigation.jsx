@@ -47,7 +47,7 @@ function Navigation() {
         <ProfileButton />
       </div>
 
-      <button className="new-note-btn">New Note</button>
+      <button className="new-note-button">New Note</button>
       <button className="new-note-btn">New Task</button>
       <button className="new-note-btn">New Notebook</button>
 
