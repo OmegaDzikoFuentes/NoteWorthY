@@ -2,22 +2,23 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { updateNote, getNoteById } from "../../redux/notes";
+import { getNotebooks } from "../../redux/notebook";
+import "./UpdateNoteForm.css"
 
 const UpdateNoteForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { noteId } = useParams();
     const note = useSelector(state => state.notes.Notes.Note);
+    const notebook = useSelector(state => state.notebooks.allNotebooks)
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [notebook_id, setNotebook_id] = useState("");
     const [, setErrors] = useState([]);
 
     useEffect(() => {
-        const loadNote = async () => {
-            await dispatch(getNoteById(noteId));
-        };
-        loadNote();
+        dispatch(getNoteById(noteId));
+        dispatch(getNotebooks())
     }, [dispatch, noteId]);
 
     useEffect(() => {
@@ -31,13 +32,15 @@ const UpdateNoteForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors([]);
-        
+
         const updatedNote = {
             title,
             content,
             notebook_id: parseInt(notebook_id)
         };
-    
+
+        console.log('Submitting updated note:', updatedNote);
+
         return dispatch(updateNote(noteId, updatedNote))
             .then(() => {
                 navigate(`/notes/${noteId}`)
@@ -48,47 +51,61 @@ const UpdateNoteForm = () => {
                 }
             });
     }
-    
+
     if (!note) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h1>Make changes to a current note</h1>
-                <label>
-                    Title
-                    <input 
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Title"
-                        required
-                    />
-                </label>
-                <label>
-                    Content
-                    <input 
-                        type="text"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="Content"
-                        required
-                    />
-                </label>
-                <label>
-                    Notebook Id
-                    <input 
-                        type="number"
-                        value={notebook_id}
-                        onChange={(e) => setNotebook_id(e.target.value)}
-                        placeholder="Id"
-                        required
-                    />
-                </label>
+        <div className="update-note-container">
+            <form onSubmit={handleSubmit} className="update-note-form-container">
                 <div>
-                    <button type="submit">Update Note</button>
+                    <h1 className="update-note-title">Make changes to {note.title}</h1>
+                </div>
+                <div className="update-note-label-container">
+                    <label className="update-note-label">
+                        Title
+                        <input className="update-note-title-input"
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="Title"
+                            required
+                        />
+                    </label>
+                </div>
+                <div className="update-note-label-container">
+                    <label className="update-note-label">
+                        Content
+                        <textarea 
+                            className="update-note-content-input"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            placeholder="Content"
+                            required
+                            rows={10}
+                        />
+                    </label>
+                </div>
+                <div className="update-note-label-container">
+                    <label className="update-note-label">
+                        Select Notebook
+                        <select className="update-note-dropdown"
+                            value={notebook_id}
+                            onChange={(e) => setNotebook_id(e.target.value)}
+                            required
+                        >
+                            <option value="">Select a notebook</option>
+                            {Object.values(notebook).map((nb, index) => (
+                                <option key={index} value={nb.id}>
+                                    {nb.name}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                </div>
+                <div className="update-note-button-container">
+                    <button type="submit" className="update-note-button">Update Note</button>
                 </div>
             </form>
         </div>
