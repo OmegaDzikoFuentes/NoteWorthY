@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { csrfFetch } from "../../redux/csrf";
 import { useModal } from "../../context/Modal";
 import { updateTask, getUserTasks } from "../../redux/task";
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import DeleteTaskModal from "../DeleteTaskModal";
 
 function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
@@ -115,6 +114,11 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
     new Date(formData.due_date).setHours(0, 0, 0, 0) <
       new Date().setHours(0, 0, 0, 0);
 
+  const handleDeleteClick = (e) => {
+    e.preventDefault();
+    setModalContent(<DeleteTaskModal taskId={taskId} />);
+  };
+
   return (
     <>
       {isLoaded && (
@@ -176,11 +180,6 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
               </p>
             ) : null}
             <div className="task-update-buttons">
-              <OpenModalButton
-                buttonText="Delete Task"
-                className="delete-task-button"
-                modalComponent={<DeleteTaskModal taskId={taskId} />}
-              />
               <button
                 type="submit"
                 disabled={formData.title.length <= 0 || isDueDateInvalid}
@@ -197,6 +196,13 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
                 }}
               >
                 Update Task
+              </button>
+              <button
+                type="button"
+                className="delete-task-button"
+                onClick={handleDeleteClick}
+              >
+                Delete Task
               </button>
             </div>
           </form>
