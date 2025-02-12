@@ -126,11 +126,16 @@
   .notebooks-list-delete-button {
     border: none;
     background-color: transparent;
-    color: #b378ee;
+    color: #EA9828;
     cursor: pointer;
   }
 
   .notebooks-list-edit-button:hover,
   .notebooks-list-delete-button:hover {
     text-decoration: underline;
+  }
+
+  .notebook-buttons-container {
+    display: flex;
+    gap: 7px;
   }

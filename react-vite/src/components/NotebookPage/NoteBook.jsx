@@ -123,7 +123,7 @@ const NotebookPage = () => {
                       </p>
                     </div>
                   </div>
-                  <div>
+                  <div className="notebook-buttons-container">
                     <button
                       onClick={() => handleEditClick(notebook)}
                       className="notebooks-list-edit-button"
