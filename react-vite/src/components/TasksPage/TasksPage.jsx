@@ -30,8 +30,11 @@ function TasksPage() {
   }, [rawTasks]);
 
   const tasks = rawTasks
-    .filter((task) =>
-      task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    .filter(
+      (task) =>
+        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (task.description &&
+          task.description.toLowerCase().includes(searchQuery.toLowerCase()))
     )
     .sort((a, b) => {
       if (!a.due_date) return 1;
