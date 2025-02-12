@@ -1,6 +1,6 @@
 import { getUserTasks } from "../../redux/task";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { selectAllUserTasks, updateTask } from "../../redux/task";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
@@ -12,7 +12,8 @@ function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const rawTasks = useSelector(selectAllUserTasks) || [];
+  const allUserTasks = useSelector(selectAllUserTasks) || [];
+  const rawTasks = useMemo(() => allUserTasks, [allUserTasks]);
   const [checkedTasks, setCheckedTasks] = useState({});
 
   useEffect(() => {
@@ -29,18 +30,17 @@ function TasksPage() {
     setCheckedTasks(initialCheckedTasks);
   }, [rawTasks]);
 
-  const tasks = rawTasks
-    .filter(
-      (task) =>
-        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (task.description &&
-          task.description.toLowerCase().includes(searchQuery.toLowerCase()))
-    )
-    .sort((a, b) => {
-      if (!a.due_date) return 1;
-      if (!b.due_date) return -1;
-      return new Date(a.due_date) - new Date(b.due_date);
-    });
+  const tasks = useMemo(() => {
+    return rawTasks
+      .filter((task) =>
+        task.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (!a.due_date) return 1;
+        if (!b.due_date) return -1;
+        return new Date(a.due_date) - new Date(b.due_date);
+      });
+  }, [rawTasks, searchQuery]);
 
   const { setModalContent } = useModal();
 

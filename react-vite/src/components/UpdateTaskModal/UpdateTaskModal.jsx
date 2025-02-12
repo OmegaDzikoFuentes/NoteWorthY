@@ -64,7 +64,7 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
 
   useEffect(() => {
     getUserNotebooks();
-  }, []);
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -172,7 +172,7 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
             </label>
             {isDueDateInvalid ? (
               <p className="task-title-requirement">
-                Due Date Can't Be Before Today
+                Due Date Can&apos;t Be Before Today
               </p>
             ) : null}
             <div className="task-update-buttons">
