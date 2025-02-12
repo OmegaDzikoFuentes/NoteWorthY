@@ -11,12 +11,17 @@ import "./TasksPage.css";
 function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const rawTasks = useSelector(selectAllUserTasks) || [];
-  const tasks = rawTasks.sort((a, b) => {
-    if (!a.due_date) return 1;
-    if (!b.due_date) return -1;
-    return new Date(a.due_date) - new Date(b.due_date);
-  });
+  const tasks = rawTasks
+    .filter((task) =>
+      task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (!a.due_date) return 1;
+      if (!b.due_date) return -1;
+      return new Date(a.due_date) - new Date(b.due_date);
+    });
   const { setModalContent } = useModal();
   console.log("THESE ARE THE TASKS", tasks);
 
@@ -58,6 +63,8 @@ function TasksPage() {
                 className="tasks-page-search"
                 type="text"
                 placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
