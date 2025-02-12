@@ -43,8 +43,8 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        path: "notes/current",
-        element: <UserNotes />,
+        path: "notes/new",
+        element: <CreateNoteForm />,
       },
       {
         path: "notes/:noteId/edit",

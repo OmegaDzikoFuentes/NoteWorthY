@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
 function Navigation() {
+  const navigate = useNavigate();
   const [searchNotebook, setSearchNotebook] = useState("");
   const [searchTag, setSearchTag] = useState("");
   const [showNotebooks, setShowNotebooks] = useState(false);
@@ -47,7 +49,7 @@ function Navigation() {
         <ProfileButton />
       </div>
 
-      <button className="new-note-button">New Note</button>
+      <button className="new-note-button" onClick={() => navigate(`/notes/new`)}>New Note</button>
       <button className="new-note-btn">New Task</button>
       <button className="new-note-btn">New Notebook</button>
 
