@@ -12,20 +12,33 @@ function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [checkedTasks, setCheckedTasks] = useState({});
   const rawTasks = useSelector(selectAllUserTasks) || [];
+  const [checkedTasks, setCheckedTasks] = useState({});
+
+  useEffect(() => {
+    dispatch(getUserTasks()).then(() => {
+      setIsLoaded(true);
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const initialCheckedTasks = {};
+    rawTasks.forEach((task) => {
+      initialCheckedTasks[task.id] = task.completed;
+    });
+    setCheckedTasks(initialCheckedTasks);
+  }, [rawTasks]);
+
   const tasks = rawTasks
-    .filter(
-      (task) =>
-        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (task.description &&
-          task.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter((task) =>
+      task.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => {
       if (!a.due_date) return 1;
       if (!b.due_date) return -1;
       return new Date(a.due_date) - new Date(b.due_date);
     });
+
   const { setModalContent } = useModal();
 
   const formatDate = (dateString) => {
@@ -42,23 +55,16 @@ function TasksPage() {
   };
 
   const handleCheckBoxChange = async (taskId) => {
-    setCheckedTasks((prev) => {
-      const newCheckedTasks = { ...prev, [taskId]: !prev[taskId] };
+    const newCheckedTasks = {
+      ...checkedTasks,
+      [taskId]: !checkedTasks[taskId],
+    };
+    setCheckedTasks(newCheckedTasks);
 
-      if (!prev[taskId]) {
-        dispatch(updateTask(taskId, { completed: true }));
-      } else {
-        dispatch(updateTask(taskId, { completed: false }));
-      }
-
-      dispatch(getUserTasks());
-      return newCheckedTasks;
-    });
+    const updatedTask = { completed: newCheckedTasks[taskId] };
+    await dispatch(updateTask(taskId, updatedTask));
+    await dispatch(getUserTasks());
   };
-
-  useEffect(() => {
-    dispatch(getUserTasks()).then(() => setIsLoaded(true));
-  }, [dispatch]);
 
   return (
     <>
@@ -104,7 +110,7 @@ function TasksPage() {
                     <input
                       type="checkbox"
                       className="tasks-list-checkbox"
-                      checked={checkedTasks[task.id]}
+                      checked={checkedTasks[task.id] || false}
                       onChange={() => handleCheckBoxChange(task.id)}
                       name="group1"
                       value={task.id}
@@ -114,8 +120,8 @@ function TasksPage() {
                         className="tasks-list-item-title"
                         onClick={() => handleTaskClick(task)}
                         style={{
-                          color: task.completed ? "#bcbcbc" : "inherit",
-                          textDecoration: task.completed
+                          color: checkedTasks[task.id] ? "#bcbcbc" : "inherit",
+                          textDecoration: checkedTasks[task.id]
                             ? "line-through"
                             : "none",
                         }}
