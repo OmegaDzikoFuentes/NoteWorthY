@@ -12,8 +12,8 @@ function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const allUserTasks = useSelector(selectAllUserTasks) || [];
-  const rawTasks = useMemo(() => allUserTasks, [allUserTasks]);
+  const allUserTasks = useSelector(selectAllUserTasks);
+  const rawTasks = useMemo(() => allUserTasks || [], [allUserTasks]);
   const [checkedTasks, setCheckedTasks] = useState({});
 
   useEffect(() => {
@@ -32,8 +32,11 @@ function TasksPage() {
 
   const tasks = useMemo(() => {
     return rawTasks
-      .filter((task) =>
-        task.title.toLowerCase().includes(searchQuery.toLowerCase())
+      .filter(
+        (task) =>
+          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (task.description &&
+            task.description.toLowerCase().includes(searchQuery.toLowerCase()))
       )
       .sort((a, b) => {
         if (!a.due_date) return 1;
