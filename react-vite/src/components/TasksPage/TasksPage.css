@@ -154,9 +154,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 10px;
-  height: 10px;
-  background-color: #bcbcbc;
+  width: 9px;
+  height: 9px;
+  background-color: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
