@@ -51,7 +51,11 @@ function TasksPage() {
           </div>
           <div className="tasks-search-container">
             <h4 className="task-count">
-              {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
+              {searchQuery === ""
+                ? `${tasks.length} ${tasks.length === 1 ? "task" : "tasks"}`
+                : `${tasks.length} ${
+                    tasks.length === 1 ? "task" : "tasks"
+                  } found`}
             </h4>
             <div className="new-task-search">
               <OpenModalButton
