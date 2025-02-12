@@ -145,7 +145,7 @@
 }
 
 .tasks-list-checkbox:checked {
-  background-color: #b378ee;
+  background-color: #bcbcbc;
   border: none;
 }
 
@@ -156,7 +156,7 @@
   left: 50%;
   width: 10px;
   height: 10px;
-  background-color: #b378ee;
+  background-color: #bcbcbc;
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
