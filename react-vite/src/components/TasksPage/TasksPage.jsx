@@ -62,7 +62,7 @@ function TasksPage() {
               <input
                 className="tasks-page-search"
                 type="text"
-                placeholder="Search..."
+                placeholder="Search By Title..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
