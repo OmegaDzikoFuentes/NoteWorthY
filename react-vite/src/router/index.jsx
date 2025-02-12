@@ -7,6 +7,7 @@ import Notes from "../components/Notes/Notes";
 import NoteDetails from "../components/Notes/NoteDetails";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
 import UpdateNoteForm from "../components/Notes/UpdateNoteForm";
+import UserNotes from "../components/Notes/UserNotes";
 import NotebookPage from '../components/NotebookPage/NoteBook';
 import NotebookDetailsPage from '../components/NotebookDetailPage/NotebookDetailsPage';
 
@@ -31,31 +32,33 @@ export const router = createBrowserRouter([
         element: <NotebookPage />,
       },
       {
-        path: "/notebooks/:notebookId",  
+        path: "/notebooks/:notebookId",
         element: <NotebookDetailsPage />,
         // added this so notes can be nested into notebooks
         children: [
           {
-            path: "ntoes",
+            path: "notes",
             element: <Notes />
           }
         ]
       },
       {
         path: "notes/current",
-        element: <Notes />,
-      },
-      {
-        path: "notes/:noteId",
-        element: <NoteDetails />,
+        element: <UserNotes />,
       },
       {
         path: "notes/:noteId/edit",
         element: <UpdateNoteForm />,
       },
       {
-        path: "notes",
-        element: <CreateNoteForm />,
+        path: "/notes",
+        element: <UserNotes />,
+        children: [
+          {
+            path: ":noteId",
+            element: <NoteDetails />,
+          }
+        ]
       },
       {
         path: "tasks",

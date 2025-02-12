@@ -172,6 +172,7 @@ const notesReducer = (state = initialState, action) => {
         }
         case LOAD_BY_ID: {
             const newState = { ...state };
+            newState.Notes = {};
             newState.Notes = { ...action.note };
             return newState;
         }
