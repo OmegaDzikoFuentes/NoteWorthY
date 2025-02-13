@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "notebooks/:notebookId/note/:noteId",
-        element: <NotesInNotebook />
+        element: <NoteDetails />
       },
       {
         path: "notes/new",
