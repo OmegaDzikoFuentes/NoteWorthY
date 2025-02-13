@@ -24,23 +24,26 @@ function UserNotes() {
     return (
         <>
             {isLoaded && (
-                <div className='notes-container'>
-                    <div className="notes-grid">
-                        {Object.values(noteDetails).map((note, index) => (
-                            <div
-                                key={index}
-                                className="note-card"
-                                onClick={() => handleNoteSelect(note)}
-                            >
-                                <h3>{note.title}</h3>
-                                <p>{note.content}</p>
-                            </div>
-                        ))}
+                <>
+                    <div className='notes-container'>
+                        <h2 className='notes-title'>Notes</h2>
+                        <div className="notes-grid">
+                            {Object.values(noteDetails).map((note, index) => (
+                                <div
+                                    key={index}
+                                    className="note-card"
+                                    onClick={() => handleNoteSelect(note)}
+                                >
+                                    <h3>{note.title}</h3>
+                                    <p>{note.content}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                     <div className='note-details'>
                         <NoteDetails selectedNote={selectedNote} />
                     </div>
-                </div>
+                </>
             )}
         </>
     );

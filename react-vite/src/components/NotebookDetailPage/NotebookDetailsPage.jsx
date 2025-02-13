@@ -26,7 +26,7 @@ const NotebookDetailsPage = () => {
       </div>
       {/* added notes to be displayed on the left */}
       <div className="notes-panel">
-        <h2>Notes</h2>
+        <h2>{notebook.name}</h2>
         <Notes notebookId={notebookId} />
       </div>
     </div>

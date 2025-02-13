@@ -1,9 +1,9 @@
 .notes-grid {
     padding: 10px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    display: flex;
     gap: 20px;
-    width: 300px;
+    width: 80%;
+    height: 100%;
 }
 
 .note-card {
@@ -13,10 +13,21 @@
 
 .notes-container {
     display: flex;
-    width: 100%;
+    flex-direction: column;
+    width: 25%;
+    height: 100%;
+    justify-content: center;
 }
 
 .note-details {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     width: 100%;
+}
+
+.notes-title {
+    align-self: flex-start;
+    margin-left: 20px;
+    padding-top: 10px;
 }
