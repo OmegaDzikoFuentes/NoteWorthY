@@ -6,6 +6,7 @@ const CREATE_NOTE = 'notes/CREATE_NOTENOTE';
 const UPDATE_NOTE = 'notes/UPDATE_NOTE';
 const DELETE_NOTE = 'notes/DELETE_NOTE';
 const SET_NOTE_TAGS = 'notes/SET_NOTE_TAGS';
+const LOAD_BY_NB_ID = 'notes/LOAD_BY_NB_ID';
 
 
 const loadCurrent = notes => ({
@@ -18,17 +19,22 @@ const loadById = note => ({
     note
 })
 
+const loadByNotebookId = (notes) => ({
+    type: LOAD_BY_NB_ID,
+    notes
+})
+
 const createNote = (note) => ({
     type: CREATE_NOTE,
     payload: note
 })
 
-const updateNote = (note) => ({
+const update_Note = (note) => ({
     type: UPDATE_NOTE,
     payload: note
 })
 
-const deleteNote = (noteId) => ({
+const delete_Note = (noteId) => ({
     type: DELETE_NOTE,
     noteId
 })
@@ -70,6 +76,20 @@ export const getNoteById = (noteId) => async dispatch => {
     }
 }
 
+export const getNotesForNotebook = (notebookId) => async dispatch => {
+    const response = await csrfFetch(`/api/notes/notebook/${notebookId}`);
+
+    if (response.ok) {
+        const data = await response.json();
+        const normalizedNotes = {};
+        data.Notes.forEach(note => {
+            normalizedNotes[note.id] = note;
+        });
+        dispatch(loadByNotebookId(normalizedNotes));
+        return normalizedNotes;
+    }
+}
+
 export const createNewNote = (noteData) => async dispatch => {
     const formattedData = {
         title: noteData.title,
@@ -89,8 +109,39 @@ export const createNewNote = (noteData) => async dispatch => {
         const note = await response.json();
         dispatch(createNote(note));
         return note;
-    };
+    }
 
+}
+
+export const updateNote = (noteId, note) => async dispatch => {
+    // const currentNoteData = await csrfFetch(`/api/notes/${noteId}`);
+    // const currentNote = await currentNoteData.json();
+
+    const response = await csrfFetch(`/api/notes/${noteId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            title: note.title,
+            content: note.content,
+            notebook_id: note.notebook_id
+        })
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(update_Note(data));
+        return data;
+    }
+}
+
+export const deleteNote = (noteId) => async dispatch => {
+    const response = await csrfFetch(`/api/notes/${noteId}`, {
+        method: 'DELETE'
+    });
+    dispatch(delete_Note(noteId));
+    return response;
 }
 
 const initialState = {
@@ -121,14 +172,29 @@ const notesReducer = (state = initialState, action) => {
         }
         case LOAD_BY_ID: {
             const newState = { ...state };
+            newState.Notes = {};
             newState.Notes = { ...action.note };
+            return newState;
+        }
+        case LOAD_BY_NB_ID: {
+            const newState = { ...state };
+            newState.Notes = { ...action.notes };
             return newState;
         }
         case CREATE_NOTE: {
             const newState = { ...state };
-            newState.Notes = { ...state.Notes };
             newState.Notes[action.payload.id] = action.payload;
             return newState
+        }
+        case UPDATE_NOTE: {
+            const newState = { ...state };
+            newState.Notes[action.payload.id] = action.payload;
+            return newState;
+        }
+        case DELETE_NOTE: {
+            const newState = { ...state };
+            delete newState.Notes[action.noteId]
+            return newState;
         }
         default:
             return state;

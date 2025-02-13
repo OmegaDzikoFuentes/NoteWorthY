@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getNotebookById } from "../../redux/notebook";
+// added this to display notes
+import Notes from "../Notes/Notes";
+import "./NoteBookDetailsPage.css";
 
 const NotebookDetailsPage = () => {
   const { notebookId } = useParams();
@@ -15,10 +18,17 @@ const NotebookDetailsPage = () => {
   if (!notebook) return <p>Loading notebook...</p>;
 
   return (
-    <div className="notebook-details">
-      <h1>{notebook.name}</h1>
-      <p>Created at: {new Date(notebook.created_at).toLocaleString()}</p>
-      <p>Last updated: {new Date(notebook.updated_at).toLocaleString()}</p>
+    <div className="notebook-container">
+      <div className="notebook-details">
+        <h1>{notebook.name}</h1>
+        <p>Created at: {new Date(notebook.created_at).toLocaleString()}</p>
+        <p>Last updated: {new Date(notebook.updated_at).toLocaleString()}</p>
+      </div>
+      {/* added notes to be displayed on the left */}
+      <div className="notes-panel">
+        <h2>{notebook.name}</h2>
+        <Notes notebookId={notebookId} />
+      </div>
     </div>
   );
 };

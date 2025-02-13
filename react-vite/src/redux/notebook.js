@@ -37,7 +37,7 @@ const removeNotebook = (notebookId) => ({
 
 // Get all notebooks
 export const getNotebooks = () => async dispatch => {
-    const response = await csrfFetch(`/api/notebooks`);
+    const response = await csrfFetch(`/api/notebooks/`);
 
     if (response.ok) {
         const notebooks = await response.json();
@@ -68,7 +68,7 @@ export const createNotebook = (notebookData) => async dispatch => {
         user_id: notebookData.user_id, // assuming you pass user_id with the notebook data
     };
 
-    const response = await csrfFetch('/api/notebooks', {
+    const response = await csrfFetch('/api/notebooks/', {
         method: 'POST',
         body: JSON.stringify(formattedData),
     });

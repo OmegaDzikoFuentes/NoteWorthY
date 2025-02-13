@@ -80,6 +80,7 @@ def edit_note(note_Id):
     data = request.get_json()
     title = data.get('title')
     content = data.get('content')
+    notebook_id = data.get('notebook_id')
 
     if not title:
         return jsonify({"message": "Title is required"}), 400
@@ -89,6 +90,8 @@ def edit_note(note_Id):
     
     note.title = title
     note.content = content
+    note.notebook_id = notebook_id
+    
     db.session.commit()
     return jsonify(note.to_dict()), 200
 

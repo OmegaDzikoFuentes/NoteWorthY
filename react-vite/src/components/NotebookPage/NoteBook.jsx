@@ -1,12 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNotebooks, createNotebook, updateNotebook, deleteNotebook } from "../../redux/notebook"
+import { useNavigate } from "react-router-dom";
+import {
+  getNotebooks,
+  createNotebook,
+  updateNotebook,
+  deleteNotebook,
+} from "../../redux/notebook";
+import "./Notebook.css";
 
 const NotebookPage = () => {
   const dispatch = useDispatch();
-  const { allNotebooks, loading, error } = useSelector((state) => state.notebooks);
+  const navigate = useNavigate();
+  const { allNotebooks, loading, error } = useSelector(
+    (state) => state.notebooks
+  );
   const [name, setName] = useState("");
   const [editingNotebook, setEditingNotebook] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(getNotebooks());
@@ -36,64 +47,105 @@ const NotebookPage = () => {
     await dispatch(deleteNotebook(notebookId));
   };
 
-  if (loading) return <p className="loading-placeholder">Loading...</p>;
-  if (error) return <p className="errors">{error}</p>;
+  const handleNotebookClick = (notebookId) => {
+    navigate(`/notebooks/${notebookId}`);
+  };
+
+  const filteredNotebooks = Object.values(allNotebooks).filter((notebook) =>
+    notebook.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="Notebook">
-      <h1 className="NotebookPage-title">Notebooks</h1>
-
-      <form
-        onSubmit={editingNotebook ? handleUpdateNotebook : handleCreateNotebook}
-        className="Notebook-edit-form"
-      >
-        <h2 className="Notebook-creator-editor">
-          {editingNotebook ? "Edit Notebook" : "Create a Notebook"}
-        </h2>
-        <input
-          type="text"
-          placeholder="Notebook Name"
-          className="Notebook-name-input"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="Notebook-submit-button"
-        >
-          {editingNotebook ? "Update Notebook" : "Create Notebook"}
-        </button>
-      </form>
-
-      <h2 className="current-Notebook">Your Notebooks</h2>
-      {Object.keys(allNotebooks).length > 0 ? (
-        <ul className="Notebook-actions">
-          {Object.values(allNotebooks).map((notebook) => (
-            <li key={notebook.id} className="">
-              <div>
-                <h3 className="Notebook-name">{notebook.name}</h3>
-              </div>
-              <div>
-                <button
-                  onClick={() => handleEditClick(notebook)}
-                  className="Notebook-edit-button"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteNotebook(notebook.id)}
-                  className="Notebook-delete-button"
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="Empty-Notebooks-error">No notebooks found.</p>
-      )}
-    </div>
+    <>
+      <div className="notebooks-page-container">
+        <div className="notebooks-header-box">
+          <h1 className="notebooks-header">My Notebooks</h1>
+        </div>
+        <div className="notebook-form-container">
+          <form
+            onSubmit={
+              editingNotebook ? handleUpdateNotebook : handleCreateNotebook
+            }
+            className="notebook-edit-form"
+          >
+            <h2 className="notebook-creator-editor">
+              {editingNotebook ? "Edit Notebook" : "Create a Notebook"}
+            </h2>
+            <input
+              type="text"
+              placeholder="Notebook Name"
+              className="notebook-name-input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <button type="submit" className="notebook-submit-button">
+              {editingNotebook ? "Update Notebook" : "Create Notebook"}
+            </button>
+          </form>
+        </div>
+        <div className="notebooks-search-container">
+          <h4 className="notebook-count">
+            {filteredNotebooks.length}{" "}
+            {filteredNotebooks.length === 1 ? "notebook" : "notebooks"}
+          </h4>
+          <div className="new-notebook-search">
+            <input
+              className="notebooks-page-search"
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="notebooks-list-container">
+          <div className="notebooks-list-headers">
+            <p className="notebooks-list-header-text notebooks-list-title">
+              Title
+            </p>
+          </div>
+          <div className="notebooks-list">
+            {loading ? (
+              <p className="loading-placeholder">Loading...</p>
+            ) : error ? (
+              <p className="errors">{error}</p>
+            ) : filteredNotebooks.length > 0 ? (
+              filteredNotebooks.map((notebook) => (
+                <div key={notebook.id} className="notebooks-list-item">
+                  <div className="notebooks-list-box-1">
+                    <div
+                      className="notebooks-list-text"
+                      onClick={() => handleNotebookClick(notebook.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <p className="notebooks-list-item-title">
+                        {notebook.name}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="notebook-buttons-container">
+                    <button
+                      onClick={() => handleEditClick(notebook)}
+                      className="notebooks-list-edit-button"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteNotebook(notebook.id)}
+                      className="notebooks-list-delete-button"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="Empty-Notebooks-error">No notebooks found.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

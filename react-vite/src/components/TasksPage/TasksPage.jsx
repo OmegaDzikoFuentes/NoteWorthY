@@ -1,28 +1,76 @@
 import { getUserTasks } from "../../redux/task";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { selectAllUserTasks } from "../../redux/task";
+import { useEffect, useState, useMemo } from "react";
+import { selectAllUserTasks, updateTask } from "../../redux/task";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
+import UpdateTaskModal from "../UpdateTaskModal/UpdateTaskModal";
+import { useModal } from "../../context/Modal";
 import "./TasksPage.css";
 
 function TasksPage() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const tasks = useSelector(selectAllUserTasks);
+  const [searchQuery, setSearchQuery] = useState("");
+  const allUserTasks = useSelector(selectAllUserTasks);
+  const rawTasks = useMemo(() => allUserTasks || [], [allUserTasks]);
+  const [checkedTasks, setCheckedTasks] = useState({});
+
+  useEffect(() => {
+    dispatch(getUserTasks()).then(() => {
+      setIsLoaded(true);
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const initialCheckedTasks = {};
+    rawTasks.forEach((task) => {
+      initialCheckedTasks[task.id] = task.completed;
+    });
+    setCheckedTasks(initialCheckedTasks);
+  }, [rawTasks]);
+
+  const tasks = useMemo(() => {
+    return rawTasks
+      .filter(
+        (task) =>
+          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (task.description &&
+            task.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+      .sort((a, b) => {
+        if (!a.due_date) return 1;
+        if (!b.due_date) return -1;
+        return new Date(a.due_date) - new Date(b.due_date);
+      });
+  }, [rawTasks, searchQuery]);
+
+  const { setModalContent } = useModal();
 
   const formatDate = (dateString) => {
+    if (!dateString) return "No Due Date";
     const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  useEffect(() => {
-    dispatch(getUserTasks()).then(() => setIsLoaded(true));
-  }, [dispatch]);
+  const handleTaskClick = (task) => {
+    const selectedTask = tasks.find((t) => t.id === task.id);
+    if (!selectedTask) return;
 
-  //remove this once i work on components
-  useEffect(() => {
-    console.log(isLoaded);
-    console.log("TASKS TEST", tasks);
-  }, [isLoaded, tasks]);
+    setModalContent(<UpdateTaskModal taskId={task.id} task={selectedTask} />);
+  };
+
+  const handleCheckBoxChange = async (taskId) => {
+    const newCheckedTasks = {
+      ...checkedTasks,
+      [taskId]: !checkedTasks[taskId],
+    };
+    setCheckedTasks(newCheckedTasks);
+
+    const updatedTask = { completed: newCheckedTasks[taskId] };
+    await dispatch(updateTask(taskId, updatedTask));
+    await dispatch(getUserTasks());
+  };
 
   return (
     <>
@@ -33,14 +81,24 @@ function TasksPage() {
           </div>
           <div className="tasks-search-container">
             <h4 className="task-count">
-              {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
+              {searchQuery === ""
+                ? `${tasks.length} ${tasks.length === 1 ? "task" : "tasks"}`
+                : `${tasks.length} ${
+                    tasks.length === 1 ? "task" : "tasks"
+                  } found`}
             </h4>
             <div className="new-task-search">
-              <button className="tasks-page-new">+ New Task</button>
+              <OpenModalButton
+                buttonText="+ New Task"
+                className="tasks-page-new"
+                modalComponent={<CreateTaskModal />}
+              />
               <input
                 className="tasks-page-search"
                 type="text"
-                placeholder="Search..."
+                placeholder="Search By Title..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
@@ -58,15 +116,28 @@ function TasksPage() {
                     <input
                       type="checkbox"
                       className="tasks-list-checkbox"
+                      checked={checkedTasks[task.id] || false}
+                      onChange={() => handleCheckBoxChange(task.id)}
                       name="group1"
                       value={task.id}
                     ></input>
                     <div className="tasks-list-text">
-                      <p className="tasks-list-item-title">{task.title}</p>
+                      <p
+                        className="tasks-list-item-title"
+                        onClick={() => handleTaskClick(task)}
+                        style={{
+                          color: checkedTasks[task.id] ? "#bcbcbc" : "inherit",
+                          textDecoration: checkedTasks[task.id]
+                            ? "line-through"
+                            : "none",
+                        }}
+                      >
+                        {task.title}
+                      </p>
                       <p className="tasks-list-item-description">
-                        {task.description.length > 35
+                        {task.description && task.description.length > 35
                           ? task.description.slice(0, 35) + "..."
-                          : task.description}
+                          : task.description || null}
                       </p>
                     </div>
                   </div>
