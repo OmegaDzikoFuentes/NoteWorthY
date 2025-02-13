@@ -3,7 +3,8 @@ import LoginFormPage from "../components/LoginFormPage";
 import SignupFormPage from "../components/SignupFormPage";
 import Layout from "./Layout";
 import TasksPage from "../components/TasksPage";
-import Notes from "../components/Notes/Notes";
+// import Notes from "../components/Notes/Notes";
+import NotesInNotebook from "../components/Notes/NotesInNotebook";
 import NoteDetails from "../components/Notes/NoteDetails";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
 import UpdateNoteForm from "../components/Notes/UpdateNoteForm";
@@ -32,15 +33,12 @@ export const router = createBrowserRouter([
         element: <NotebookPage />,
       },
       {
-        path: "/notebooks/:notebookId",
+        path: "notebooks/:notebookId",
         element: <NotebookDetailsPage />,
-        // added this so notes can be nested into notebooks
-        children: [
-          {
-            path: "notes",
-            element: <Notes />
-          }
-        ]
+      },
+      {
+        path: "notebooks/:notebookId/note/:noteId",
+        element: <NotesInNotebook />
       },
       {
         path: "notes/new",
