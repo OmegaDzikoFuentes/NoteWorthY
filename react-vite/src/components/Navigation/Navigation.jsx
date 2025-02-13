@@ -12,9 +12,11 @@ function Navigation() {
   const [showTags, setShowTags] = useState(false);
   const [notebooks, setNotebooks] = useState([]);
   const [tags, setTags] = useState([]);
+  const [notesByTag, setNotesByTag] = useState([]);
 
   // Fetch notebooks from the backend
   useEffect(() => {
+    fetch("/api/notebooks")
     fetch("/api/notebooks")
       .then((res) => res.json())
       .then((data) => {
@@ -27,7 +29,10 @@ function Navigation() {
 
   // Fetch tags from the backend
   useEffect(() => {
-    fetch("/api/tags")
+    fetch("/api/tags/", {
+      method: "GET",
+      credentials: "include",  // IMPORTANT: Ensures cookies are sent
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log("Tags data:", data);
@@ -38,10 +43,22 @@ function Navigation() {
       .catch((err) => console.error("Error fetching tags:", err));
   }, []);
 
+  const handleTagSearch = (tagName) => {
+    setSearchTag(tagName);
+    fetch(`/api/tags/${tagName}/notes`, { credentials: "include" })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Notes by tag:", data);
+        setNotesByTag(data.notes || []);
+      })
+      .catch((err) => console.error("Error fetching notes for tag:", err));
+  };
+
   const filterItems = (list, searchTerm) =>
     list.filter((item) =>
-      item.toLowerCase().includes(searchTerm.toLowerCase())
+      item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  
 
   return (
     <nav className="sidebar">
@@ -69,18 +86,14 @@ function Navigation() {
             Tasks
           </NavLink>
         </li>
-        <li>
-    <NavLink to="/notebooks" className="nav-item">
-      Notebooks
-    </NavLink>
-  </li>
-        {/* Notebooks Dropdown */}
-        <li className="dropdown-container">
+          {/* Notebooks Section */}
+          <li className="nav-item-container">
+          <NavLink to="/notebooks" className="nav-item">Notebooks</NavLink>
           <button
             onClick={() => setShowNotebooks(!showNotebooks)}
             className="dropdown-button"
           >
-            Notebooks ▼
+            ▼
           </button>
           {showNotebooks && (
             <div className="dropdown-content">
@@ -92,26 +105,18 @@ function Navigation() {
                 onChange={(e) => setSearchNotebook(e.target.value)}
               />
               <ul className="dropdown-list">
-                {filterItems(notebooks, searchNotebook).map(
-                  (notebook, index) => (
-                    <li key={index} className="dropdown-item">
-                      {notebook}
-                    </li>
-                  )
-                )}
+                {filterItems(notebooks, searchNotebook).map((notebook, index) => (
+                  <li key={index} className="dropdown-item">{notebook.name}</li>
+                ))}
               </ul>
             </div>
           )}
         </li>
 
-        {/* Tags Dropdown */}
-        <li className="dropdown-container">
-          <button
-            onClick={() => setShowTags(!showTags)}
-            className="dropdown-button"
-          >
-            Tags ▼
-          </button>
+       {/* Tags Section */}
+       <li className="nav-item-container">
+          <NavLink to="/tags" className="nav-item">Tags</NavLink>
+          <button onClick={() => setShowTags(!showTags)} className="dropdown-button">▼</button>
           {showTags && (
             <div className="dropdown-content">
               <input
@@ -123,8 +128,8 @@ function Navigation() {
               />
               <ul className="dropdown-list">
                 {filterItems(tags, searchTag).map((tag, index) => (
-                  <li key={index} className="dropdown-item">
-                    {tag}
+                  <li key={index} className="dropdown-item" onClick={() => handleTagSearch(tag.name)}>
+                    {tag.name}
                   </li>
                 ))}
               </ul>
@@ -132,8 +137,23 @@ function Navigation() {
           )}
         </li>
       </ul>
+
+      {/* Display Notes by Tag */}
+      {notesByTag.length > 0 && (
+        <div className="tag-search-results">
+          <h3>Notes for Tag: "{searchTag}"</h3>
+          <ul>
+            {notesByTag.map((note) => (
+              <li key={note.id}>
+                <strong>{note.title}</strong>: {note.content}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }
+
 
 export default Navigation;
