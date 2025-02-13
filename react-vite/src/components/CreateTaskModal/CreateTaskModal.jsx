@@ -20,7 +20,7 @@ function CreateTaskModal({ onTaskAdded }) {
   // Get all user notebooks for now
   const getUserNotebooks = async () => {
     try {
-      const response = await csrfFetch("/api/notebooks/notebooks", {
+      const response = await csrfFetch("/api/notebooks/", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
