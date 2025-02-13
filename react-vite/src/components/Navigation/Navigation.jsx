@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
 function Navigation() {
+  const navigate = useNavigate();
   const [searchNotebook, setSearchNotebook] = useState("");
   const [searchTag, setSearchTag] = useState("");
   const [showNotebooks, setShowNotebooks] = useState(false);
@@ -13,7 +15,7 @@ function Navigation() {
 
   // Fetch notebooks from the backend
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/notebooks")
+    fetch("/api/notebooks")
       .then((res) => res.json())
       .then((data) => {
         if (data.Notebooks) {
@@ -25,7 +27,7 @@ function Navigation() {
 
   // Fetch tags from the backend
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/tags")
+    fetch("/api/tags")
       .then((res) => res.json())
       .then((data) => {
         console.log("Tags data:", data);
@@ -47,7 +49,7 @@ function Navigation() {
         <ProfileButton />
       </div>
 
-      <button className="new-note-btn">New Note</button>
+      <button className="new-note-button" onClick={() => navigate(`/notes/new`)}>New Note</button>
       <button className="new-note-btn">New Task</button>
       <button className="new-note-btn">New Notebook</button>
 

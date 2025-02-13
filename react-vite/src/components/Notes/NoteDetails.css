@@ -1,0 +1,59 @@
+.note-details-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 90%;
+    height: 100%;
+    gap: 20px;
+    flex: 1;
+}
+
+.note-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    width: 100%;
+    flex: 1;
+}
+
+.note-details-title {
+    font-size: 20pt;
+    padding: 20px;
+}
+
+.note-details-content {
+    font-size: 18pt;
+    padding: 20px;
+}
+
+.note-details-title-container {
+    display: flex;
+    width: 100%;
+}
+
+.note-details-content-container {
+    display: flex;
+    width: 100%;
+}
+
+.note-details-button-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.note-details-update, .note-details-delete {
+    background-color: #133c64;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-items: center;
+    width: 150px;
+}
+
+.note-details-update:hover, .note-details-delete:hover {
+    background-color: #175088;
+}
