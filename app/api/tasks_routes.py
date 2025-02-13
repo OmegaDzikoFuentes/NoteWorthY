@@ -17,6 +17,22 @@ def current_tasks():
 
     return jsonify({"Tasks": [task.to_dict() for task in tasks]})
 
+# get task by id
+@tasks_routes.route('/<int:task_id>', methods=['GET'])
+@login_required
+def get_task(task_id):
+    task = Task.query.get(task_id)
+
+    if task is None:
+        return jsonify({"message": "Task not found"}), 404
+
+    notebook = Notebook.query.get(task.notebook_id)
+
+    if notebook.user_id != current_user.id:
+        return jsonify({"message": "Unauthorized"}), 401
+
+    return jsonify(task.to_dict())
+
 # Create a new task
 @tasks_routes.route('/new', methods=['POST'])
 @login_required
@@ -91,6 +107,9 @@ def update_task(task_id):
 
     if 'title' in data:
         task.title = data['title']
+
+    if 'notebook_id' in data:
+        task.notebook_id = data['notebook_id']
 
     if 'description' in data:
         task.description = data['description']

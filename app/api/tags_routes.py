@@ -6,6 +6,26 @@ from sqlalchemy.exc import IntegrityError
 
 tag_routes = Blueprint("tags", __name__)
 
+@tag_routes.route('/<string:tag_name>/notes', methods=['GET'])
+@login_required
+def get_notes_by_tag(tag_name):
+    """
+    Get all notes associated with a specific tag name.
+    """
+    tag = Tag.query.filter_by(name=tag_name).first()
+
+    if not tag:
+        return jsonify({"error": "Tag not found"}), 404
+
+    # Fetch all notes associated with the tag via the NoteTag join table
+    note_tags = NoteTag.query.filter_by(tag_id=tag.id).all()
+    note_ids = [note_tag.note_id for note_tag in note_tags]
+
+    notes = Notes.query.filter(Notes.id.in_(note_ids)).all()
+
+    return jsonify({"notes": [note.to_dict() for note in notes]}), 200
+
+
 @tag_routes.route('/', methods=['GET'])
 @login_required
 def get_all_tags():
