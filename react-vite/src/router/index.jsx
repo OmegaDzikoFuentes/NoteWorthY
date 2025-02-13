@@ -4,7 +4,7 @@ import SignupFormPage from "../components/SignupFormPage";
 import Layout from "./Layout";
 import TasksPage from "../components/TasksPage";
 // import Notes from "../components/Notes/Notes";
-import NotesInNotebook from "../components/Notes/NotesInNotebook";
+// import NotesInNotebook from "../components/Notes/NotesInNotebook";
 import NoteDetails from "../components/Notes/NoteDetails";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
 import UpdateNoteForm from "../components/Notes/UpdateNoteForm";
