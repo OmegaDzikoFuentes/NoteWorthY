@@ -65,100 +65,133 @@ function Navigation() {
       <div className="profile-section">
         <ProfileButton />
       </div>
-
-      <button
-        className="new-note-button"
-        onClick={() => navigate(`/notes/new`)}
-      >
-        New Note
-      </button>
-      <button className="new-note-btn">New Task</button>
-      <button className="new-note-btn">New Notebook</button>
-
-      <ul className="nav-links">
-        <li>
-          <NavLink to="/" className="nav-item">
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/notes" className="nav-item">
-            Notes
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/tasks" className="nav-item">
-            Tasks
-          </NavLink>
-        </li>
-        {/* Notebooks Section */}
-        <li className="nav-item-container">
-          <NavLink to="/notebooks" className="nav-item">
-            Notebooks
-          </NavLink>
-          <button
-            onClick={() => setShowNotebooks(!showNotebooks)}
-            className="dropdown-button"
-          >
-            ▼
+      <div className="nav-button-box">
+        <button className="new-notebook-button nav-button-height">
+          + New Notebook
+        </button>
+        <div className="nav-small-button-box">
+          <button className="new-task-button nav-small-button nav-button-height">
+            + New Task
           </button>
-          {showNotebooks && (
-            <div className="dropdown-content">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder="Search Notebooks..."
-                value={searchNotebook}
-                onChange={(e) => setSearchNotebook(e.target.value)}
+          <button
+            className="new-note-button nav-small-button nav-button-height"
+            onClick={() => navigate(`/notes/new`)}
+          >
+            + New Note
+          </button>
+        </div>
+      </div>
+      <div className="nav-link-box">
+        <ul className="nav-links">
+          <li>
+            <NavLink to="/" className="nav-item">
+              <img
+                src="https://imgur.com/Bkx5UYB.png"
+                alt="task icon"
+                className="home-icon"
               />
-              <ul className="dropdown-list">
-                {filterItems(notebooks, searchNotebook).map(
-                  (notebook, index) => (
-                    <li key={index} className="dropdown-item">
-                      {notebook.name}
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/notes" className="nav-item">
+              <img
+                src="https://imgur.com/DzSuiZl.png"
+                alt="task icon"
+                className="nav-icon"
+              />
+              Notes
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/tasks" className="nav-item">
+              <img
+                src="https://imgur.com/cr9q2LJ.png"
+                alt="task icon"
+                className="nav-icon"
+              />
+              Tasks
+            </NavLink>
+          </li>
+          {/* Notebooks Section */}
+          <li className="nav-item-container">
+            <NavLink to="/notebooks" className="nav-item">
+              <img
+                src="https://i.imgur.com/8yj3hyE.png"
+                alt="notebook icon"
+                className="nav-icon"
+              />
+              Notebooks
+            </NavLink>
+            <button
+              onClick={() => setShowNotebooks(!showNotebooks)}
+              className="dropdown-button"
+            >
+              ▼
+            </button>
+            {showNotebooks && (
+              <div className="dropdown-content">
+                <input
+                  type="text"
+                  className="search-bar"
+                  placeholder="Search Notebooks..."
+                  value={searchNotebook}
+                  onChange={(e) => setSearchNotebook(e.target.value)}
+                />
+                <ul className="dropdown-list">
+                  {filterItems(notebooks, searchNotebook).map(
+                    (notebook, index) => (
+                      <li key={index} className="dropdown-item">
+                        {notebook.name}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            )}
+          </li>
+
+          {/* Tags Section */}
+          <li className="nav-item-container">
+            <NavLink to="/tags" className="nav-item">
+              <img
+                src="https://imgur.com/Qerdjvw.png"
+                alt="task icon"
+                className="tag-icon"
+              />
+              Tags
+            </NavLink>
+            <button
+              onClick={() => setShowTags(!showTags)}
+              className="dropdown-button"
+            >
+              ▼
+            </button>
+            {showTags && (
+              <div className="dropdown-content">
+                <input
+                  type="text"
+                  className="search-bar"
+                  placeholder="Search Tags..."
+                  value={searchTag}
+                  onChange={(e) => setSearchTag(e.target.value)}
+                />
+                <ul className="dropdown-list">
+                  {filterItems(tags, searchTag).map((tag, index) => (
+                    <li
+                      key={index}
+                      className="dropdown-item"
+                      onClick={() => handleTagSearch(tag.name)}
+                    >
+                      {tag.name}
                     </li>
-                  )
-                )}
-              </ul>
-            </div>
-          )}
-        </li>
-
-        {/* Tags Section */}
-        <li className="nav-item-container">
-          <NavLink to="/tags" className="nav-item">
-            Tags
-          </NavLink>
-          <button
-            onClick={() => setShowTags(!showTags)}
-            className="dropdown-button"
-          >
-            ▼
-          </button>
-          {showTags && (
-            <div className="dropdown-content">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder="Search Tags..."
-                value={searchTag}
-                onChange={(e) => setSearchTag(e.target.value)}
-              />
-              <ul className="dropdown-list">
-                {filterItems(tags, searchTag).map((tag, index) => (
-                  <li
-                    key={index}
-                    className="dropdown-item"
-                    onClick={() => handleTagSearch(tag.name)}
-                  >
-                    {tag.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </li>
-      </ul>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </li>
+        </ul>
+      </div>
 
       {/* Display Notes by Tag */}
       {notesByTag.length > 0 && (
