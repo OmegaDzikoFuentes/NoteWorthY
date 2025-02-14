@@ -27,8 +27,21 @@
   align-items: center;
 }
 
+.notebook-tasks-list-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+.notebook-tasks-list-item-description {
+  font-size: 16px;
+  color: #bcbcbc;
+  margin-left: 15px;
+}
+
 .notebook-tasks-list-item-due-date {
-  padding-left: 55px;
+  margin-left: 60px;
+  color: #bcbcbc;
 }
 
 .notebook-tasks-list-checkbox {
@@ -37,6 +50,7 @@
   -moz-appearance: none;
   width: 14px;
   height: 14px;
+  margin-bottom: 17px;
   border-radius: 50%;
   border: 2px solid #b378ee;
   background-color: #fff;
