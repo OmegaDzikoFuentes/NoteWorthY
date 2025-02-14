@@ -11,6 +11,10 @@
   margin-bottom: 10px;
 }
 
+.notebook-tasks-details {
+  margin-bottom: 20px;
+}
+
 .notebook-tasks-container {
   width: 100%;
 }
@@ -32,7 +36,7 @@
 
 .notebook-tasks-list-item-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: #000;
 }
 
@@ -53,7 +57,7 @@
   -moz-appearance: none;
   width: 14px;
   height: 14px;
-  margin-bottom: 17px;
+  margin-bottom: 19px;
   border-radius: 50%;
   border: 2px solid #b378ee;
   background-color: #fff;

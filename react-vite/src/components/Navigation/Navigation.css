@@ -2,19 +2,30 @@
   position: absolute;
 }
 
+.profile-section {
+  margin-bottom: 100px;
+}
+
 li {
   list-style-type: none;
 }
 
 .sidebar {
-  height: 100%;
+  height: 100vh;
   width: 15%;
   border-right: 1px solid #bcbcbc;
   box-shadow: 0 0 10px #bcbcbc;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
-.profile-section {
-  margin-bottom: 100px;
+.main-content {
+  margin-left: 15%;
+  height: 100vh;
+  width: 100%;
 }
 
 .new-note-button {

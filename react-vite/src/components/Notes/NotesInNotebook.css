@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   padding: 10px;
-  width: 80%;
+  width: 100%;
   height: 100%;
   flex: 1;
   margin-left: 10px;
@@ -74,11 +74,12 @@
 .notebook-note-card {
   display: flex;
   flex-direction: column;
-  padding: 10px 15px;
+  padding: 20px 10px 15px 10px;
   border-bottom: 1px solid #bcbcbc;
   gap: 10px;
-  height: 130px;
-  max-height: 130px;
+  height: 100px;
+  max-height: 100px;
+  width: 95%;
   cursor: pointer;
 }
 
@@ -86,9 +87,11 @@
   display: flex;
   flex-direction: column;
   padding: 10px;
-  width: 80%;
-  height: 100%;
+  width: 70%;
+  height: 95%;
   flex: 1;
+  margin-left: 22%;
+  position: fixed;
 }
 
 .notebook-note-title {
@@ -99,4 +102,34 @@
 .notebook-note-content {
   font-size: 14px;
   color: #4d4d4d;
+}
+
+.notes-in-notebook-header {
+  font-weight: 500;
+  font-size: 28px;
+}
+
+.notes-in-notebook-count {
+  font-weight: 100;
+  color: #bcbcbc;
+  font-size: 20px;
+}
+
+.notebook-notes-header-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 8%;
+  width: 19%;
+  position: fixed;
+  top: 0;
+  background-color: #f5f5f5;
+  z-index: 1000;
+  padding: 20px 10px 0px 0px;
+}
+
+.notebook-notes-column-container {
+  margin-top: 15%;
+  padding: 20px;
+  overflow-y: auto;
 }

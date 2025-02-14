@@ -17,8 +17,10 @@ export default function Layout() {
       <ModalProvider>
         <div className="page-layout">
           <Navigation />
-          {isLoaded && <Outlet />}
-          <Modal />
+          <div className="main-content">
+            {isLoaded && <Outlet />}
+            <Modal />
+          </div>
         </div>
       </ModalProvider>
     </>

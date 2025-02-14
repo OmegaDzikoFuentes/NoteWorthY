@@ -16,7 +16,7 @@ function Navigation() {
 
   // Fetch notebooks from the backend
   useEffect(() => {
-    fetch("/api/notebooks")
+    fetch("/api/notebooks");
     fetch("/api/notebooks")
       .then((res) => res.json())
       .then((data) => {
@@ -31,7 +31,7 @@ function Navigation() {
   useEffect(() => {
     fetch("/api/tags/", {
       method: "GET",
-      credentials: "include",  // IMPORTANT: Ensures cookies are sent
+      credentials: "include", // IMPORTANT: Ensures cookies are sent
     })
       .then((res) => res.json())
       .then((data) => {
@@ -55,10 +55,10 @@ function Navigation() {
   };
 
   const filterItems = (list, searchTerm) =>
-    list.filter((item) =>
-      item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    list.filter(
+      (item) =>
+        item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  
 
   return (
     <nav className="sidebar">
@@ -66,7 +66,12 @@ function Navigation() {
         <ProfileButton />
       </div>
 
-      <button className="new-note-button" onClick={() => navigate(`/notes/new`)}>New Note</button>
+      <button
+        className="new-note-button"
+        onClick={() => navigate(`/notes/new`)}
+      >
+        New Note
+      </button>
       <button className="new-note-btn">New Task</button>
       <button className="new-note-btn">New Notebook</button>
 
@@ -86,9 +91,11 @@ function Navigation() {
             Tasks
           </NavLink>
         </li>
-          {/* Notebooks Section */}
-          <li className="nav-item-container">
-          <NavLink to="/notebooks" className="nav-item">Notebooks</NavLink>
+        {/* Notebooks Section */}
+        <li className="nav-item-container">
+          <NavLink to="/notebooks" className="nav-item">
+            Notebooks
+          </NavLink>
           <button
             onClick={() => setShowNotebooks(!showNotebooks)}
             className="dropdown-button"
@@ -105,18 +112,29 @@ function Navigation() {
                 onChange={(e) => setSearchNotebook(e.target.value)}
               />
               <ul className="dropdown-list">
-                {filterItems(notebooks, searchNotebook).map((notebook, index) => (
-                  <li key={index} className="dropdown-item">{notebook.name}</li>
-                ))}
+                {filterItems(notebooks, searchNotebook).map(
+                  (notebook, index) => (
+                    <li key={index} className="dropdown-item">
+                      {notebook.name}
+                    </li>
+                  )
+                )}
               </ul>
             </div>
           )}
         </li>
 
-       {/* Tags Section */}
-       <li className="nav-item-container">
-          <NavLink to="/tags" className="nav-item">Tags</NavLink>
-          <button onClick={() => setShowTags(!showTags)} className="dropdown-button">▼</button>
+        {/* Tags Section */}
+        <li className="nav-item-container">
+          <NavLink to="/tags" className="nav-item">
+            Tags
+          </NavLink>
+          <button
+            onClick={() => setShowTags(!showTags)}
+            className="dropdown-button"
+          >
+            ▼
+          </button>
           {showTags && (
             <div className="dropdown-content">
               <input
@@ -128,7 +146,11 @@ function Navigation() {
               />
               <ul className="dropdown-list">
                 {filterItems(tags, searchTag).map((tag, index) => (
-                  <li key={index} className="dropdown-item" onClick={() => handleTagSearch(tag.name)}>
+                  <li
+                    key={index}
+                    className="dropdown-item"
+                    onClick={() => handleTagSearch(tag.name)}
+                  >
                     {tag.name}
                   </li>
                 ))}
@@ -154,6 +176,5 @@ function Navigation() {
     </nav>
   );
 }
-
 
 export default Navigation;
