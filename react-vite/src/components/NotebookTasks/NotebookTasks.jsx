@@ -1,10 +1,9 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { getNotebookTasks, updateTask } from "../../redux/task";
 import "./NotebookTasks.css";
 
-// Memoized selector to avoid unnecessary re-renders
 const selectNotebookTasks = createSelector(
   (state) => state.task.notebookTasks,
   (_, notebookId) => notebookId,
