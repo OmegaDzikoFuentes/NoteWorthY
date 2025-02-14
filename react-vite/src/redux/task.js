@@ -10,11 +10,20 @@ const LOAD_TASKS = "tasks/loadTasks";
 const ADD_TASK = "tasks/addTask";
 const UPDATE_TASK = "tasks/updateTask";
 const REMOVE_TASK = "tasks/removeTask";
+const LOAD_NOTEBOOK_TASKS = "tasks/loadNotebookTasks";
 
 // Action Creators
 const loadTasks = (tasks) => {
   return {
     type: LOAD_TASKS,
+    tasks,
+  };
+};
+
+const loadNotebookTasks = (notebookId, tasks) => {
+  return {
+    type: LOAD_NOTEBOOK_TASKS,
+    notebookId,
     tasks,
   };
 };
@@ -70,7 +79,7 @@ export const addTaskThunk = (taskData) => async (dispatch) => {
 
 export const updateTask = (taskId, taskData) => async (dispatch) => {
   try {
-    const response = await csrfFetch(`api/tasks/${taskId}`, {
+    const response = await csrfFetch(`/api/tasks/${taskId}`, {
       method: "PUT",
       headers,
       body: JSON.stringify(taskData),
@@ -104,8 +113,22 @@ export const deleteTask = (taskId) => async (dispatch) => {
   }
 };
 
+export const getNotebookTasks = (notebookId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/tasks/notebook/${notebookId}`);
+
+  if (response.ok) {
+    const data = await response.json();
+    const tasks = data.Tasks;
+    dispatch(loadNotebookTasks(notebookId, tasks));
+  } else {
+    const error = await response.json();
+    console.error("Failed to load notebook tasks:", error);
+    throw error;
+  }
+};
+
 // Reducer
-const initialState = { userTasks: {} };
+const initialState = { userTasks: {}, notebookTasks: {} };
 
 function tasksReducer(state = initialState, action) {
   switch (action.type) {
@@ -140,6 +163,17 @@ function tasksReducer(state = initialState, action) {
       const newState = { ...state };
       delete newState.userTasks[action.taskId];
       return newState;
+    }
+    case LOAD_NOTEBOOK_TASKS: {
+      return {
+        ...state,
+        notebookTasks: {
+          [action.notebookId]: action.tasks.reduce((acc, task) => {
+            acc[task.id] = task;
+            return acc;
+          }, {}),
+        },
+      };
     }
     default:
       return state;
