@@ -25,7 +25,6 @@ function Notes({ notebookId }) {
   return (
     <div>
       <div className="notes-grid">
-        <NotebookTasks notebookId={notebookId} />
         {Object.values(noteDetails).map((note, index) => (
           <div
             key={index}
