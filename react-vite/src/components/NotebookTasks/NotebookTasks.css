@@ -4,8 +4,11 @@
 
 .things-to-do {
   width: 100%;
+  font-size: 20px;
   color: #b378ee;
   cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .notebook-tasks-container {
