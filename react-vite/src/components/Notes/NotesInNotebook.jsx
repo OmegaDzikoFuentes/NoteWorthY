@@ -44,7 +44,6 @@ const NotesInNotebook = () => {
         return dispatch(updateNote(noteId, updatedNote))
             .then(() => {
                 dispatch(getNotesForNotebook(notebook_id));
-                window.location.href = `/notebooks/${notebook_id}`;
             })
             .catch((res) => {
                 if (res && res.errors) {
