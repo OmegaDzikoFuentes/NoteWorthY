@@ -141,7 +141,7 @@ function Navigation() {
       {/* Display Notes by Tag */}
       {notesByTag.length > 0 && (
         <div className="tag-search-results">
-          <h3>Notes for Tag: "{searchTag}"</h3>
+          <h3>Notes for Tag: {searchTag}</h3>
           <ul>
             {notesByTag.map((note) => (
               <li key={note.id}>
