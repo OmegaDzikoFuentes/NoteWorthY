@@ -10,12 +10,12 @@ function DeleteNote({ noteId }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleClick = () => {
-        dispatch(deleteNote(noteId))
+    const handleClick = async () => {
+        await dispatch(deleteNote(noteId))
             .then(() => {
                 navigate(`/notes/current`)
             });
-        dispatch(getCurrentUserNotes());
+        await dispatch(getCurrentUserNotes());
         closeModal();
     }
 

@@ -63,7 +63,7 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
 
   useEffect(() => {
     getUserNotebooks();
-  });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
