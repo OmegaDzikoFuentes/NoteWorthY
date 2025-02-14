@@ -1,9 +1,37 @@
+.things-to-do {
+  width: 100%;
+  color: #b378ee;
+  cursor: pointer;
+}
+
+.notebook-tasks-container {
+  width: 100%;
+}
+
+.notebook-tasks-list {
+  width: 100%;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notebook-tasks-list-box-1 {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.notebook-tasks-list-item-due-date {
+  padding-left: 55px;
+}
+
 .notebook-tasks-list-checkbox {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   border: 2px solid #b378ee;
   background-color: #fff;

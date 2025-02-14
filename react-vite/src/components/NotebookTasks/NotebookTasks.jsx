@@ -55,8 +55,8 @@ function NotebookTasks({ notebookId }) {
     <>
       {isLoaded && (
         <div className="notebook-tasks-container">
-          <details>
-            <summary>Things to do:</summary>
+          <details className="notebook-tasks-details">
+            <summary className="things-to-do">Things to do:</summary>
             {Object.keys(notebookTasks).length > 0 ? (
               <div className="notebook-tasks-list">
                 {Object.values(notebookTasks).map((task) => (
