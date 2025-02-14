@@ -9,12 +9,14 @@ import sessionReducer from "./session";
 import notebooksReducer from "./notebook";
 import notesReducer from "./notes";
 import tasksReducer from "./task";
+import tagsReducer from "./tags";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   notebooks: notebooksReducer,
   notes: notesReducer,
   task: tasksReducer,
+  tags: tagsReducer,
 });
 
 let enhancer;
