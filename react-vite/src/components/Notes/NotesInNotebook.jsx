@@ -4,12 +4,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { updateNote } from "../../redux/notes";
 import "./NotesInNotebook.css"
 import { getNotesForNotebook } from "../../redux/notes";
-import { getNotebooks, getNotebookById } from "../../redux/notebook";
+import { getNotebooks } from "../../redux/notebook";
+import NotebookTasks from "../NotebookTasks/NotebookTasks";
 
 const NotesInNotebook = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { notebookId, noteId } = useParams();;
+    const { notebookId, noteId } = useParams();
     const notes = useSelector(state => state.notes.Notes);
     const notebooks = useSelector(state => state.notebooks.allNotebooks)
     const [title, setTitle] = useState("");
@@ -17,7 +18,7 @@ const NotesInNotebook = () => {
     const [notebook_id, setNotebook_id] = useState("");
     const [selectedNote, setSelectedNote] = useState(null)
     const [, setErrors] = useState([]);
-    const notebook = notebooks[notebookId] 
+    const notebook = notebooks[notebookId];
 
     useEffect(() => {
         dispatch(getNotesForNotebook(notebookId))
@@ -29,7 +30,7 @@ const NotesInNotebook = () => {
                     setSelectedNote(notesList[0]);
                 }
             })
-    }, [dispatch, notebookId]);
+    }, [dispatch, notebookId, notes, selectedNote]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,7 +44,7 @@ const NotesInNotebook = () => {
 
         return dispatch(updateNote(noteId, updatedNote))
             .then(() => {
-                dispatch(getNotesForNotebook(notebook_id));
+                dispatch(getNotesForNotebook(notebook_id))
             })
             .catch((res) => {
                 if (res && res.errors) {
@@ -74,6 +75,7 @@ const NotesInNotebook = () => {
         <div className="notebook-notes-note-container">
             <div className="notebook-notes-container">
                 <h2>Notes for {notebook.name}</h2>
+                <NotebookTasks notebookId={notebookId} />
                 {Object.values(notes).map((note, index) => (
                     <div
                         key={index}
