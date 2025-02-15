@@ -9,8 +9,9 @@ import NotesInNotebook from "../components/Notes/NotesInNotebook";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
 import UpdateNoteForm from "../components/Notes/UpdateNoteForm";
 import UserNotes from "../components/Notes/UserNotes";
-import NotebookPage from '../components/NotebookPage/NoteBook';
+import NotebookPage from "../components/NotebookPage/NoteBook";
 // import NotebookDetailsPage from '../components/NotebookDetailPage/NotebookDetailsPage';
+import HomePage from "../components/HomePage";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <HomePage />,
       },
       {
         path: "login",
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "notebooks/:notebookId/note/:noteId",
-        element: <NotesInNotebook />
+        element: <NotesInNotebook />,
       },
       {
         path: "notes/new",

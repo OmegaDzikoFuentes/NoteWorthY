@@ -26,10 +26,12 @@
   background-color: #309aac;
   cursor: pointer;
 }
+
 .user-info-text {
   font-size: 17px;
   color: rgba(0, 0, 0, 0.75);
 }
+
 .logged-in-container {
   display: flex;
   align-items: center;
