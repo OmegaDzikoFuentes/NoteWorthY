@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
+import { useSelector } from "react-redux";
+import LoginFormModal from "../LoginFormModal";
+import SignupFormModal from "../SignupFormModal";
+import OpenModalButton from "../OpenModalButton";
 import "./Navigation.css";
 
 function Navigation() {
@@ -13,6 +17,9 @@ function Navigation() {
   const [notebooks, setNotebooks] = useState([]);
   const [tags, setTags] = useState([]);
   const [notesByTag, setNotesByTag] = useState([]);
+  const sessionUser = useSelector((state) => state.session.user);
+
+  const closeMenu = () => setShowMenu(false);
 
   // Fetch notebooks from the backend
   useEffect(() => {
@@ -60,10 +67,43 @@ function Navigation() {
         item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+  const testString = "aaaaaaaaaaaaaaa";
+
   return (
     <nav className="sidebar">
       <div className="profile-section">
-        <ProfileButton />
+        {sessionUser ? (
+          <div className="logged-in-container">
+            <ProfileButton className={"nav-profile-button"} />
+            <div className="user-info">
+              <p className="user-info-text">
+                {sessionUser.username.length > 15
+                  ? sessionUser.username.slice(0, 15) + "..."
+                  : sessionUser.username}
+              </p>
+              <p className="user-info-text">
+                {sessionUser.email.length > 15
+                  ? sessionUser.email.slice(0, 15) + "..."
+                  : sessionUser.email}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="non-logged-buttons-container">
+            <OpenModalButton
+              buttonText="Log In"
+              onItemClick={closeMenu}
+              className={"non-logged-button"}
+              modalComponent={<LoginFormModal />}
+            />
+            <OpenModalButton
+              buttonText="Sign Up"
+              onItemClick={closeMenu}
+              className={"non-logged-button"}
+              modalComponent={<SignupFormModal />}
+            />
+          </div>
+        )}
       </div>
       <div className="nav-button-box">
         <button className="new-notebook-button nav-button-height">

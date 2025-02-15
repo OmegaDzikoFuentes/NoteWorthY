@@ -7,7 +7,7 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { useNavigate } from "react-router-dom";
 
-function ProfileButton() {
+function ProfileButton({ className }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const user = useSelector((store) => store.session.user);
@@ -44,7 +44,7 @@ function ProfileButton() {
 
   return (
     <>
-      <button onClick={toggleMenu}>
+      <button className={className} onClick={toggleMenu}>
         <FaUserCircle />
       </button>
       {showMenu && (
