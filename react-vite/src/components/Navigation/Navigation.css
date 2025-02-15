@@ -174,3 +174,7 @@ li {
   height: 17px;
   margin-right: 4px;
 }
+
+.nav-item-container {
+  display: flex;
+}
