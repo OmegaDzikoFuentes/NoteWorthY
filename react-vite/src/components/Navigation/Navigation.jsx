@@ -19,8 +19,6 @@ function Navigation() {
   const [notesByTag, setNotesByTag] = useState([]);
   const sessionUser = useSelector((state) => state.session.user);
 
-  const closeMenu = () => setShowMenu(false);
-
   // Fetch notebooks from the backend
   useEffect(() => {
     fetch("/api/notebooks");
@@ -67,8 +65,6 @@ function Navigation() {
         item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const testString = "aaaaaaaaaaaaaaa";
-
   return (
     <nav className="sidebar">
       <div className="profile-section">
@@ -92,13 +88,11 @@ function Navigation() {
           <div className="non-logged-buttons-container">
             <OpenModalButton
               buttonText="Log In"
-              onItemClick={closeMenu}
               className={"non-logged-button"}
               modalComponent={<LoginFormModal />}
             />
             <OpenModalButton
               buttonText="Sign Up"
-              onItemClick={closeMenu}
               className={"non-logged-button"}
               modalComponent={<SignupFormModal />}
             />
