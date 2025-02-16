@@ -74,9 +74,7 @@ const NotesInNotebook = () => {
     <div className="notebook-notes-note-container">
       <div className="notebook-notes-container">
         <div className="notebook-notes-header-box">
-          <h2 className="notes-in-notebook-header">
-            Notes for {notebook.name}
-          </h2>
+          <h2 className="notes-in-notebook-header">{notebook.name}</h2>
           <h4 className="notes-in-notebook-count">
             {Object.keys(notes).length}{" "}
             {Object.keys(notes).length === 1 ? "note" : "notes"}
