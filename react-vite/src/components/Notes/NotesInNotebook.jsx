@@ -25,11 +25,13 @@ const NotesInNotebook = () => {
     dispatch(getNotebooks()).then(() => {
       // Set the first note as selected when notes are loaded
       const notesList = Object.values(notes);
-      if (notesList.length > 0 && !selectedNote) {
+      if (notesList.length === 0) {
+        setSelectedNote(null);
+      } else if (!selectedNote) {
         setSelectedNote(notesList[0]);
       }
     });
-  }, [dispatch, notebookId]); //removed notes and selectedNote from dependencies to stop constant fetching
+  }, [dispatch, notebookId, notes]); //removed notes and selectedNote from dependencies to stop constant fetching
 
   const handleSubmit = async (e) => {
     e.preventDefault();
