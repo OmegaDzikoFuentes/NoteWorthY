@@ -14,7 +14,6 @@ function UserNotes() {
     const [searchParams, setSearchParams] = useSearchParams();
     const noteDetails = useSelector(state => state.notes.Notes);
     const notesByTag = useSelector(state => state.tags.notesByTag);
-    const noteTags = useSelector(state => state.tags.noteTags);
     const notebooks = useSelector(state => state.notebooks.allNotebooks);
     const navigate = useNavigate();
     const { noteId } = useParams();

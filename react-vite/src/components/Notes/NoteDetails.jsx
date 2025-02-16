@@ -31,17 +31,6 @@ function NoteDetails({ selectedNote }) {
 
     if (noteToDisplay && isLoaded === false) setIsLoaded(true);
 
-    const handleAddTag = (e) => {
-        if (e.key === "Enter" && newTag.trim()) {
-            dispatch(addTagToNote(noteId, newTag.trim()));
-            setNewTag(""); 
-        }
-    };
-
-    const handleRemoveTag = (tagId) => {
-        dispatch(removeTagFromNote(noteId, tagId));
-    };
-
     return (
         <>
             {isLoaded && (

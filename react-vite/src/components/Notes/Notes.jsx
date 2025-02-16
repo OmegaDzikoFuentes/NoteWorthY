@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotesForNotebook } from "../../redux/notes";
 import { fetchTagsForNote } from "../../redux/tags";
@@ -11,7 +11,7 @@ function Notes({ notebookId }) {
   const navigate = useNavigate();
   const [, setSelectedNote] = useState(null);
   const noteDetails = useSelector((state) => state.notes.Notes);
-    const noteTags = useSelector(state => state.tags.noteTags);
+  const { noteId } = useParams();
 
   useEffect(() => {
     if (notebookId) {
