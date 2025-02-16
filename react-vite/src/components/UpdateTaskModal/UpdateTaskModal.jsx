@@ -1,16 +1,17 @@
 import "./UpdateTaskModal.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { csrfFetch } from "../../redux/csrf";
 import { useModal } from "../../context/Modal";
 import { updateTask, getUserTasks } from "../../redux/task";
 import DeleteTaskModal from "../DeleteTaskModal";
+import { getNotebooks } from "../../redux/notebook";
 
 function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
   const dispatch = useDispatch();
   const { setModalContent } = useModal();
   const [notebooks, setNotebooks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { allNotebooks } = useSelector((state) => state.notebooks);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -27,43 +28,25 @@ function UpdateTaskModal({ taskId, task, onTaskUpdated }) {
     notebook_id: task.notebook_id || "",
   });
 
-  // Get all user notebooks for now
-  const getUserNotebooks = async () => {
-    try {
-      const response = await csrfFetch("/api/notebooks/", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+  useEffect(() => {
+    const sortedNotebooks = Object.values(allNotebooks).sort((a, b) => {
+      return new Date(a.created_at) - new Date(b.created_at);
+    });
+    setNotebooks(sortedNotebooks);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch notebooks");
-      }
-
-      const data = await response.json();
-
-      const sortedNotebooks = data.notebooks.sort((a, b) => {
-        return new Date(a.created_at) - new Date(b.created_at);
-      });
-
-      setNotebooks(sortedNotebooks);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        notebook_id:
-          task.notebook_id ||
-          (sortedNotebooks.length > 0 ? sortedNotebooks[0].id : ""),
-      }));
-      setIsLoaded(true);
-    } catch (error) {
-      console.error("Error fetching notebooks:", error);
-      setIsLoaded(true);
-    }
-  };
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      notebook_id:
+        task.notebook_id ||
+        (sortedNotebooks.length > 0 ? sortedNotebooks[0].id : ""),
+    }));
+  }, [allNotebooks, task.notebook_id]);
 
   useEffect(() => {
-    getUserNotebooks();
-  }, []);
+    dispatch(getNotebooks()).then(() => {
+      setIsLoaded(true);
+    });
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
