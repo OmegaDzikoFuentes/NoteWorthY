@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import OpenModalButton from "../OpenModalButton";
+import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
 import "./Navigation.css";
 
 function Navigation() {
@@ -16,17 +17,15 @@ function Navigation() {
   const [notesByTag, setNotesByTag] = useState([]);
   const sessionUser = useSelector((state) => state.session.user);
 
-  // Fetch tags from the backend
   useEffect(() => {
     if (sessionUser) {
       fetch("/api/tags/", {
         method: "GET",
-        credentials: "include", // IMPORTANT: Ensures cookies are sent
+        credentials: "include",
       })
         .then((res) => res.json())
         .then((data) => {
           console.log("Tags data:", data);
-          // If the data is not an array, extract the array from the object
           const tagsArray = Array.isArray(data) ? data : data.Tags || [];
           setTags(tagsArray);
         })
@@ -93,9 +92,11 @@ function Navigation() {
               + New Notebook
             </button>
             <div className="nav-small-button-box">
-              <button className="new-task-button nav-small-button nav-button-height">
-                + New Task
-              </button>
+              <OpenModalButton
+                buttonText="+ New Task"
+                className="new-task-button nav-small-button nav-button-height"
+                modalComponent={<CreateTaskModal />}
+              />
               <button
                 className="new-note-button nav-small-button nav-button-height"
                 onClick={() => navigate(`/notes/new`)}
