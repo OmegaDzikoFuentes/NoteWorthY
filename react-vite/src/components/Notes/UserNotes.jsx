@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserNotes, updateNote } from '../../redux/notes';
+import { fetchNotesByTag } from '../../redux/tags';
 import './UserNotes.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { getNotebooks } from '../../redux/notebook';
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import DeleteNote from './DeleteNote';
+import Tags from "../Tags/Tags";
 
 function UserNotes() {
     const dispatch = useDispatch();
+    const [searchParams, setSearchParams] = useSearchParams();
     const noteDetails = useSelector(state => state.notes.Notes);
+    const notesByTag = useSelector(state => state.tags.notesByTag);
+    const noteTags = useSelector(state => state.tags.noteTags);
     const notebooks = useSelector(state => state.notebooks.allNotebooks);
     const navigate = useNavigate();
     const { noteId } = useParams();
@@ -20,39 +25,53 @@ function UserNotes() {
     const [, setErrors] = useState([]);
     const [, setIsLoaded] = useState(false);
     const [, setShowModal] = useState(false);
+    const selectedTag = searchParams.get("tag");
 
     useEffect(() => {
         dispatch(getCurrentUserNotes()).then(() => setIsLoaded(true));
         dispatch(getNotebooks())
     }, [dispatch])
 
-    const handleSubmit = async (e) => {
-            e.preventDefault();
-            setErrors([]);
-    
-            const updatedNote = {
-                title,
-                content,
-                notebook_id: parseInt(notebook_id)
-            };
-    
-            return dispatch(updateNote(noteId, updatedNote))
-                .then(() => {
-                    dispatch(getCurrentUserNotes());
-                })
-                .catch((res) => {
-                    if (res && res.errors) {
-                        setErrors(res.errors);
-                    }
-                });
+    useEffect(() => {
+        if (selectedTag) {
+            dispatch(fetchNotesByTag(selectedTag));
+        } else {
+            dispatch(getCurrentUserNotes());
         }
+    }, [dispatch, selectedTag, noteTags]);
+    const displayedNotes = selectedTag ? notesByTag[selectedTag] || [] : Object.values(noteDetails);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setErrors([]);
+
+        const updatedNote = {
+            title,
+            content,
+            notebook_id: parseInt(notebook_id)
+        };
+
+        return dispatch(updateNote(noteId, updatedNote))
+            .then(() => {
+                dispatch(getCurrentUserNotes());
+            })
+            .catch((res) => {
+                if (res && res.errors) {
+                    setErrors(res.errors);
+                }
+            });
+    }
 
     const handleNoteSelect = (note) => {
         setSelectedNote(note);
         setTitle(note.title);
         setContent(note.content);
         setNotebook_id(note.notebook_id);
-        navigate(`/notes/${note.id}`);
+        const params = new URLSearchParams(searchParams);
+        if (selectedTag) {
+            params.set("tag", selectedTag); 
+        }
+        navigate(`/notes/${note.id}?${params.toString()}`);
     }
 
     const handleDelete = async () => {
@@ -68,20 +87,39 @@ function UserNotes() {
         }
     }, [selectedNote])
 
+    const clearTagFilter = () => {
+        setSearchParams({}); 
+    };
+
     return (
-        <div className="notebook-notes-note-container">
+         <div className="notebook-notes-note-container">
             <div className="notebook-notes-container">
-                <h2>Notes</h2>
-                {Object.values(noteDetails).map((note, index) => (
-                    <div
-                        key={index}
-                        className="notebook-note-card"
-                        onClick={() => handleNoteSelect(note)}
-                    >
-                        <h3>{note.title}</h3>
-                        <p>{note.content}</p>
+            <h2>Notes</h2>
+                
+                {/* ✅ Show the selected tag and an option to remove the filter */}
+                {selectedTag && (
+                    <div className="filter-banner">
+                        <span>Filtered by Tag: <strong>{selectedTag}</strong></span>
+                        <button onClick={clearTagFilter} className="clear-filter-btn">Remove Filter ✖</button>
                     </div>
-                ))}
+                )}
+
+                {/* ✅ Now correctly filtering notes */}
+                {displayedNotes.length > 0 ? (
+                    displayedNotes.map((note) => (
+                        <div
+                            key={note.id}
+                            className="notebook-note-card"
+                            onClick={() => handleNoteSelect(note)}
+                        >
+                            <h3>{note.title}</h3>
+                            <p>{note.content}</p>
+                            <Tags noteId={note.id} showInput={false} />
+                        </div>
+                    ))
+                ) : (
+                    <p>No notes found for this tag.</p>
+                )}
             </div>
             {selectedNote && (
                 <form onSubmit={handleSubmit} className="notebook-notes-note-form-container">
@@ -141,10 +179,11 @@ function UserNotes() {
                             />
                         </button>
                     </div>
+                    <Tags noteId={selectedNote.id} showInput={true} />
                 </form>
             )}
         </div>
     )
 }
-    
+
 export default UserNotes;

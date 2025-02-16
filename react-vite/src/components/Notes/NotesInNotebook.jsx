@@ -5,6 +5,7 @@ import { updateNote } from "../../redux/notes";
 import "./NotesInNotebook.css"
 import { getNotesForNotebook } from "../../redux/notes";
 import { getNotebooks } from "../../redux/notebook";
+import Tags from "../Tags/Tags";
 import NotebookTasks from "../NotebookTasks/NotebookTasks";
 
 const NotesInNotebook = () => {
@@ -12,7 +13,7 @@ const NotesInNotebook = () => {
     const navigate = useNavigate();
     const { notebookId, noteId } = useParams();
     const notes = useSelector(state => state.notes.Notes);
-    const notebooks = useSelector(state => state.notebooks.allNotebooks)
+    const notebooks = useSelector(state => state.notebooks.allNotebooks);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [notebook_id, setNotebook_id] = useState("");
@@ -30,7 +31,7 @@ const NotesInNotebook = () => {
                     setSelectedNote(notesList[0]);
                 }
             })
-    }, [dispatch, notebookId, notes, selectedNote]);
+    }, [dispatch, notebookId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -84,7 +85,8 @@ const NotesInNotebook = () => {
                     >
                         <h3>{note.title}</h3>
                         <p>{note.content}</p>
-                    </div>
+                        <Tags noteId={note.id} showInput={false} />
+                        </div>
                 ))}
             </div>
             {selectedNote && (
@@ -137,6 +139,7 @@ const NotesInNotebook = () => {
                     <div className="notebook-notes-note-button-container">
                         <button type="submit" className="notebook-notes-note-button">Save</button>
                     </div>
+                    <Tags noteId={selectedNote.id} showInput={true} />
                 </form>
             )}
         </div>

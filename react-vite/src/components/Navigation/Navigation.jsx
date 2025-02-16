@@ -1,64 +1,44 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUserTags, resetTags } from "../../redux/tags";
+import { useModal } from "../../context/Modal";
+import TagsModal from "../TagsModal/TagsModal";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
 function Navigation() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { setModalContent } = useModal();
+  const sessionUser = useSelector((state) => state.session.user);
+  const tags = useSelector((state) => state.tags.tags);
   const [searchNotebook, setSearchNotebook] = useState("");
   const [searchTag, setSearchTag] = useState("");
   const [showNotebooks, setShowNotebooks] = useState(false);
   const [showTags, setShowTags] = useState(false);
-  const [notebooks, setNotebooks] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [notesByTag, setNotesByTag] = useState([]);
-
-  // Fetch notebooks from the backend
   useEffect(() => {
-    fetch("/api/notebooks")
-    fetch("/api/notebooks")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.Notebooks) {
-          setNotebooks(data.Notebooks);
-        }
-      })
-      .catch((err) => console.error("Error fetching notebooks:", err));
-  }, []);
-
-  // Fetch tags from the backend
-  useEffect(() => {
-    fetch("/api/tags/", {
-      method: "GET",
-      credentials: "include",  // IMPORTANT: Ensures cookies are sent
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Tags data:", data);
-        // If the data is not an array, extract the array from the object
-        const tagsArray = Array.isArray(data) ? data : data.Tags || [];
-        setTags(tagsArray);
-      })
-      .catch((err) => console.error("Error fetching tags:", err));
-  }, []);
+    if (sessionUser) {
+      dispatch(fetchCurrentUserTags());
+    } else {
+      dispatch(resetTags());
+    }
+  }, [dispatch, sessionUser]);
 
   const handleTagSearch = (tagName) => {
-    setSearchTag(tagName);
-    fetch(`/api/tags/${tagName}/notes`, { credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Notes by tag:", data);
-        setNotesByTag(data.notes || []);
-      })
-      .catch((err) => console.error("Error fetching notes for tag:", err));
-  };
+    navigate(`/notes?tag=${tagName}`); 
+};
 
-  const filterItems = (list, searchTerm) =>
-    list.filter((item) =>
-      item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filterItems = (list, searchTerm) => {
+    if (!list || typeof list !== "object") return [];  
+    const arrayList = Array.isArray(list) ? list : Object.values(list); 
+
+    return arrayList.filter(
+        (item) => item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  
+};
+
 
   return (
     <nav className="sidebar">
@@ -86,8 +66,8 @@ function Navigation() {
             Tasks
           </NavLink>
         </li>
-          {/* Notebooks Section */}
-          <li className="nav-item-container">
+        {/* Notebooks Section */}
+        <li className="nav-item-container">
           <NavLink to="/notebooks" className="nav-item">Notebooks</NavLink>
           <button
             onClick={() => setShowNotebooks(!showNotebooks)}
@@ -105,17 +85,31 @@ function Navigation() {
                 onChange={(e) => setSearchNotebook(e.target.value)}
               />
               <ul className="dropdown-list">
-                {filterItems(notebooks, searchNotebook).map((notebook, index) => (
-                  <li key={index} className="dropdown-item">{notebook.name}</li>
-                ))}
+                {Object.values(tags).length > 0 ? (  
+                  filterItems(Object.values(tags), searchTag).map((tag) => (
+                    <li key={tag.id} className="dropdown-item" onClick={() => handleTagSearch(tag.name)}>
+                      {tag.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className="dropdown-item">No Tags Found</li>  
+                )}
               </ul>
             </div>
           )}
         </li>
 
-       {/* Tags Section */}
-       <li className="nav-item-container">
-          <NavLink to="/tags" className="nav-item">Tags</NavLink>
+        <li className="nav-item-container">
+          <NavLink
+            to="#"
+            className="nav-item"
+            onClick={(e) => {
+              e.preventDefault();
+              setModalContent(<TagsModal />);
+            }}
+          >
+            Tags
+          </NavLink>
           <button onClick={() => setShowTags(!showTags)} className="dropdown-button">▼</button>
           {showTags && (
             <div className="dropdown-content">
@@ -137,20 +131,6 @@ function Navigation() {
           )}
         </li>
       </ul>
-
-      {/* Display Notes by Tag */}
-      {notesByTag.length > 0 && (
-        <div className="tag-search-results">
-          <h3>Notes for Tag: {searchTag}</h3>
-          <ul>
-            {notesByTag.map((note) => (
-              <li key={note.id}>
-                <strong>{note.title}</strong>: {note.content}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </nav>
   );
 }
