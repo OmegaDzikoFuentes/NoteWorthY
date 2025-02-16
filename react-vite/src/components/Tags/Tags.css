@@ -5,11 +5,11 @@
     border: 2px solid #ccc;
     border-radius: 8px;
     padding: 6px 12px;
-    width: 100%;  /* ✅ Make it take full width */
-    max-width: 235px; /* ✅ Set max width */
-    min-width: 200px; /* ✅ Prevent shrinking too much */
+    width: 100%; 
+    max-width: 235px;
+    min-width: 200px; 
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap; /* ✅ Allow wrapping for small screens */
+    flex-wrap: wrap; 
 }
 
 .tags-title {
@@ -17,8 +17,8 @@
     font-weight: bold;
     color: #2c3e50;
     margin-right: 10px;
-    white-space: nowrap; /* Prevents breaking */
-    flex-shrink: 0; /* ✅ Ensures the title doesn't shrink */
+    white-space: nowrap; 
+    flex-shrink: 0; 
 }
 
 .tag-input {
@@ -69,13 +69,13 @@
 
 @media (max-width: 600px) {
     .tags-input-container {
-        width: 90%; /* ✅ Make it take most of the screen */
-        max-width: none; /* ✅ Allow full width on small screens */
+        width: 90%;
+        max-width: none; 
         justify-content: space-between;
     }
 
     .tags-title {
-        font-size: 14px; /* ✅ Reduce text size on small screens */
+        font-size: 14px; 
     }
 
     .tag-input {

@@ -33,8 +33,8 @@
 }
 
 .clear-filter-btn {
-    background-color: #ff4d4d;  /* Red background */
-    color: white;  /* White text */
+    background-color: #ff4d4d;  
+    color: white;  
     border: none;
     padding: 6px 12px;
     font-size: 14px;
@@ -46,11 +46,11 @@
 }
 
 .clear-filter-btn:hover {
-    background-color: #e63946;  /* Darker red on hover */
+    background-color: #e63946;  
 }
 
 .clear-filter-btn:active {
-    background-color: #cc3333;  /* Even darker red when clicked */
+    background-color: #cc3333;  
 }
 
 .filter-tag {

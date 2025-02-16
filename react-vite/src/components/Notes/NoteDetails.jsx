@@ -34,7 +34,7 @@ function NoteDetails({ selectedNote }) {
     const handleAddTag = (e) => {
         if (e.key === "Enter" && newTag.trim()) {
             dispatch(addTagToNote(noteId, newTag.trim()));
-            setNewTag(""); // Reset input field
+            setNewTag(""); 
         }
     };
 
