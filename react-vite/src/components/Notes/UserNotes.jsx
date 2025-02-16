@@ -54,6 +54,15 @@ function UserNotes() {
             });
     }
 
+    const handleNoNotes = () => {
+        return (
+            <div className="no-notes-message">
+                <h3>You don&apos;t have any notes yet!</h3>
+                <p>Create a new note to get started</p>
+            </div>
+        )
+    }
+
     const handleNoteSelect = (note) => {
         setSelectedNote(note);
         setTitle(note.title);
@@ -84,33 +93,36 @@ function UserNotes() {
             <div className="notebook-notes-container">
                 <div className="notebook-notes-header-box">
                     <h2 className="notes-in-notebook-header">
-                        Notes
+                        My Notes
                     </h2>
                     <h4 className="notes-in-notebook-count">
                         {Object.keys(notes).length}{" "}
                         {Object.keys(notes).length === 1 ? "note" : "notes"}
                     </h4>
                 </div>
+
                 <div className="notebook-notes-column-container">
-                    {Object.values(notes).map((note, index) => (
-                        <div
-                            key={index}
-                            className="notebook-note-card"
-                            onClick={() => handleNoteSelect(note)}
-                            style={{
-                                border: selectedNote?.id === note.id ? "1px solid #7DA9D6" : "",
-                                boxShadow:
-                                    selectedNote?.id === note.id ? "0 0 7px #7DA9D6" : "",
-                            }}
-                        >
-                            <h3 className="notebook-note-title">{note.title}</h3>
-                            <p className="notebook-note-content">
-                                {note.content.length > 100
-                                    ? note.content.slice(0, 99) + "..."
-                                    : note.content}
-                            </p>
-                        </div>
-                    ))}
+                    {Object.keys(notes).length === 0 ?
+                        handleNoNotes() :
+                        Object.values(notes).map((note, index) => (
+                            <div
+                                key={index}
+                                className="notebook-note-card"
+                                onClick={() => handleNoteSelect(note)}
+                                style={{
+                                    border: selectedNote?.id === note.id ? "1px solid #7DA9D6" : "",
+                                    boxShadow:
+                                        selectedNote?.id === note.id ? "0 0 7px #7DA9D6" : "",
+                                }}
+                            >
+                                <h3 className="notebook-note-title">{note.title}</h3>
+                                <p className="notebook-note-content">
+                                    {note.content.length > 100
+                                        ? note.content.slice(0, 99) + "..."
+                                        : note.content}
+                                </p>
+                            </div>
+                        ))}
                 </div>
             </div>
             {selectedNote && (
