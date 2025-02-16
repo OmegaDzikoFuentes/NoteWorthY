@@ -62,3 +62,8 @@
 .create-note-button-container {
   padding: 20px;
 }
+
+.create-note-button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+}

@@ -46,3 +46,8 @@
   .note-details-delete:hover {
     background-color: #175088;
   }
+
+  .notebook-notes-note-button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+}

@@ -68,6 +68,10 @@ const NotesInNotebook = () => {
     }
   }, [selectedNote]);
 
+  const isFormValid = () => {
+    return title.trim() && content.trim() && notebook_id;
+  }
+
   if (!notebook) return <h1>Loading...</h1>;
 
   return (
@@ -158,7 +162,15 @@ const NotesInNotebook = () => {
             </label>
           </div>
           <div className="notebook-notes-note-button-container">
-            <button type="submit" className="notebook-notes-note-button">
+            <button
+              type="submit"
+              className="notebook-notes-note-button"
+              disabled={!isFormValid()}
+              style={{
+                opacity: isFormValid() ? 1 : 0.5,
+                cursor: isFormValid() ? 'pointer' : 'not-allowed'
+              }}
+            >
               Save
             </button>
           </div>

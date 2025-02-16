@@ -27,25 +27,25 @@ function UserNotes() {
     }, [dispatch])
 
     const handleSubmit = async (e) => {
-            e.preventDefault();
-            setErrors([]);
-    
-            const updatedNote = {
-                title,
-                content,
-                notebook_id: parseInt(notebook_id)
-            };
-    
-            return dispatch(updateNote(noteId, updatedNote))
-                .then(() => {
-                    dispatch(getCurrentUserNotes());
-                })
-                .catch((res) => {
-                    if (res && res.errors) {
-                        setErrors(res.errors);
-                    }
-                });
-        }
+        e.preventDefault();
+        setErrors([]);
+
+        const updatedNote = {
+            title,
+            content,
+            notebook_id: parseInt(notebook_id)
+        };
+
+        return dispatch(updateNote(noteId, updatedNote))
+            .then(() => {
+                dispatch(getCurrentUserNotes());
+            })
+            .catch((res) => {
+                if (res && res.errors) {
+                    setErrors(res.errors);
+                }
+            });
+    }
 
     const handleNoteSelect = (note) => {
         setSelectedNote(note);
@@ -66,7 +66,11 @@ function UserNotes() {
             setContent(selectedNote.content);
             setNotebook_id(selectedNote.notebook_id);
         }
-    }, [selectedNote])
+    }, [selectedNote]);
+
+    const isFormValid = () => {
+        return title.trim() && content.trim() && notebook_id;
+    }
 
     return (
         <div className="notebook-notes-note-container">
@@ -131,7 +135,17 @@ function UserNotes() {
                         </label>
                     </div>
                     <div className="notebook-notes-note-button-container">
-                        <button type="submit" className="notebook-notes-note-button">Save</button>
+                        <button
+                            type="submit"
+                            className="notebook-notes-note-button"
+                            disabled={!isFormValid()}
+                            style={{
+                                opacity: isFormValid() ? 1 : 0.5,
+                                cursor: isFormValid() ? 'pointer' : 'not-allowed'
+                            }}
+                        >
+                            Save
+                        </button>
                         <button className="note-details-delete">
                             <OpenModalMenuItem
                                 itemText="Delete"
@@ -146,5 +160,5 @@ function UserNotes() {
         </div>
     )
 }
-    
+
 export default UserNotes;

@@ -5,7 +5,6 @@ import Layout from "./Layout";
 import TasksPage from "../components/TasksPage";
 import NotesInNotebook from "../components/Notes/NotesInNotebook";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
-import UpdateNoteForm from "../components/Notes/UpdateNoteForm";
 import UserNotes from "../components/Notes/UserNotes";
 import NotebookPage from "../components/NotebookPage/NoteBook";
 import HomePage from "../components/HomePage";
