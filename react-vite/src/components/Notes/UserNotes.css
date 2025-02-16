@@ -31,3 +31,47 @@
     margin-left: 20px;
     padding-top: 10px;
 }
+
+.clear-filter-btn {
+    background-color: #ff4d4d;  /* Red background */
+    color: white;  /* White text */
+    border: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    margin-left: 10px;
+    font-weight: bold; 
+}
+
+.clear-filter-btn:hover {
+    background-color: #e63946;  /* Darker red on hover */
+}
+
+.clear-filter-btn:active {
+    background-color: #cc3333;  /* Even darker red when clicked */
+}
+
+.filter-tag {
+    background-color: blue;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold; 
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.filter-tag button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: bold; 
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+

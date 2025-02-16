@@ -1,15 +1,13 @@
 import { csrfFetch } from "./csrf";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-/** 🔹 Action Types */
-const LOAD_CURRENT = "tags/LOAD_CURRENT";  // Fetch Current User Tags
+const LOAD_CURRENT = "tags/LOAD_CURRENT";  
 const LOAD_FOR_NOTE = "tags/LOAD_FOR_NOTE";
 const LOAD_NOTES_BY_TAG = "tags/LOAD_NOTES_BY_TAG";  
-const ADD_TAG = "tags/ADD_TAG";  // Add Tag to Note
-const REMOVE_TAG = "tags/REMOVE_TAG";  // Remove Tag from Note
-const RESET_TAGS = "tags/RESET_TAGS";  // Clear Tags on Logout
+const ADD_TAG = "tags/ADD_TAG";  
+const REMOVE_TAG = "tags/REMOVE_TAG"; 
+const RESET_TAGS = "tags/RESET_TAGS";  
 
-/** 🔹 Action Creators */
 const loadCurrentTags = (tags) => ({
     type: LOAD_CURRENT,
     tags
@@ -31,7 +29,6 @@ export const resetTags = () => ({
     type: RESET_TAGS
 });
 
-// Fetch all tags for the current user
 export const fetchCurrentUserTags = () => async (dispatch) => {
     const response = await csrfFetch("/api/tags/");
 
@@ -83,7 +80,7 @@ export const addTagToNote = createAsyncThunk(
         }
     }
 );
-// Remove a tag from a note
+
 export const removeTagFromNote = createAsyncThunk(
     "tags/removeTagFromNote",
     async ({ noteId, tagName }, thunkAPI) => {
@@ -109,14 +106,12 @@ export const removeTagFromNote = createAsyncThunk(
     }
 );
 
-/** 🔹 Initial State */
 const initialState = {
-    tags: {},  // Stores all user’s tags
-    noteTags: {},  // Stores tags for each note
+    tags: {},  
+    noteTags: {},  
     notesByTag: {} 
 };
 
-/** 🔹 Reducer */
 const tagsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_CURRENT: {
@@ -165,7 +160,7 @@ const tagsReducer = (state = initialState, action) => {
         }
 
         case RESET_TAGS:
-            return { ...initialState };  // Reset all tags on logout
+            return { ...initialState };  
 
         default:
             return state;

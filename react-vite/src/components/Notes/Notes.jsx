@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotesForNotebook } from "../../redux/notes";
 import { fetchTagsForNote } from "../../redux/tags";
+import Tags from "../Tags/Tags";
 import "./Notes.css";
 
 function Notes({ notebookId }) {
@@ -40,18 +41,7 @@ function Notes({ notebookId }) {
           >
             <h3>{note.title}</h3>
             <p>{note.content}</p>
-                         {/* ✅ Display Tags if Available */}
-                         <div className="note-tags">
-                            {noteTags[note.id] && noteTags[note.id].length > 0 ? (
-                                noteTags[note.id].map(tag => (
-                                    <span key={tag.id} className="tag">
-                                        {tag.name}
-                                    </span>
-                                ))
-                            ) : (
-                                <span className="no-tags">No Tags</span>
-                            )}
-                        </div>
+            <Tags noteId={noteId} showInput={false} />
           </div>
         ))}
       </div>

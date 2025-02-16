@@ -4,9 +4,12 @@
     background: #f4f4f4;
     border: 2px solid #ccc;
     border-radius: 8px;
-    padding: 4px 12px;
-    width: 20%;
+    padding: 6px 12px;
+    width: 100%;  /* ✅ Make it take full width */
+    max-width: 235px; /* ✅ Set max width */
+    min-width: 200px; /* ✅ Prevent shrinking too much */
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap; /* ✅ Allow wrapping for small screens */
 }
 
 .tags-title {
@@ -14,9 +17,9 @@
     font-weight: bold;
     color: #2c3e50;
     margin-right: 10px;
-    white-space: nowrap;
+    white-space: nowrap; /* Prevents breaking */
+    flex-shrink: 0; /* ✅ Ensures the title doesn't shrink */
 }
-
 
 .tag-input {
     flex: 1;
@@ -25,6 +28,7 @@
     font-size: 14px;
     padding: 6px;
     outline: none;
+    min-width: 100px; 
 }
 
 
@@ -46,7 +50,7 @@
 }
 
 .tag {
-    background-color: #2c3e50;
+    background-color: gray;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -58,8 +62,23 @@
 .tag button {
     background: none;
     border: none;
-    color: red;
+    color: white;
     font-size: 14px;
     cursor: pointer;
 }
 
+@media (max-width: 600px) {
+    .tags-input-container {
+        width: 90%; /* ✅ Make it take most of the screen */
+        max-width: none; /* ✅ Allow full width on small screens */
+        justify-content: space-between;
+    }
+
+    .tags-title {
+        font-size: 14px; /* ✅ Reduce text size on small screens */
+    }
+
+    .tag-input {
+        font-size: 13px;
+    }
+}

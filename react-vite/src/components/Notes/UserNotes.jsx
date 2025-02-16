@@ -25,7 +25,8 @@ function UserNotes() {
     const [, setErrors] = useState([]);
     const [, setIsLoaded] = useState(false);
     const [, setShowModal] = useState(false);
-    const selectedTag = searchParams.get("tag");
+   
+    const selectedTags = new Set(searchParams.getAll("tag"));
 
     useEffect(() => {
         dispatch(getCurrentUserNotes()).then(() => setIsLoaded(true));
@@ -33,13 +34,20 @@ function UserNotes() {
     }, [dispatch])
 
     useEffect(() => {
-        if (selectedTag) {
-            dispatch(fetchNotesByTag(selectedTag));
+        if (selectedTags.size > 0) {
+            Array.from(selectedTags).forEach(tag => {
+                if (!notesByTag[tag]) dispatch(fetchNotesByTag(tag));
+            });
         } else {
             dispatch(getCurrentUserNotes());
         }
-    }, [dispatch, selectedTag, noteTags]);
-    const displayedNotes = selectedTag ? notesByTag[selectedTag] || [] : Object.values(noteDetails);
+    }, [dispatch, Array.from(selectedTags).join(",")]);
+
+     const displayedNotes = selectedTags.size > 0
+        ? Object.values(noteDetails).filter(note =>
+            Array.from(selectedTags).every(tag => notesByTag[tag]?.some(filteredNote => filteredNote.id === note.id))
+        )
+        : Object.values(noteDetails);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -67,12 +75,12 @@ function UserNotes() {
         setTitle(note.title);
         setContent(note.content);
         setNotebook_id(note.notebook_id);
-        const params = new URLSearchParams(searchParams);
-        if (selectedTag) {
-            params.set("tag", selectedTag); 
-        }
+        const params = new URLSearchParams();
+        selectedTags.forEach(tag => params.append("tag", tag)); 
+    
         navigate(`/notes/${note.id}?${params.toString()}`);
-    }
+    };
+    
 
     const handleDelete = async () => {
         await dispatch(getCurrentUserNotes());
@@ -87,6 +95,11 @@ function UserNotes() {
         }
     }, [selectedNote])
 
+    const removeTagFilter = (tagToRemove) => {
+        const newTags = Array.from(selectedTags).filter(tag => tag !== tagToRemove);
+        setSearchParams(newTags.length > 0 ? newTags.map(tag => ["tag", tag]) : {});
+    };
+
     const clearTagFilter = () => {
         setSearchParams({}); 
     };
@@ -96,15 +109,18 @@ function UserNotes() {
             <div className="notebook-notes-container">
             <h2>Notes</h2>
                 
-                {/* ✅ Show the selected tag and an option to remove the filter */}
-                {selectedTag && (
-                    <div className="filter-banner">
-                        <span>Filtered by Tag: <strong>{selectedTag}</strong></span>
-                        <button onClick={clearTagFilter} className="clear-filter-btn">Remove Filter ✖</button>
-                    </div>
-                )}
+            {selectedTags.size > 0 && (
+                <div className="filter-banner">
+                    <span>Filtered by Tags:</span>
+                    {Array.from(selectedTags).map(tag => (
+                        <span key={tag} className="filter-tag">
+                            {tag} <button onClick={() => removeTagFilter(tag)}>✖</button>
+                        </span>
+                    ))}
+                    <button onClick={clearTagFilter} className="clear-filter-btn">Clear Filter ✖</button>
+                </div>
+            )}
 
-                {/* ✅ Now correctly filtering notes */}
                 {displayedNotes.length > 0 ? (
                     displayedNotes.map((note) => (
                         <div

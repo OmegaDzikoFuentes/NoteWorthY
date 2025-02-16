@@ -27,7 +27,14 @@ function Navigation() {
   }, [dispatch, sessionUser]);
 
   const handleTagSearch = (tagName) => {
-    navigate(`/notes?tag=${tagName}`); 
+    const params = new URLSearchParams(window.location.search);
+    
+    const existingTags = params.getAll("tag");
+    if (!existingTags.includes(tagName)) {
+        params.append("tag", tagName);
+    }
+
+    navigate(`/notes?${params.toString()}`);
 };
 
   const filterItems = (list, searchTerm) => {
