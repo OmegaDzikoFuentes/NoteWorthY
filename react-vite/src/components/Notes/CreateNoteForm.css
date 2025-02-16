@@ -30,6 +30,8 @@
   font-size: 18pt;
   margin-left: 20px;
   padding: 5px;
+  border: 1px solid #e0e0e0;
+  outline: none;
 }
 
 .create-note-content-input {
@@ -38,6 +40,8 @@
   font-size: 15pt;
   margin-left: 20px;
   padding: 5px;
+  border: 1px solid #e0e0e0;
+  outline: none;
 }
 
 .create-note-dropdown {
@@ -61,4 +65,9 @@
 
 .create-note-button-container {
   padding: 20px;
+}
+
+.create-note-button:disabled {
+  background-color: #cccccc;
+  color: #666666;
 }

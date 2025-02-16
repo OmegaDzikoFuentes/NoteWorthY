@@ -22,14 +22,15 @@ const NotesInNotebook = () => {
 
   useEffect(() => {
     dispatch(getNotesForNotebook(notebookId));
-    dispatch(getNotebooks()).then(() => {
-      // Set the first note as selected when notes are loaded
-      const notesList = Object.values(notes);
-      if (notesList.length > 0 && !selectedNote) {
-        setSelectedNote(notesList[0]);
-      }
-    });
+    dispatch(getNotebooks());
   }, [dispatch, notebookId]); //removed notes and selectedNote from dependencies to stop constant fetching
+
+  useEffect(() => {
+    const notesList = Object.values(notes);
+    if (notesList.length > 0 && !selectedNote) {
+      handleNoteSelect(notesList[0]);
+    }
+  }, [notes]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +44,7 @@ const NotesInNotebook = () => {
 
     return dispatch(updateNote(noteId, updatedNote))
       .then(() => {
-        dispatch(getNotesForNotebook(notebook_id));
+        dispatch(getNotesForNotebook(notebookId));
       })
       .catch((res) => {
         if (res && res.errors) {
@@ -65,8 +66,16 @@ const NotesInNotebook = () => {
       setTitle(selectedNote.title);
       setContent(selectedNote.content);
       setNotebook_id(selectedNote.notebook_id);
+      // Reset selectedNote when notebook changes
+      if (selectedNote && selectedNote.notebook_id !== parseInt(notebookId)) {
+        setSelectedNote(null);
+      }
     }
-  }, [selectedNote]);
+  }, [selectedNote, notebookId]);
+
+  const isFormValid = () => {
+    return title.trim() && content.trim() && notebook_id;
+  }
 
   if (!notebook) return <h1>Loading...</h1>;
 
@@ -156,7 +165,15 @@ const NotesInNotebook = () => {
             </label>
           </div>
           <div className="notebook-notes-note-button-container">
-            <button type="submit" className="notebook-notes-note-button">
+            <button
+              type="submit"
+              className="notebook-notes-note-button"
+              disabled={!isFormValid()}
+              style={{
+                opacity: isFormValid() ? 1 : 0.5,
+                cursor: isFormValid() ? 'pointer' : 'not-allowed'
+              }}
+            >
               Save
             </button>
           </div>

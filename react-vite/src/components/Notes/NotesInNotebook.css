@@ -30,6 +30,8 @@
   font-size: 18pt;
   margin-left: 20px;
   padding: 5px;
+  border: 1px solid #e0e0e0;
+  outline: none;
 }
 
 .notebook-notes-note-content-input {
@@ -38,6 +40,8 @@
   font-size: 15pt;
   margin-left: 20px;
   padding: 5px;
+  border: 1px solid #e0e0e0;
+  outline: none;
 }
 
 .notebook-notes-note-dropdown {
@@ -60,7 +64,9 @@
 }
 
 .notebook-notes-note-button-container {
+  display: flex;
   padding: 20px;
+  gap: 10px;
 }
 
 .notebook-notes-container {
@@ -129,7 +135,7 @@
 }
 
 .notebook-notes-column-container {
-  margin-top: 15%;
+  margin-top: 20%;
   padding: 20px;
   overflow-y: auto;
 }
