@@ -1,88 +1,141 @@
 .notebook-notes-note-container {
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    width: 80%;
-    height: 100%;
-    flex: 1;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  margin-left: 10px;
 }
 
 .notebook-notes-note-label-container {
-    padding: 10px;
-    width: 100%;
-    flex: 1;
+  padding: 10px;
+  width: 100%;
+  flex: 1;
 }
 
 .notebook-notes-note-label {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: flex-start;
-    font-size: 20pt;
-    width: 80%;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  font-size: 20pt;
+  width: 80%;
+  flex: 1;
 }
 
 .notebook-notes-note-title-input {
-    width: 100%;
-    height: 20pt;
-    font-size: 18pt;
-    margin-left: 20px;
-    padding: 5px;
+  width: 100%;
+  height: 20pt;
+  font-size: 18pt;
+  margin-left: 20px;
+  padding: 5px;
+  border: 1px solid #e0e0e0;
+  outline: none;
 }
 
 .notebook-notes-note-content-input {
-    width: 100%;
-    height: 500px;
-    font-size: 15pt;
-    margin-left: 20px;
-    padding: 5px;
+  width: 100%;
+  height: 500px;
+  font-size: 15pt;
+  margin-left: 20px;
+  padding: 5px;
+  border: 1px solid #e0e0e0;
+  outline: none;
 }
 
 .notebook-notes-note-dropdown {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .notebook-notes-note-button {
-    background-color: #133c64;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    align-items: center;
-    width: 150px;
+  background-color: #133c64;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-items: center;
+  width: 150px;
 }
 
 .notebook-notes-note-button:hover {
-    background-color: #175088;
+  background-color: #175088;
 }
 
 .notebook-notes-note-button-container {
-    padding: 20px;
+  display: flex;
+  padding: 20px;
+  gap: 10px;
 }
 
 .notebook-notes-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 23%;
-    padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 23%;
+  padding: 10px;
 }
 
 .notebook-note-card {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    border: 1px solid grey;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px 15px 10px;
+  border-bottom: 1px solid #bcbcbc;
+  gap: 10px;
+  height: 100px;
+  max-height: 100px;
+  width: 95%;
+  cursor: pointer;
 }
 
 .notebook-notes-note-form-container {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    width: 80%;
-    height: 100%;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 70%;
+  height: 95%;
+  flex: 1;
+  margin-left: 22%;
+  position: fixed;
+}
+
+.notebook-note-title {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.notebook-note-content {
+  font-size: 14px;
+  color: #4d4d4d;
+}
+
+.notes-in-notebook-header {
+  font-weight: 500;
+  font-size: 28px;
+}
+
+.notes-in-notebook-count {
+  font-weight: 100;
+  color: #bcbcbc;
+  font-size: 20px;
+}
+
+.notebook-notes-header-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 8%;
+  width: 19%;
+  position: fixed;
+  top: 0;
+  background-color: #f5f5f5;
+  z-index: 1000;
+  padding: 20px 10px 0px 0px;
+}
+
+.notebook-notes-column-container {
+  margin-top: 20%;
+  padding: 20px;
+  overflow-y: auto;
 }

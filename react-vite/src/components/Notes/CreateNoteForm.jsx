@@ -21,13 +21,13 @@ const CreateNoteForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors([]);
-        
+
         const newNote = {
             title,
             content,
             notebook_id: parseInt(notebook_id)
         };
-    
+
         try {
             const createdNote = await dispatch(createNewNote(newNote));
             navigate(`/notes/${createdNote.id}`);
@@ -35,7 +35,11 @@ const CreateNoteForm = () => {
             setErrors([error.toString()]);
         }
     }
-    
+
+    const isFormValid = () => {
+        return title.trim() && content.trim() && notebook_id;
+      }
+
     return (
         <div className="create-note-container">
             <form onSubmit={handleSubmit} className="create-note-form-container">
@@ -57,7 +61,7 @@ const CreateNoteForm = () => {
                 <div className="create-note-label-container">
                     <label className="create-note-label">
                         Content
-                        <textarea 
+                        <textarea
                             className="create-note-content-input"
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
@@ -85,8 +89,17 @@ const CreateNoteForm = () => {
                     </label>
                 </div>
                 <div className="create-note-button-container">
-                    <button type="submit" className="create-note-button">Create Note</button>
-                </div>
+                    <button
+                        type="submit"
+                        className="create-note-button"
+                        disabled={!isFormValid()}
+                        style={{
+                            opacity: isFormValid() ? 1 : 0.5,
+                            cursor: isFormValid() ? 'pointer' : 'not-allowed'
+                        }}
+                    >
+                        Save
+                    </button>                </div>
             </form>
         </div>
     )

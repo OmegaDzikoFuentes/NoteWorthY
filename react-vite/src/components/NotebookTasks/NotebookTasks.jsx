@@ -1,10 +1,9 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { getNotebookTasks, updateTask } from "../../redux/task";
 import "./NotebookTasks.css";
 
-// Memoized selector to avoid unnecessary re-renders
 const selectNotebookTasks = createSelector(
   (state) => state.task.notebookTasks,
   (_, notebookId) => notebookId,
@@ -92,7 +91,7 @@ function NotebookTasks({ notebookId }) {
                       </div>
                     </div>
                     <p className="notebook-tasks-list-item-due-date">
-                      {formatDate(task.due_date)}
+                      {task.due_date ? formatDate(task.due_date) : null}
                     </p>
                   </div>
                 ))}

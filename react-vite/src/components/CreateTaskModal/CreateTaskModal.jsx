@@ -1,15 +1,17 @@
 import "./CreateTaskModal.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { csrfFetch } from "../../redux/csrf";
 import { useModal } from "../../context/Modal";
 import { addTaskThunk, getUserTasks } from "../../redux/task";
+import { getNotebooks } from "../../redux/notebook";
 
 function CreateTaskModal({ onTaskAdded }) {
   const dispatch = useDispatch();
   const { setModalContent } = useModal();
   const [notebooks, setNotebooks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { allNotebooks } = useSelector((state) => state.notebooks);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,41 +19,23 @@ function CreateTaskModal({ onTaskAdded }) {
     notebook_id: "",
   });
 
-  // Get all user notebooks for now
-  const getUserNotebooks = async () => {
-    try {
-      const response = await csrfFetch("/api/notebooks/", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+  useEffect(() => {
+    const sortedNotebooks = Object.values(allNotebooks).sort((a, b) => {
+      return new Date(a.created_at) - new Date(b.created_at);
+    });
+    setNotebooks(sortedNotebooks);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch notebooks");
-      }
-
-      const data = await response.json();
-
-      const sortedNotebooks = data.notebooks.sort((a, b) => {
-        return new Date(a.created_at) - new Date(b.created_at);
-      });
-
-      setNotebooks(sortedNotebooks);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        notebook_id: sortedNotebooks.length > 0 ? sortedNotebooks[0].id : "",
-      }));
-      setIsLoaded(true);
-    } catch (error) {
-      console.error("Error fetching notebooks:", error);
-      setIsLoaded(true);
-    }
-  };
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      notebook_id: sortedNotebooks.length > 0 ? sortedNotebooks[0].id : "",
+    }));
+  }, [allNotebooks]);
 
   useEffect(() => {
-    getUserNotebooks();
-  }, []);
+    dispatch(getNotebooks()).then(() => {
+      setIsLoaded(true);
+    });
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

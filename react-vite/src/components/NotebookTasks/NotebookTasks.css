@@ -4,8 +4,15 @@
 
 .things-to-do {
   width: 100%;
+  font-size: 20px;
   color: #b378ee;
   cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.notebook-tasks-details {
+  margin-bottom: 20px;
 }
 
 .notebook-tasks-container {
@@ -27,8 +34,21 @@
   align-items: center;
 }
 
+.notebook-tasks-list-item-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+
+.notebook-tasks-list-item-description {
+  font-size: 16px;
+  color: #bcbcbc;
+  margin-left: 15px;
+}
+
 .notebook-tasks-list-item-due-date {
-  padding-left: 55px;
+  margin-left: 60px;
+  color: #bcbcbc;
 }
 
 .notebook-tasks-list-checkbox {
@@ -37,6 +57,7 @@
   -moz-appearance: none;
   width: 14px;
   height: 14px;
+
   border-radius: 50%;
   border: 2px solid #b378ee;
   background-color: #fff;

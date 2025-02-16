@@ -3,14 +3,11 @@ import LoginFormPage from "../components/LoginFormPage";
 import SignupFormPage from "../components/SignupFormPage";
 import Layout from "./Layout";
 import TasksPage from "../components/TasksPage";
-// import Notes from "../components/Notes/Notes";
 import NotesInNotebook from "../components/Notes/NotesInNotebook";
-// import NoteDetails from "../components/Notes/NoteDetails";
 import CreateNoteForm from "../components/Notes/CreateNoteForm";
-import UpdateNoteForm from "../components/Notes/UpdateNoteForm";
 import UserNotes from "../components/Notes/UserNotes";
-import NotebookPage from '../components/NotebookPage/NoteBook';
-// import NotebookDetailsPage from '../components/NotebookDetailPage/NotebookDetailsPage';
+import NotebookPage from "../components/NotebookPage/NoteBook";
+import HomePage from "../components/HomePage";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <HomePage />,
       },
       {
         path: "login",
@@ -38,15 +35,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "notebooks/:notebookId/note/:noteId",
-        element: <NotesInNotebook />
+        element: <NotesInNotebook />,
       },
       {
         path: "notes/new",
         element: <CreateNoteForm />,
-      },
-      {
-        path: "notes/:noteId/edit",
-        element: <UpdateNoteForm />,
       },
       {
         path: "/notes",
