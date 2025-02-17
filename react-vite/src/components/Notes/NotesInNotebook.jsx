@@ -5,6 +5,7 @@ import { updateNote } from "../../redux/notes";
 import "./NotesInNotebook.css";
 import { getNotesForNotebook } from "../../redux/notes";
 import { getNotebooks } from "../../redux/notebook";
+import Tags from "../Tags/Tags";
 import NotebookTasks from "../NotebookTasks/NotebookTasks";
 
 const NotesInNotebook = () => {
@@ -12,7 +13,7 @@ const NotesInNotebook = () => {
   const navigate = useNavigate();
   const { notebookId, noteId } = useParams();
   const notes = useSelector((state) => state.notes.Notes);
-  const notebooks = useSelector((state) => state.notebooks.allNotebooks);
+  const notebooks = useSelector((state) => state.notebooks.allNotebooks);;
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [notebook_id, setNotebook_id] = useState("");
@@ -20,17 +21,17 @@ const NotesInNotebook = () => {
   const [, setErrors] = useState([]);
   const notebook = notebooks[notebookId];
 
-  useEffect(() => {
-    dispatch(getNotesForNotebook(notebookId));
-    dispatch(getNotebooks());
-  }, [dispatch, notebookId]); //removed notes and selectedNote from dependencies to stop constant fetching
-
-  useEffect(() => {
-    const notesList = Object.values(notes);
-    if (notesList.length > 0 && !selectedNote) {
-      handleNoteSelect(notesList[0]);
-    }
-  }, [notes]);
+    useEffect(() => {
+        dispatch(getNotesForNotebook(notebookId))
+        dispatch(getNotebooks())
+            .then(() => {
+                // Set the first note as selected when notes are loaded
+                const notesList = Object.values(notes);
+                if (notesList.length > 0 && !selectedNote) {
+                    setSelectedNote(notesList[0]);
+                }
+            })
+    }, [dispatch, notebookId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,7 +109,8 @@ const NotesInNotebook = () => {
                   ? note.content.slice(0, 99) + "..."
                   : note.content}
               </p>
-            </div>
+                        <Tags noteId={note.id} showInput={false} />
+                </div>
           ))}
         </div>
       </div>
@@ -177,6 +179,7 @@ const NotesInNotebook = () => {
               Save
             </button>
           </div>
+                    <Tags noteId={selectedNote.id} showInput={true} />
         </form>
       )}
     </div>

@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUserTags, resetTags } from "../../redux/tags";
+import { useModal } from "../../context/Modal";
+import TagsModal from "../TagsModal/TagsModal";
 import ProfileButton from "./ProfileButton";
 import { useSelector } from "react-redux";
 import LoginFormModal from "../LoginFormModal";
@@ -11,44 +15,41 @@ import "./Navigation.css";
 
 function Navigation() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { setModalContent } = useModal();
+  const sessionUser = useSelector((state) => state.session.user);
+  const tags = useSelector((state) => state.tags.tags);
+  const [searchNotebook, setSearchNotebook] = useState("");
   const [searchTag, setSearchTag] = useState("");
   const [showTags, setShowTags] = useState(false);
-  const [tags, setTags] = useState([]);
-  const [notesByTag, setNotesByTag] = useState([]);
-  const sessionUser = useSelector((state) => state.session.user);
-
   useEffect(() => {
     if (sessionUser) {
-      fetch("/api/tags/", {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("Tags data:", data);
-          const tagsArray = Array.isArray(data) ? data : data.Tags || [];
-          setTags(tagsArray);
-        })
-        .catch((err) => console.error("Error fetching tags:", err));
-    } else return;
-  }, [sessionUser]);
+      dispatch(fetchCurrentUserTags());
+    } else {
+      dispatch(resetTags());
+    }
+  }, [dispatch, sessionUser]);
 
   const handleTagSearch = (tagName) => {
-    setSearchTag(tagName);
-    fetch(`/api/tags/${tagName}/notes`, { credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Notes by tag:", data);
-        setNotesByTag(data.notes || []);
-      })
-      .catch((err) => console.error("Error fetching notes for tag:", err));
-  };
+    const params = new URLSearchParams(window.location.search);
+    
+    const existingTags = params.getAll("tag");
+    if (!existingTags.includes(tagName)) {
+        params.append("tag", tagName);
+    }
 
-  const filterItems = (list, searchTerm) =>
-    list.filter(
-      (item) =>
-        item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    navigate(`/notes?${params.toString()}`);
+};
+
+  const filterItems = (list, searchTerm) => {
+    if (!list || typeof list !== "object") return [];  
+    const arrayList = Array.isArray(list) ? list : Object.values(list); 
+
+    return arrayList.filter(
+        (item) => item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+};
+
 
   return (
     <nav className="sidebar">
@@ -130,6 +131,38 @@ function Navigation() {
                 </NavLink>
               </li>
 
+        <li className="nav-item-container">
+          <NavLink
+            to="#"
+            className="nav-item"
+            onClick={(e) => {
+              e.preventDefault();
+              setModalContent(<TagsModal />);
+            }}
+          >
+            Tags
+          </NavLink>
+          <button onClick={() => setShowTags(!showTags)} className="dropdown-button">▼</button>
+          {showTags && (
+            <div className="dropdown-content">
+              <input
+                type="text"
+                className="search-bar"
+                placeholder="Search Tags..."
+                value={searchTag}
+                onChange={(e) => setSearchTag(e.target.value)}
+              />
+              <ul className="dropdown-list">
+                {filterItems(tags, searchTag).map((tag, index) => (
+                  <li key={index} className="dropdown-item" onClick={() => handleTagSearch(tag.name)}>
+                    {tag.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </li>
+      </ul>
               {/* Tags Section */}
               <li className="nav-item-container">
                 <NavLink to="/tags" className="nav-item">

@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import DeleteNote from "./DeleteNote";
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import "./NoteDetails.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTagsForNote } from "../../redux/tags";
+import Tags from "../Tags/Tags"
 
 function NoteDetails({ selectedNote }) {
+    const { noteId } = useParams();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const notes = useSelector(state => state.notes.Notes)
+    const notes = useSelector(state => state.notes.Notes);
     const [isLoaded, setIsLoaded] = useState(false);
     const [, setShowModal] = useState(false);
-    const { noteId } = useParams();
+
+    useEffect(() => {
+        if (noteId) {
+            dispatch(fetchTagsForNote(noteId)); 
+        }
+    }, [dispatch, noteId]);
 
     const handleNoteTitleLogic = () => {
         if (!selectedNote) {
@@ -44,6 +53,7 @@ function NoteDetails({ selectedNote }) {
                             />
                         </button>
                     </div>
+                    <Tags noteId={noteId} showInput={true} />
                 </div>
             )}
         </>

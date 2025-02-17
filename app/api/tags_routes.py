@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import db, Tag, NoteTag, Notes
+from app.models import db, Tag, NoteTag, Notes, Notebook
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
@@ -25,11 +25,31 @@ def get_notes_by_tag(tag_name):
 
     return jsonify({"notes": [note.to_dict() for note in notes]}), 200
 
-
 @tag_routes.route('/', methods=['GET'])
 @login_required
 def get_all_tags():
-    tags = Tag.query.all()
+    """
+    Get all tags for the currently logged-in user's notes.
+    """
+    # ✅ Get all notebooks that belong to the logged-in user
+    user_notebooks = Notebook.query.filter_by(user_id=current_user.id).all()
+    notebook_ids = [notebook.id for notebook in user_notebooks]
+
+    if not notebook_ids:
+        return jsonify([]), 200  # No notebooks? No tags.
+
+    # ✅ Get all notes that belong to those notebooks
+    user_notes = Notes.query.filter(Notes.notebook_id.in_(notebook_ids)).all()
+    note_ids = [note.id for note in user_notes]
+
+    if not note_ids:
+        return jsonify([]), 200  # No notes? No tags.
+
+    # ✅ Get all tags associated with the user's notes
+    note_tags = NoteTag.query.filter(NoteTag.note_id.in_(note_ids)).all()
+    tag_ids = list(set([note_tag.tag_id for note_tag in note_tags]))  # Remove duplicates
+    tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+
     return jsonify([tag.to_dict() for tag in tags]), 200
 
 # Get all tags for a specific note
@@ -44,16 +64,15 @@ def get_tags_for_note(note_id):
     # Query NoteTag to get tag IDs linked to the note
     note_tags = NoteTag.query.filter_by(note_id=note_id).all()
 
-    if not note_tags:
-        return jsonify({"message": "No tags found for this note"}), 404
 
-    # Extract tag IDs and fetch corresponding Tag objects
+    if not note_tags:
+        return jsonify([]), 200  
+
     tag_ids = [notetag.tag_id for notetag in note_tags]
     tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
 
-    response = jsonify([tag.to_dict() for tag in tags])
-    response.headers['Content-Type'] = 'application/json'
-    return response, 200
+    return jsonify([tag.to_dict() for tag in tags]), 200
+
 
 
 # Add a tag to a note
