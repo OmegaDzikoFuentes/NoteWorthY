@@ -41,13 +41,13 @@ function UserNotes() {
 
   useEffect(() => {
     if (selectedTags.size > 0) {
-      selectedTags.forEach((tag) => {
-        if (!notesByTag[tag]) dispatch(fetchNotesByTag(tag));
-      });
+        Array.from(selectedTags).forEach(tag => {
+            if (!notesByTag[tag]) dispatch(fetchNotesByTag(tag));
+        });
     } else {
-      dispatch(getCurrentUserNotes());
+        dispatch(getCurrentUserNotes());
     }
-  }, [dispatch]);
+}, [dispatch, Array.from(selectedTags).join(",")]);
 
   const displayedNotes =
     selectedTags.size > 0
