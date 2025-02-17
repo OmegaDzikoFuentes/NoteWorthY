@@ -38,14 +38,14 @@ def get_all_tags():
     if not notebook_ids:
         return jsonify([]), 200  # No notebooks? No tags.
 
-    Get all notes that belong to those notebooks
+    # Get all notes that belong to those notebooks
     user_notes = Notes.query.filter(Notes.notebook_id.in_(notebook_ids)).all()
     note_ids = [note.id for note in user_notes]
 
     if not note_ids:
         return jsonify([]), 200  # No notes? No tags.
 
-    Get all tags associated with the user's notes
+    # Get all tags associated with the user's notes
     note_tags = NoteTag.query.filter(NoteTag.note_id.in_(note_ids)).all()
     tag_ids = list(set([note_tag.tag_id for note_tag in note_tags]))  # Remove duplicates
     tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
