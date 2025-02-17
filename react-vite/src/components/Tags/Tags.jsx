@@ -9,13 +9,8 @@ const Tags = ({  noteId, showInput = true }) => {
     const [newTag, setNewTag] = useState("");
 
     useEffect(() => {
-        if (noteId) {
+        if (noteId && !isNaN(parseInt(noteId))) {
             dispatch(fetchTagsForNote(noteId))
-                .then((tags) => {
-                    if (!tags || tags.length === 0) {
-                        console.log(`No tags found for note ID ${noteId}`);
-                    }
-                })
                 .catch((error) => console.error(`Error fetching tags for note ${noteId}:`, error));
         }
     }, [dispatch, noteId]);

@@ -52,10 +52,10 @@ function UserNotes() {
   const displayedNotes =
     selectedTags.size > 0
       ? Object.values(notes).filter((note) =>
-          Array.from(selectedTags).every((tag) =>
-            notesByTag[tag]?.some((filteredNote) => filteredNote.id === note.id)
-          )
+        Array.from(selectedTags).every((tag) =>
+          notesByTag[tag]?.some((filteredNote) => filteredNote.id === note.id)
         )
+      )
       : Object.values(notes);
 
   const handleNoteSelect = (note) => {
@@ -116,12 +116,22 @@ function UserNotes() {
   const clearTagFilter = () => {
     setSearchParams({});
   };
-  const handleNoNotes = () => (
-    <div className="no-notes-message">
-      <h3>You don&apos;t have any notes yet!</h3>
-      <p>Create a new note to get started</p>
-    </div>
-  );
+  const handleNoNotes = () => {
+    if (selectedTags.size > 0) {
+      return (
+        <div className="no-notes-message">
+          <h3>No notes found under {selectedTags.size === 1 ? "this tag" : "these tags"}.</h3>
+          <p>Try removing some filters or creating a new note.</p>
+        </div>
+      );
+    }
+    return (
+      <div className="no-notes-message">
+        <h3>You don&apos;t have any notes yet!</h3>
+        <p>Create a new note to get started.</p>
+      </div>
+    );
+  };
 
   return (
     <div className="notebook-notes-note-container">
@@ -153,29 +163,27 @@ function UserNotes() {
           className="notebook-notes-column-container"
           style={{ marginTop: selectedTags.size > 0 ? "120px" : "" }}
         >
-          {displayedNotes.length === 0
-            ? handleNoNotes()
-            : displayedNotes.map((note, index) => (
-                <div
-                  key={index}
-                  className="notebook-note-card"
-                  onClick={() => handleNoteSelect(note)}
-                  style={{
-                    border:
-                      selectedNote?.id === note.id ? "1px solid #7DA9D6" : "",
-                    boxShadow:
-                      selectedNote?.id === note.id ? "0 0 7px #7DA9D6" : "",
-                  }}
-                >
-                  <h3 className="notebook-note-title">{note.title}</h3>
-                  <p className="notebook-note-content">
-                    {note.content.length > 100
-                      ? note.content.slice(0, 99) + "..."
-                      : note.content}
-                  </p>
-                  <Tags noteId={note.id} showInput={false} />
-                </div>
-              ))}
+          {displayedNotes.length === 0 ? (
+            handleNoNotes()
+          ) : (
+            displayedNotes.map((note, index) => (
+              <div
+                key={index}
+                className="notebook-note-card"
+                onClick={() => handleNoteSelect(note)}
+                style={{
+                  border: selectedNote?.id === note.id ? "1px solid #7DA9D6" : "",
+                  boxShadow: selectedNote?.id === note.id ? "0 0 7px #7DA9D6" : "",
+                }}
+              >
+                <h3 className="notebook-note-title">{note.title}</h3>
+                <p className="notebook-note-content">
+                  {note.content.length > 100 ? note.content.slice(0, 99) + "..." : note.content}
+                </p>
+                <Tags noteId={note.id} showInput={false} />
+              </div>
+            ))
+          )}
         </div>
       </div>
 
@@ -260,12 +268,3 @@ function UserNotes() {
 }
 
 export default UserNotes;
-
-{
-  /* <OpenModalMenuItem
-            itemText="Delete"
-            onItemClick={() => setShowModal(true)}
-            modalComponent={<DeleteNote noteId={noteId} />}
-            onModalClose={handleDelete}
-          /> */
-}
