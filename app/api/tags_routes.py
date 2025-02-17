@@ -31,7 +31,7 @@ def get_all_tags():
     """
     Get all tags for the currently logged-in user's notes.
     """
-    Get all notebooks that belong to the logged-in user
+    # Get all notebooks that belong to the logged-in user
     user_notebooks = Notebook.query.filter_by(user_id=current_user.id).all()
     notebook_ids = [notebook.id for notebook in user_notebooks]
 
