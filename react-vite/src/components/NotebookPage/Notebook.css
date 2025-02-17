@@ -51,6 +51,7 @@
   width: 200px;
   border: 1px solid #bcbcbc;
   border-radius: 5px;
+  height: 20px;
 }
 
 /* List of notebooks */
@@ -138,4 +139,27 @@
 .notebook-buttons-container {
   display: flex;
   gap: 7px;
+}
+
+.notebook-count {
+  color: #bcbcbc;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.notebook-submit-button {
+  background-color: #ea9828;
+  color: white;
+  border: none;
+  height: 20px;
+  width: 112px;
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+.notebook-name-input {
+  height: 20px;
+  padding-left: 10px;
+  border: #bcbcbc 1px solid;
+  border-radius: 5px;
 }
