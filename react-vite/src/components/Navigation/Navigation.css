@@ -32,6 +32,11 @@
   color: rgba(0, 0, 0, 0.75);
 }
 
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
 .logged-in-container {
   display: flex;
   align-items: center;

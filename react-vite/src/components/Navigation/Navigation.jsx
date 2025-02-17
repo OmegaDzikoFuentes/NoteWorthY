@@ -92,7 +92,10 @@ function Navigation() {
         <>
           {/* Navigation Buttons */}
           <div className="nav-button-box">
-            <button className="new-notebook-button nav-button-height">
+            <button
+              className="new-notebook-button nav-button-height"
+              onClick={() => navigate(`/notebooks`)}
+            >
               + New Notebook
             </button>
             <div className="nav-small-button-box">
