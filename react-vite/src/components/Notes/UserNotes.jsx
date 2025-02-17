@@ -41,13 +41,13 @@ function UserNotes() {
 
   useEffect(() => {
     if (selectedTags.size > 0) {
-        Array.from(selectedTags).forEach(tag => {
-            if (!notesByTag[tag]) dispatch(fetchNotesByTag(tag));
-        });
+      Array.from(selectedTags).forEach((tag) => {
+        if (!notesByTag[tag]) dispatch(fetchNotesByTag(tag));
+      });
     } else {
-        dispatch(getCurrentUserNotes());
+      dispatch(getCurrentUserNotes());
     }
-}, [dispatch, Array.from(selectedTags).join(",")]);
+  }, [dispatch, Array.from(selectedTags).join(",")]);
 
   const displayedNotes =
     selectedTags.size > 0
@@ -151,7 +151,7 @@ function UserNotes() {
 
         <div
           className="notebook-notes-column-container"
-          style={{ marginTop: "100px" }}
+          style={{ marginTop: selectedTags.size > 0 ? "120px" : "" }}
         >
           {displayedNotes.length === 0
             ? handleNoNotes()

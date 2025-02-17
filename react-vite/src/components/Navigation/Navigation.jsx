@@ -152,30 +152,29 @@ function Navigation() {
                 >
                   ▼
                 </button>
-
-                {showTags && (
-                  <div className="dropdown-content">
-                    <input
-                      type="text"
-                      className="search-bar"
-                      placeholder="Search Tags..."
-                      value={searchTag}
-                      onChange={(e) => setSearchTag(e.target.value)}
-                    />
-                    <ul className="dropdown-list">
-                      {filterItems(tags, searchTag).map((tag, index) => (
-                        <li
-                          key={index}
-                          className="dropdown-item"
-                          onClick={() => handleTagSearch(tag.name)}
-                        >
-                          {tag.name}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
               </li>
+              {showTags && (
+                <div className="dropdown-content">
+                  <input
+                    type="text"
+                    className="search-bar"
+                    placeholder="Search Tags..."
+                    value={searchTag}
+                    onChange={(e) => setSearchTag(e.target.value)}
+                  />
+                  <ul className="dropdown-list">
+                    {filterItems(tags, searchTag).map((tag, index) => (
+                      <li
+                        key={index}
+                        className="dropdown-item"
+                        onClick={() => handleTagSearch(tag.name)}
+                      >
+                        {tag.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </ul>
           </div>
         </>
