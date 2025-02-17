@@ -149,7 +149,10 @@ function UserNotes() {
           </h4>
         </div>
 
-        <div className="notebook-notes-column-container">
+        <div
+          className="notebook-notes-column-container"
+          style={{ marginTop: "100px" }}
+        >
           {displayedNotes.length === 0
             ? handleNoNotes()
             : displayedNotes.map((note, index) => (
@@ -181,39 +184,75 @@ function UserNotes() {
           onSubmit={handleSubmit}
           className="notebook-notes-note-form-container"
         >
-          <h1 className="notebook-notes-note-title">{selectedNote.title}</h1>
-
-          <label className="notebook-notes-note-label">
-            Title
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </label>
-
-          <label className="notebook-notes-note-label">
-            Content
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              required
-              rows={10}
-            />
-          </label>
-
+          <div>
+            <h1 className="notebook-notes-note-title">{selectedNote.title}</h1>
+          </div>
+          <div className="notebook-notes-note-label-container">
+            <label className="notebook-notes-note-label">
+              Title
+              <input
+                className="notebook-notes-note-title-input"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+                required
+              />
+            </label>
+          </div>
+          <div className="notebook-notes-note-label-container">
+            <label className="notebook-notes-note-label">
+              Content
+              <textarea
+                className="notebook-notes-note-content-input"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Content"
+                required
+                rows={10}
+              />
+            </label>
+          </div>
+          <div className="notebook-notes-note-label-container">
+            <label className="notebook-notes-note-label">
+              Select Notebook
+              <select
+                className="notebook-notes-note-dropdown"
+                value={notebook_id}
+                onChange={(e) => setNotebook_id(e.target.value)}
+                required
+              >
+                <option value="">Select a notebook</option>
+                {Object.values(notebooks).map((nb, index) => (
+                  <option key={index} value={nb.id}>
+                    {nb.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="notebook-notes-note-button-container">
+            <button
+              type="submit"
+              className="notebook-notes-note-button"
+              disabled={!isFormValid()}
+              style={{
+                opacity: isFormValid() ? 1 : 0.5,
+                cursor: isFormValid() ? "pointer" : "not-allowed",
+              }}
+            >
+              Save
+            </button>
+            <button className="notebook-notes-note-button">
+              <OpenModalMenuItem
+                itemText="Delete"
+                onItemClick={() => setShowModal(true)}
+                modalComponent={<DeleteNote noteId={noteId} />}
+                onModalClose={handleDelete}
+              />
+            </button>
+          </div>
           <Tags noteId={selectedNote.id} showInput={true} />
-
-          <button type="submit" disabled={!isFormValid()}>
-            Save
-          </button>
-          <OpenModalMenuItem
-            itemText="Delete"
-            onItemClick={() => setShowModal(true)}
-            modalComponent={<DeleteNote noteId={noteId} />}
-            onModalClose={handleDelete}
-          />
         </form>
       )}
     </div>
@@ -221,3 +260,12 @@ function UserNotes() {
 }
 
 export default UserNotes;
+
+{
+  /* <OpenModalMenuItem
+            itemText="Delete"
+            onItemClick={() => setShowModal(true)}
+            modalComponent={<DeleteNote noteId={noteId} />}
+            onModalClose={handleDelete}
+          /> */
+}
