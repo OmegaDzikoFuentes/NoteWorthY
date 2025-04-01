@@ -79,14 +79,14 @@ const NotebookPage = () => {
               onChange={(e) => setName(e.target.value)}
             />
             <button type="submit" className="notebook-submit-button">
-              {editingNotebook ? "Update Notebook" : "Create Notebook"}
+              {editingNotebook ? "Update Notebook " : "Create Notebook"}
             </button>
           </form>
         </div>
         <div className="notebooks-search-container">
           <h4 className="notebook-count">
             {filteredNotebooks.length}{" "}
-            {filteredNotebooks.length === 1 ? "notebook" : "notebooks"}
+            {filteredNotebooks.length === 1 ? "Notebook" : "notebooks"}
           </h4>
           <div className="new-notebook-search">
             <input
